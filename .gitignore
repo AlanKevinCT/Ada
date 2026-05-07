@@ -2,8 +2,13 @@
 venv/
 env/
 .venv/
+
+# Bytecode de Python
 *.py[cod]
+*.pyc
+*.pyo
 __pycache__/
+*/__pycache__/
 
 # Base de datos
 db.sqlite3
@@ -18,3 +23,4 @@ local_settings.py
 
 # Archivos de editor
 .vscode/
+
