@@ -1,0 +1,20 @@
+# Entorno virtual y paquetes
+venv/
+env/
+.venv/
+*.py[cod]
+__pycache__/
+
+# Base de datos
+db.sqlite3
+db.sqlite3-journal
+
+# Archivos de configuración 
+local_settings.py
+.env
+
+# Archivos de log
+*.log
+
+# Archivos de editor
+.vscode/
