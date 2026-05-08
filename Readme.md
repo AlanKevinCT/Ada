@@ -60,55 +60,74 @@ Abre tu navegador en **http://127.0.0.1:8000**
 ```bash
 Ada/
 ├── .gitignore
-├── Readme.md                    ← descripción general del repo
-└── NyxValley/                   ← raíz del proyecto Django
-├── manage.py                    ← comando principal de Django
-├── Readme.md                    ← este archivo
-├── templates/                   ← HTMLs globales
-├── static/                      ← CSS, JS e imágenes
-├── media/                       ← archivos subidos por usuarios
-├── Festival2026/                ← app principal del proyecto
-│   ├── models.py                ← BD: clases Usuario, Parque, Reservacion
-│   ├── views.py                 ← vistas de todas las páginas del mapa de navegación
-│   ├── urls.py                  ← rutas del sistema (todas las URLs del proyecto)
-│   ├── admin.py                 ← panel de administración de Django
-│   ├── apps.py                  ← configuración de la app, conecta signals
-│   ├── services.py              ← lógica de negocio: Autenticador, Disponibilidad, AsistReserva
-│   ├── decorators.py            ← patrón Decorator: ServicioParque, ParqueBase, Cabanas
-│   ├── signals.py               ← patrón Observer: correos y notificaciones automáticas
-│   ├── mapa.py                  ← lógica del mapa interactivo
-│   ├── tests.py                 ← pruebas unitarias e integración
-│   └── migrations/              ← historial de cambios en la base de datos
-│       └── 0001_initial.py      ← migración inicial con los 3 modelos
-└── NyxValley/
-├── settings.py              ← configuración general del proyecto
-├── urls.py                  ← configuración de URLs del proyecto Django
-├── wsgi.py                  ← despliegue en servidor
-└── asgi.py                  ← despliegue asíncrono
+├── Readme.md                        ← descripción general del repo
+└── NyxValley/                       ← raíz del proyecto Django
+    ├── manage.py                    ← comando principal de Django
+    ├── Readme.md                    ← descripción general del repo
+    ├── templates/                   ← HTMLs globales
+    ├── static/                      ← CSS, JS e imágenes
+    ├── media/                       ← archivos subidos por usuarios
+    ├── Festival2026/                ← app principal del proyecto
+    │   ├── models.py                ← BD: clases Usuario, Parque, Reservacion
+    │   ├── views.py                 ← vistas de todas las páginas del mapa de navegación
+    │   ├── admin.py                 ← panel de administración de Django
+    │   ├── apps.py                  ← configuración de la app, conecta signals
+    │   ├── services.py              ← lógica de negocio: Autenticador, Disponibilidad, AsistReserva
+    │   ├── decorators.py            ← patrón Decorator: ServicioParque, ParqueBase, Cabanas
+    │   ├── signals.py               ← patrón Observer: correos y notificaciones automáticas
+    │   ├── mapa.py                  ← lógica del mapa interactivo
+    │   ├── tests.py                 ← pruebas unitarias e integración
+    │   └── migrations/              ← historial de cambios en la base de datos
+    │       └── 0001_initial.py      ← migración inicial con los 3 modelos
+    └── NyxValley/
+        ├── settings.py              ← configuración general del proyecto
+        ├── urls.py                  ← todas las rutas del sistema
+        ├── wsgi.py                  ← despliegue en servidor
+        └── asgi.py                  ← despliegue asíncrono
 ```
 
 ---
 
-### ¿Qué hace cada archivo nuevo?
+### ¿Qué hace cada archivo?
 
-**`services.py`** — Contiene la lógica de negocio principal:
+**`models.py`** — Define las tablas de la base de datos:
+- `Usuario` — modelo base con correo como login, hash SHA-256 de contraseña
+- `Parque` — información del parque, coordenadas para el mapa, tipo de hospedaje
+- `Reservacion` — estancia de un cliente en un parque, con fechas y estado
+
+**`views.py`** — Contiene todas las vistas del sistema organizadas por sección:
+- Autenticación: `inicio`, `registro`, `login`, `logout`
+- Panel cliente: `panel_cliente`, `mis_reservaciones`, `cancelar_reservacion`
+- Mapa: `mapa`, `detalle_parque` — Ayros implementa estas
+- Reservaciones: `formulario_reserva`, `confirmacion`
+- Panel admin: `panel_admin`, `gestionar_reservaciones`, `consultar_reservas`, `crear_parque`, `editar_parque`, `eliminar_parque`
+
+**`services.py`** — Lógica de negocio principal:
 - `Autenticador` — maneja el hash SHA-256 de contraseñas
 - `Disponibilidad` — valida fechas del festival (junio-agosto), bloquea martes y verifica cupo
 - `AsistReserva` — crea, cancela y modifica reservaciones con todas las validaciones
 
-**`decorators.py`** — Implementa el patrón Decorator para los parques:
+**`decorators.py`** — Patrón Decorator para los parques:
 - `ServicioParque` — clase abstracta base
 - `ParqueBase` — parque con zona de camping (todos los parques)
 - `ParqueDecorator` — decorator base
 - `Cabanas` — agrega servicio de cabañas al parque si el admin lo define
 
-**`signals.py`** — Implementa el patrón Observer para notificaciones:
+**`signals.py`** — Patrón Observer para notificaciones automáticas:
 - `SignalCorreoCliente` — manda correos al cliente al reservar, cancelar o modificar
 - `SignalModificacion` — notifica a clientes afectados cuando un parque cambia o se elimina
-- Se dispara automáticamente al crear una reservación — no hay que llamarlo manualmente
+- Se dispara automáticamente al crear una reservación, no hay que llamarlo manualmente
 
-**`mapa.py`** — Lógica del mapa interactivo:
-- `MapaNavegacion` — carga parques activos con coordenadas, devuelve info por pin y exporta GeoJSON para Leaflet/Google Maps
+**`mapa.py`** — Lógica del mapa interactivo (Ayros):
+- `MapaNavegacion` — carga parques activos con coordenadas, devuelve info por pin
+- Exporta GeoJSON compatible con Leaflet y Google Maps API
+
+**`NyxValley/urls.py`** — Todas las rutas del sistema:
+- Autenticación: `/`, `/registro/`, `/login/`, `/logout/`
+- Cliente: `/panel/`, `/mis-reservaciones/`, `/mis-reservaciones/cancelar/<id>/`
+- Mapa: `/mapa/`, `/mapa/parque/<id>/`
+- Reservaciones: `/reservar/`, `/reservar/confirmacion/`
+- Admin: `/admin-panel/` y todas sus sub-rutas
 
 ---
 
