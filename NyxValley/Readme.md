@@ -69,7 +69,8 @@ Ada/
 ├── media/                       ← archivos subidos por usuarios
 ├── Festival2026/                ← app principal del proyecto
 │   ├── models.py                ← BD: clases Usuario, Parque, Reservacion
-│   ├── views.py                 ← lógica de cada página
+│   ├── views.py                 ← vistas de todas las páginas del mapa de navegación
+│   ├── urls.py                  ← rutas del sistema (todas las URLs del proyecto)
 │   ├── admin.py                 ← panel de administración de Django
 │   ├── apps.py                  ← configuración de la app, conecta signals
 │   ├── services.py              ← lógica de negocio: Autenticador, Disponibilidad, AsistReserva
@@ -81,7 +82,7 @@ Ada/
 │       └── 0001_initial.py      ← migración inicial con los 3 modelos
 └── NyxValley/
 ├── settings.py              ← configuración general del proyecto
-├── urls.py                  ← rutas del sistema
+├── urls.py                  ← configuración de URLs del proyecto Django
 ├── wsgi.py                  ← despliegue en servidor
 └── asgi.py                  ← despliegue asíncrono
 ```
