@@ -1,0 +1,63 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block titulo %}Nyx Valley{% endblock %}</title>
+
+    <!-- Estilos base del festival -->
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+
+    <!-- Leaflet CSS — mapa interactivo -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+
+    <!-- HTMX -->
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+
+    {% block estilos_extra %}{% endblock %}
+</head>
+<body>
+
+    <!-- ── Navbar ── -->
+    <nav>
+        <a class="nav-logo" href="/">
+            <span class="glyph">✦</span> Nyx Valley
+        </a>
+        <ul class="nav-links">
+            <li><a href="/">Inicio</a></li>
+            <li><a href="/mapa/">Mapa</a></li>
+            {% if user.is_authenticated %}
+                {% if user.is_admin %}
+                    <li><a href="/admin-panel/">Panel admin</a></li>
+                {% else %}
+                    <li><a href="/panel/">Mi cuenta</a></li>
+                    <li><a href="/mis-reservaciones/">Mis reservaciones</a></li>
+                {% endif %}
+                <li><a href="/logout/">Cerrar sesión</a></li>
+            {% else %}
+                <li><a href="/login/">Iniciar sesión</a></li>
+                <li><a href="/registro/">Registrarse</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+
+    <!-- ── Contenido de cada página ── -->
+    <main>
+        {% block contenido %}{% endblock %}
+    </main>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    {% block scripts_extra %}{% endblock %}
+
+    <!-- ── Footer ── -->
+    <footer>
+        <span class="glyph">✦</span>
+        Festival Internacional de las Luciérnagas 2026 — Nyx Valley
+        <span class="glyph">✦</span>
+    </footer>
+
+</body>
+</html>

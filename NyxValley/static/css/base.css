@@ -1,0 +1,306 @@
+/* ══════════════════════════════════════════════════════════════
+   Nyx Valley — Festival Internacional de las Luciérnagas 2026
+   Estilo: brutalismo elegante + temática bosque nocturno
+   Autora: Ayros / Equipo Ada
+══════════════════════════════════════════════════════════════ */
+
+/* ── Variables ─────────────────────────────────────────────── */
+:root {
+    --negro:          #080c08;
+    --verde-bosque:   #0d1a0d;
+    --verde-medio:    #1a3320;
+    --verde-claro:    #2d5a3d;
+    --verde-acento:   #4a7c59;
+    --amarillo:       #e8d44d;
+    --amarillo-glow:  #f5e76a;
+    --crema:          #f0ead6;
+    --texto-principal:#e8f0e8;
+    --texto-suave:    #8fa88f;
+    --borde-brutal:   3px solid var(--amarillo);
+    --glow-lucier:    0 0 24px 6px rgba(232, 212, 77, 0.15);
+    --glow-fuerte:    0 0 40px 10px rgba(232, 212, 77, 0.3);
+    --fuente-titulo:  'Georgia', serif;
+    --fuente-cuerpo:  'Courier New', monospace;
+}
+
+/* ── Reset ──────────────────────────────────────────────────── */
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* ── Base ───────────────────────────────────────────────────── */
+html { scroll-behavior: smooth; }
+
+body {
+    font-family: var(--fuente-cuerpo);
+    background-color: var(--negro);
+    color: var(--texto-principal);
+    min-height: 100vh;
+    line-height: 1.7;
+    /* Textura sutil de ruido para dar profundidad */
+    background-image:
+        radial-gradient(ellipse at 20% 50%, rgba(13,26,13,0.8) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 20%, rgba(45,90,61,0.15) 0%, transparent 50%);
+}
+
+/* ── Navbar ─────────────────────────────────────────────────── */
+nav {
+    background-color: var(--negro);
+    border-bottom: var(--borde-brutal);
+    padding: 0 48px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: var(--glow-lucier);
+}
+
+.nav-logo {
+    font-family: var(--fuente-titulo);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--amarillo);
+    text-decoration: none;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    transition: text-shadow 0.3s;
+}
+
+.nav-logo:hover {
+    text-shadow: var(--glow-fuerte);
+}
+
+.nav-logo .glyph {
+    font-size: 1.1rem;
+    margin-right: 8px;
+    opacity: 0.9;
+}
+
+.nav-links {
+    display: flex;
+    gap: 0;
+    list-style: none;
+}
+
+.nav-links li a {
+    display: block;
+    padding: 0 20px;
+    height: 64px;
+    line-height: 64px;
+    color: var(--texto-suave);
+    text-decoration: none;
+    font-size: 0.85rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    border-left: 1px solid var(--verde-medio);
+    transition: all 0.2s;
+}
+
+.nav-links li a:hover,
+.nav-links li a.activo {
+    color: var(--amarillo);
+    background-color: var(--verde-bosque);
+    border-bottom: 3px solid var(--amarillo);
+}
+
+/* ── Main ───────────────────────────────────────────────────── */
+main {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 48px 32px;
+}
+
+/* ── Tipografía ─────────────────────────────────────────────── */
+h1, h2, h3 {
+    font-family: var(--fuente-titulo);
+    font-weight: 700;
+    letter-spacing: 1px;
+    line-height: 1.2;
+}
+
+h1 {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    color: var(--amarillo);
+    text-transform: uppercase;
+    border-bottom: var(--borde-brutal);
+    padding-bottom: 16px;
+    margin-bottom: 32px;
+}
+
+h2 {
+    font-size: clamp(1.3rem, 3vw, 2rem);
+    color: var(--crema);
+    margin-bottom: 20px;
+}
+
+h3 {
+    font-size: 1.1rem;
+    color: var(--amarillo);
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+p {
+    color: var(--texto-suave);
+    margin-bottom: 16px;
+    font-size: 0.95rem;
+}
+
+/* ── Botones ────────────────────────────────────────────────── */
+.btn {
+    display: inline-block;
+    padding: 12px 28px;
+    font-family: var(--fuente-cuerpo);
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-decoration: none;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+}
+
+.btn-primary {
+    background-color: var(--amarillo);
+    color: var(--negro);
+    border: 3px solid var(--amarillo);
+}
+
+.btn-primary:hover {
+    background-color: transparent;
+    color: var(--amarillo);
+    box-shadow: var(--glow-fuerte);
+}
+
+.btn-secondary {
+    background-color: transparent;
+    color: var(--amarillo);
+    border: 3px solid var(--amarillo);
+}
+
+.btn-secondary:hover {
+    background-color: var(--amarillo);
+    color: var(--negro);
+    box-shadow: var(--glow-fuerte);
+}
+
+.btn-danger {
+    background-color: transparent;
+    color: #e05252;
+    border: 3px solid #e05252;
+}
+
+.btn-danger:hover {
+    background-color: #e05252;
+    color: var(--negro);
+}
+
+/* ── Cards ──────────────────────────────────────────────────── */
+.card {
+    background-color: var(--verde-bosque);
+    border: var(--borde-brutal);
+    padding: 28px;
+    transition: box-shadow 0.3s;
+}
+
+.card:hover {
+    box-shadow: var(--glow-lucier);
+}
+
+.card-titulo {
+    font-family: var(--fuente-titulo);
+    font-size: 1.2rem;
+    color: var(--amarillo);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 12px;
+    border-bottom: 1px solid var(--verde-claro);
+    padding-bottom: 8px;
+}
+
+.card-dato {
+    font-size: 0.85rem;
+    color: var(--texto-suave);
+    margin-bottom: 6px;
+}
+
+.card-dato span {
+    color: var(--texto-principal);
+}
+
+/* ── Formularios ────────────────────────────────────────────── */
+.form-grupo {
+    margin-bottom: 24px;
+}
+
+.form-grupo label {
+    display: block;
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--texto-suave);
+    margin-bottom: 8px;
+}
+
+.form-grupo input,
+.form-grupo select,
+.form-grupo textarea {
+    width: 100%;
+    padding: 12px 16px;
+    background-color: var(--verde-bosque);
+    border: 2px solid var(--verde-claro);
+    color: var(--texto-principal);
+    font-family: var(--fuente-cuerpo);
+    font-size: 0.95rem;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.form-grupo input:focus,
+.form-grupo select:focus,
+.form-grupo textarea:focus {
+    border-color: var(--amarillo);
+    box-shadow: var(--glow-lucier);
+}
+
+/* ── Mensajes de error ──────────────────────────────────────── */
+.error {
+    color: #e05252;
+    font-size: 0.82rem;
+    margin-top: 4px;
+    letter-spacing: 1px;
+}
+
+.alerta {
+    padding: 14px 20px;
+    border-left: 4px solid var(--amarillo);
+    background-color: var(--verde-bosque);
+    color: var(--texto-principal);
+    margin-bottom: 24px;
+    font-size: 0.9rem;
+}
+
+/* ── Footer ─────────────────────────────────────────────────── */
+footer {
+    text-align: center;
+    padding: 32px;
+    color: var(--texto-suave);
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    border-top: var(--borde-brutal);
+    margin-top: 64px;
+    background-color: var(--negro);
+}
+
+footer .glyph {
+    color: var(--amarillo);
+    font-size: 1rem;
+}

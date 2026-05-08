@@ -1,0 +1,72 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block titulo %}Mapa de Parques — Nyx Valley{% endblock %}
+
+{% block estilos_extra %}
+
+<link rel="stylesheet" href="{% static 'css/mapa.css' %}">
+{% endblock %}
+
+{% block contenido %}
+
+<h1>Parques del Festival</h1>
+<p>Selecciona un marcador en el mapa para ver la información del parque.</p>
+
+<div class="mapa-layout">
+
+    <div id="mapa-contenedor">
+        <div id="mapa"></div>
+    </div>
+
+    <div id="panel-parque" class="panel-parque panel-vacio">
+        <div class="panel-placeholder">
+            <span class="glyph-grande">✦</span>
+            <p>Selecciona un parque<br>en el mapa</p>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}
+
+{% block scripts_extra %}
+<script>
+const geojson = {{ geojson|safe }};
+
+const mapa = L.map('mapa').setView([19.4326, -99.1332], 6);
+
+L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+    attribution: '© OpenStreetMap © CARTO',
+    maxZoom: 18,
+}).addTo(mapa);
+
+const iconoLucier = L.divIcon({
+    className: 'icono-lucier',
+    html: `<div class="pin-lucier">✦</div>`,
+    iconSize: [36, 36],
+    iconAnchor: [18, 18],
+    popupAnchor: [0, -20],
+});
+
+L.geoJSON(geojson, {
+    pointToLayer: function(feature, latlng) {
+        return L.marker(latlng, { icon: iconoLucier });
+    },
+    onEachFeature: function(feature, layer) {
+        const p = feature.properties;
+        layer.on('click', function() {
+            document.querySelectorAll('.pin-lucier').forEach(el => {
+                el.classList.remove('activo');
+            });
+            this._icon.querySelector('.pin-lucier').classList.add('activo');
+            htmx.ajax('GET',
+                `/mapa/parque/${p.id}/`,
+                { target: '#panel-parque', swap: 'innerHTML' }
+            );
+        });
+    }
+}).addTo(mapa);
+setTimeout(() => { mapa.invalidateSize(); }, 100);
+</script>
+{% endblock %}

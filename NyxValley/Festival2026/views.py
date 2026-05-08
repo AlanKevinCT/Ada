@@ -73,6 +73,8 @@ def cancelar_reservacion(request, id):
 #  Mapa interactivo — Ayros
 # ─────────────────────────────────────────────────────────────
 
+import json
+
 def mapa(request):
     """
     Muestra el mapa interactivo con los parques oficiales (RF-07, RF-08).
@@ -81,9 +83,11 @@ def mapa(request):
     mapa_nav = MapaNavegacion()
     parques  = mapa_nav.iniciarMapa()
     geojson  = mapa_nav.parques_como_geojson()
+    # json.dumps convierte True/False de Python a true/false de JavaScript
+    geojson_str = json.dumps(geojson)
     return render(request, 'mapa/mapa.html', {
         'parques': parques,
-        'geojson': geojson,
+        'geojson': geojson_str,
     })
 
 
