@@ -1,25 +1,17 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" data-theme="bosque-nocturno">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block titulo %}Nyx Valley{% endblock %}</title>
-
-    <!-- Estilos base del festival -->
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
-
-    <!-- Leaflet CSS — mapa interactivo -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
-
-    <!-- HTMX -->
     <script src="https://unpkg.com/htmx.org@1.9.10"></script>
-
     {% block estilos_extra %}{% endblock %}
 </head>
 <body>
 
-    <!-- ── Navbar ── -->
     <nav>
         <a class="nav-logo" href="/">
             <span class="glyph">✦</span> Nyx Valley
@@ -42,7 +34,6 @@
         </ul>
     </nav>
 
-    <!-- ── Contenido de cada página ── -->
     <main>
         {% block contenido %}{% endblock %}
     </main>
@@ -52,12 +43,82 @@
 
     {% block scripts_extra %}{% endblock %}
 
-    <!-- ── Footer ── -->
+    <!-- ── Selector de tema ── -->
+    <div class="selector-tema">
+        <div class="selector-tema-menu" id="menu-temas">
+
+            <button class="tema-opcion activo" onclick="cambiarTema('bosque-nocturno', this)">
+                <div class="tema-muestra" style="background:#0d1a0d; border-color:#e8d44d;"></div>
+                Bosque nocturno
+            </button>
+
+            <button class="tema-opcion" onclick="cambiarTema('indigo-profundo', this)">
+                <div class="tema-muestra" style="background:#12122e; border-color:#7c6fff;"></div>
+                Índigo profundo
+            </button>
+
+            <button class="tema-opcion" onclick="cambiarTema('bosque-esmeralda', this)">
+                <div class="tema-muestra" style="background:#0a1f18; border-color:#3ecf8e;"></div>
+                Bosque esmeralda
+            </button>
+
+            <button class="tema-opcion" onclick="cambiarTema('crema-dorado', this)">
+                <div class="tema-muestra" style="background:#fffdf7; border-color:#b8860b;"></div>
+                Crema y dorado
+            </button>
+
+            <button class="tema-opcion" onclick="cambiarTema('bosque-dia', this)">
+                <div class="tema-muestra" style="background:#ffffff; border-color:#2d6a4f;"></div>
+                Bosque de día
+            </button>
+
+            <button class="tema-opcion" onclick="cambiarTema('niebla-musgo', this)">
+                <div class="tema-muestra" style="background:#f8faf8; border-color:#606c38;"></div>
+                Niebla y musgo
+            </button>
+
+        </div>
+        <button class="selector-tema-toggle" onclick="toggleMenu()">✦ Tema</button>
+    </div>
+
     <footer>
         <span class="glyph">✦</span>
         Festival Internacional de las Luciérnagas 2026 — Nyx Valley
         <span class="glyph">✦</span>
     </footer>
+
+    <script>
+        // ── Cargar tema guardado ──────────────────────────────
+        const temaGuardado = localStorage.getItem('nyx-tema') || 'bosque-nocturno';
+        aplicarTema(temaGuardado);
+
+        function aplicarTema(tema) {
+            document.documentElement.setAttribute('data-theme', tema);
+            document.querySelectorAll('.tema-opcion').forEach(btn => {
+                btn.classList.remove('activo');
+                if (btn.getAttribute('onclick').includes(tema)) {
+                    btn.classList.add('activo');
+                }
+            });
+        }
+
+        function cambiarTema(tema, btn) {
+            aplicarTema(tema);
+            localStorage.setItem('nyx-tema', tema);
+        }
+
+        function toggleMenu() {
+            document.getElementById('menu-temas').classList.toggle('abierto');
+        }
+
+        // Cerrar menú al hacer clic fuera
+        document.addEventListener('click', function(e) {
+            const selector = document.querySelector('.selector-tema');
+            if (!selector.contains(e.target)) {
+                document.getElementById('menu-temas').classList.remove('abierto');
+            }
+        });
+    </script>
 
 </body>
 </html>

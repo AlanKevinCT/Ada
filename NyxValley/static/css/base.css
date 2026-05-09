@@ -4,21 +4,99 @@
    Autora: Ayros / Equipo Ada
 ══════════════════════════════════════════════════════════════ */
 
-/* ── Variables ─────────────────────────────────────────────── */
-:root {
-    --negro:          #080c08;
-    --verde-bosque:   #0d1a0d;
+/* ── Tema 1: Bosque nocturno (default oscuro) ───────────────── */
+:root,
+[data-theme="bosque-nocturno"] {
+    --fondo-pagina:   #080c08;
+    --fondo-card:     #0d1a0d;
+    --fondo-nav:      #080c08;
     --verde-medio:    #1a3320;
     --verde-claro:    #2d5a3d;
-    --verde-acento:   #4a7c59;
-    --amarillo:       #e8d44d;
-    --amarillo-glow:  #f5e76a;
-    --crema:          #f0ead6;
+    --acento:         #e8d44d;
+    --acento-hover:   #f5e76a;
     --texto-principal:#e8f0e8;
     --texto-suave:    #8fa88f;
-    --borde-brutal:   3px solid var(--amarillo);
-    --glow-lucier:    0 0 24px 6px rgba(232, 212, 77, 0.15);
-    --glow-fuerte:    0 0 40px 10px rgba(232, 212, 77, 0.3);
+    --borde-brutal:   3px solid var(--acento);
+    --fuente-titulo:  'Georgia', serif;
+    --fuente-cuerpo:  'Courier New', monospace;
+}
+
+/* ── Tema 2: Índigo profundo (oscuro) ───────────────────────── */
+[data-theme="indigo-profundo"] {
+    --fondo-pagina:   #0a0a1a;
+    --fondo-card:     #12122e;
+    --fondo-nav:      #0a0a1a;
+    --verde-medio:    #1a1a40;
+    --verde-claro:    #2a2860;
+    --acento:         #7c6fff;
+    --acento-hover:   #a99fff;
+    --texto-principal:#c8bfff;
+    --texto-suave:    #6660a8;
+    --borde-brutal:   3px solid var(--acento);
+    --fuente-titulo:  'Georgia', serif;
+    --fuente-cuerpo:  'Courier New', monospace;
+}
+
+/* ── Tema 3: Bosque esmeralda (oscuro) ──────────────────────── */
+[data-theme="bosque-esmeralda"] {
+    --fondo-pagina:   #061410;
+    --fondo-card:     #0a1f18;
+    --fondo-nav:      #061410;
+    --verde-medio:    #0f3d2a;
+    --verde-claro:    #1a5c40;
+    --acento:         #3ecf8e;
+    --acento-hover:   #7de8bb;
+    --texto-principal:#b8f5dc;
+    --texto-suave:    #1e6b4a;
+    --borde-brutal:   3px solid var(--acento);
+    --fuente-titulo:  'Georgia', serif;
+    --fuente-cuerpo:  'Courier New', monospace;
+}
+
+/* ── Tema 4: Crema y dorado (claro) ─────────────────────────── */
+[data-theme="crema-dorado"] {
+    --fondo-pagina:   #f5f0e8;
+    --fondo-card:     #fffdf7;
+    --fondo-nav:      #fffdf7;
+    --verde-medio:    #e8dcc8;
+    --verde-claro:    #d4c49a;
+    --acento:         #b8860b;
+    --acento-hover:   #8a6200;
+    --texto-principal:#5c4400;
+    --texto-suave:    #7a6830;
+    --borde-brutal:   3px solid var(--acento);
+    --fuente-titulo:  'Georgia', serif;
+    --fuente-cuerpo:  'Courier New', monospace;
+}
+
+/* ── Tema 5: Bosque de día (claro) ──────────────────────────── */
+[data-theme="bosque-dia"] {
+    --fondo-pagina:   #f0f7f0;
+    --fondo-card:     #ffffff;
+    --fondo-nav:      #ffffff;
+    --verde-medio:    #d8f3dc;
+    --verde-claro:    #b7e4c7;
+    --acento:         #2d6a4f;
+    --acento-hover:   #1b4332;
+    --texto-principal:#1b4332;
+    --texto-suave:    #52796f;
+    --borde-brutal:   3px solid var(--acento);
+    --fuente-titulo:  'Georgia', serif;
+    --fuente-cuerpo:  'Courier New', monospace;
+}
+
+/* ── Tema 6: Niebla y musgo (claro) ─────────────────────────── */
+[data-theme="niebla-musgo"] {
+    --fondo-pagina:   #eef2ee;
+    --fondo-card:     #f8faf8;
+    --fondo-nav:      #f8faf8;
+    --verde-medio:    #dde5b6;
+    --verde-claro:    #c8d87a;
+    --acento:         #606c38;
+    --acento-hover:   #283618;
+    --texto-principal:#283618;
+    --texto-suave:    #606c38;
+    --borde-brutal:   3px solid var(--acento);
     --fuente-titulo:  'Georgia', serif;
     --fuente-cuerpo:  'Courier New', monospace;
 }
@@ -30,24 +108,20 @@
     box-sizing: border-box;
 }
 
-/* ── Base ───────────────────────────────────────────────────── */
 html { scroll-behavior: smooth; }
 
 body {
     font-family: var(--fuente-cuerpo);
-    background-color: var(--negro);
+    background-color: var(--fondo-pagina);
     color: var(--texto-principal);
     min-height: 100vh;
     line-height: 1.7;
-    /* Textura sutil de ruido para dar profundidad */
-    background-image:
-        radial-gradient(ellipse at 20% 50%, rgba(13,26,13,0.8) 0%, transparent 60%),
-        radial-gradient(ellipse at 80% 20%, rgba(45,90,61,0.15) 0%, transparent 50%);
+    transition: background-color 0.3s, color 0.3s;
 }
 
 /* ── Navbar ─────────────────────────────────────────────────── */
 nav {
-    background-color: var(--negro);
+    background-color: var(--fondo-nav);
     border-bottom: var(--borde-brutal);
     padding: 0 48px;
     height: 64px;
@@ -57,34 +131,25 @@ nav {
     position: sticky;
     top: 0;
     z-index: 1000;
-    box-shadow: var(--glow-lucier);
 }
 
 .nav-logo {
     font-family: var(--fuente-titulo);
     font-size: 1.5rem;
     font-weight: 700;
-    color: var(--amarillo);
+    color: var(--acento);
     text-decoration: none;
     letter-spacing: 2px;
     text-transform: uppercase;
-    transition: text-shadow 0.3s;
 }
 
-.nav-logo:hover {
-    text-shadow: var(--glow-fuerte);
-}
-
-.nav-logo .glyph {
-    font-size: 1.1rem;
-    margin-right: 8px;
-    opacity: 0.9;
-}
+.nav-logo .glyph { font-size: 1.1rem; margin-right: 8px; }
 
 .nav-links {
     display: flex;
     gap: 0;
     list-style: none;
+    align-items: center;
 }
 
 .nav-links li a {
@@ -101,11 +166,10 @@ nav {
     transition: all 0.2s;
 }
 
-.nav-links li a:hover,
-.nav-links li a.activo {
-    color: var(--amarillo);
-    background-color: var(--verde-bosque);
-    border-bottom: 3px solid var(--amarillo);
+.nav-links li a:hover {
+    color: var(--acento);
+    background-color: var(--fondo-card);
+    border-bottom: 3px solid var(--acento);
 }
 
 /* ── Main ───────────────────────────────────────────────────── */
@@ -125,7 +189,7 @@ h1, h2, h3 {
 
 h1 {
     font-size: clamp(2rem, 5vw, 3.5rem);
-    color: var(--amarillo);
+    color: var(--acento);
     text-transform: uppercase;
     border-bottom: var(--borde-brutal);
     padding-bottom: 16px;
@@ -134,13 +198,13 @@ h1 {
 
 h2 {
     font-size: clamp(1.3rem, 3vw, 2rem);
-    color: var(--crema);
+    color: var(--texto-principal);
     margin-bottom: 20px;
 }
 
 h3 {
     font-size: 1.1rem;
-    color: var(--amarillo);
+    color: var(--acento);
     margin-bottom: 12px;
     text-transform: uppercase;
     letter-spacing: 2px;
@@ -168,27 +232,25 @@ p {
 }
 
 .btn-primary {
-    background-color: var(--amarillo);
-    color: var(--negro);
-    border: 3px solid var(--amarillo);
+    background-color: var(--acento);
+    color: var(--fondo-pagina);
+    border: 3px solid var(--acento);
 }
 
 .btn-primary:hover {
     background-color: transparent;
-    color: var(--amarillo);
-    box-shadow: var(--glow-fuerte);
+    color: var(--acento);
 }
 
 .btn-secondary {
     background-color: transparent;
-    color: var(--amarillo);
-    border: 3px solid var(--amarillo);
+    color: var(--acento);
+    border: 3px solid var(--acento);
 }
 
 .btn-secondary:hover {
-    background-color: var(--amarillo);
-    color: var(--negro);
-    box-shadow: var(--glow-fuerte);
+    background-color: var(--acento);
+    color: var(--fondo-pagina);
 }
 
 .btn-danger {
@@ -199,25 +261,21 @@ p {
 
 .btn-danger:hover {
     background-color: #e05252;
-    color: var(--negro);
+    color: var(--fondo-pagina);
 }
 
 /* ── Cards ──────────────────────────────────────────────────── */
 .card {
-    background-color: var(--verde-bosque);
+    background-color: var(--fondo-card);
     border: var(--borde-brutal);
     padding: 28px;
-    transition: box-shadow 0.3s;
-}
-
-.card:hover {
-    box-shadow: var(--glow-lucier);
+    transition: all 0.2s;
 }
 
 .card-titulo {
     font-family: var(--fuente-titulo);
     font-size: 1.2rem;
-    color: var(--amarillo);
+    color: var(--acento);
     text-transform: uppercase;
     letter-spacing: 1.5px;
     margin-bottom: 12px;
@@ -225,20 +283,11 @@ p {
     padding-bottom: 8px;
 }
 
-.card-dato {
-    font-size: 0.85rem;
-    color: var(--texto-suave);
-    margin-bottom: 6px;
-}
-
-.card-dato span {
-    color: var(--texto-principal);
-}
+.card-dato { font-size: 0.85rem; color: var(--texto-suave); margin-bottom: 6px; }
+.card-dato span { color: var(--texto-principal); }
 
 /* ── Formularios ────────────────────────────────────────────── */
-.form-grupo {
-    margin-bottom: 24px;
-}
+.form-grupo { margin-bottom: 24px; }
 
 .form-grupo label {
     display: block;
@@ -254,7 +303,7 @@ p {
 .form-grupo textarea {
     width: 100%;
     padding: 12px 16px;
-    background-color: var(--verde-bosque);
+    background-color: var(--fondo-card);
     border: 2px solid var(--verde-claro);
     color: var(--texto-principal);
     font-family: var(--fuente-cuerpo);
@@ -266,25 +315,90 @@ p {
 .form-grupo input:focus,
 .form-grupo select:focus,
 .form-grupo textarea:focus {
-    border-color: var(--amarillo);
-    box-shadow: var(--glow-lucier);
+    border-color: var(--acento);
 }
 
-/* ── Mensajes de error ──────────────────────────────────────── */
-.error {
-    color: #e05252;
-    font-size: 0.82rem;
-    margin-top: 4px;
-    letter-spacing: 1px;
-}
+/* ── Alertas ────────────────────────────────────────────────── */
+.error { color: #e05252; font-size: 0.82rem; margin-top: 4px; letter-spacing: 1px; }
 
 .alerta {
     padding: 14px 20px;
-    border-left: 4px solid var(--amarillo);
-    background-color: var(--verde-bosque);
+    border-left: 4px solid var(--acento);
+    background-color: var(--fondo-card);
     color: var(--texto-principal);
     margin-bottom: 24px;
     font-size: 0.9rem;
+}
+
+/* ── Selector de tema ───────────────────────────────────────── */
+.selector-tema {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 8px;
+}
+
+.selector-tema-toggle {
+    background-color: var(--fondo-card);
+    border: var(--borde-brutal);
+    color: var(--acento);
+    padding: 10px 16px;
+    font-family: var(--fuente-cuerpo);
+    font-size: 0.8rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.selector-tema-toggle:hover {
+    background-color: var(--acento);
+    color: var(--fondo-pagina);
+}
+
+.selector-tema-menu {
+    display: none;
+    flex-direction: column;
+    gap: 6px;
+    background-color: var(--fondo-card);
+    border: var(--borde-brutal);
+    padding: 12px;
+    min-width: 200px;
+}
+
+.selector-tema-menu.abierto { display: flex; }
+
+.tema-opcion {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 12px;
+    cursor: pointer;
+    border: 1.5px solid transparent;
+    transition: all 0.15s;
+    font-family: var(--fuente-cuerpo);
+    font-size: 0.78rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--acento);
+    background: none;
+    text-align: left;
+    width: 100%;
+}
+
+.tema-opcion:hover { border-color: var(--acento); color: var(--acento); }
+.tema-opcion.activo { border-color: var(--acento); color: var(--acento); }
+
+.tema-muestra {
+    width: 28px;
+    height: 28px;
+    border-radius: 2px;
+    flex-shrink: 0;
+    border: 1.5px solid var(--verde-claro);
 }
 
 /* ── Footer ─────────────────────────────────────────────────── */
@@ -297,10 +411,7 @@ footer {
     text-transform: uppercase;
     border-top: var(--borde-brutal);
     margin-top: 64px;
-    background-color: var(--negro);
+    background-color: var(--fondo-nav);
 }
 
-footer .glyph {
-    color: var(--amarillo);
-    font-size: 1rem;
-}
+footer .glyph { color: var(--acento); }
