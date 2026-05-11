@@ -76,7 +76,11 @@ Ada/
     │   ├── decorators.py            ← patrón Decorator: ServicioParque, ParqueBase, Cabanas
     │   ├── signals.py               ← patrón Observer: correos y notificaciones automáticas
     │   ├── mapa.py                  ← lógica del mapa interactivo
-    │   ├── tests.py                 ← pruebas unitarias e integración
+    │   └── tests/                   ← historial de cambios en la base de datos
+    │       └── test_models.py       ← pruebas unitarias para los modelos
+    │       └── test_services.py     ← pruebas unitarias para la lógica de negocio
+    │       └── test_system.py       ← pruebas de sistema
+    │       └── test_views.py        ← pruebas de integración
     │   └── migrations/              ← historial de cambios en la base de datos
     │       └── 0001_initial.py      ← migración inicial con los 3 modelos
     └── NyxValley/

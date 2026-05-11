@@ -1,0 +1,1 @@
+# Pruebas Unitarias para los modelos de la aplicación Festival2026
