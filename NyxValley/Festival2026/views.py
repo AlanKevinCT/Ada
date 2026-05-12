@@ -8,6 +8,7 @@ from django.http import JsonResponse
 from .models import Usuario, Parque, Reservacion
 from .services import AsistReserva, Disponibilidad
 from .mapa import MapaNavegacion
+from .forms import RegistroForm
 
 
 # ─────────────────────────────────────────────────────────────
@@ -20,9 +21,25 @@ def inicio(request):
 
 
 def registro(request):
-    """Registro de nuevo UsuarioCliente."""
-    # TODO: Gera/Danna — implementar lógica de registro
-    return render(request, 'registro.html')
+    """Registro de nuevoUsuarioCliente."""
+    data = {
+    'form': RegistroForm()
+    }
+    if request.method == 'POST':
+        form = RegistroForm(request.POST)
+        if form.is_valid():
+            usuario = Usuario.objects.create_user(
+                correo_electronico=form.cleaned_data['correo_electronico'],
+                nombre=form.cleaned_data['nombre'],
+                apellido_paterno=form.cleaned_data['apellido_paterno'],
+                apellido_materno=form.cleaned_data['apellido_materno'],
+                password=form.cleaned_data['password']
+            )
+            auth_login(request, usuario)
+            return redirect('panel_cliente')
+    else:
+        form = RegistroForm()
+    return render(request, 'registro.html', data)
 
 
 def login(request):
