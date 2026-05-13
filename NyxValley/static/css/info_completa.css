@@ -1,0 +1,94 @@
+:root {
+    --acento-oro: #b8860b;
+    --fondo-caja: rgba(255, 255, 255, 0.03);
+    --borde-suave: rgba(255, 255, 255, 0.1);
+}
+
+.landing-visual {
+    max-width: 1100px;
+    margin: 40px auto;
+}
+
+/* Espaciado de la palabra SERVICIOS */
+.etiqueta-separada {
+    font-size: 0.75rem;
+    letter-spacing: 4px; /* Más espacio entre letras */
+    color: var(--acento-oro);
+    font-weight: 800;
+    margin: 40px 0 20px 0; /* Más margen arriba y abajo */
+    display: block;
+}
+
+/* Cajitas de Servicios y Horario (Mismo Diseño) */
+.servicio-card-grande, .horario-card {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    padding: 25px;
+    background: var(--fondo-caja);
+    border-radius: 12px;
+    border: 1px solid var(--borde-suave);
+    margin-bottom: 15px;
+}
+
+/* Icono de camping más grande como pediste */
+.icono-extra-grande {
+    font-size: 3rem; /* Tamaño aumentado */
+    filter: drop-shadow(0 0 10px rgba(255,255,255,0.1));
+}
+
+.icono-grande, .icono-horario {
+    font-size: 2.2rem;
+}
+
+/* Diseño del Horario */
+.horario-texto {
+    display: flex;
+    flex-direction: column;
+}
+
+.horario-texto .rango {
+    font-size: 2.5rem;
+    font-weight: 900;
+    line-height: 1;
+}
+
+.horario-texto .unidad {
+    font-size: 0.8rem;
+    color: var(--acento-oro);
+    letter-spacing: 2px;
+}
+
+/* Botón Reserva */
+.btn-reserva-boceto {
+    display: block;
+    width: 100%;
+    background: var(--acento-oro);
+    color: #000;
+    text-align: center;
+    padding: 22px;
+    font-weight: 900;
+    text-decoration: none;
+    font-size: 1.3rem;
+    border-radius: 4px;
+    margin-bottom: 30px;
+}
+
+
+.btn-reserva-boceto:hover {
+    background: #eab308; /* Se aclara un poquito el fondo */
+    transform: translateY(-3px); /* Sube un poquito */
+    
+    box-shadow: 0 0 20px rgba(184, 134, 11, 0.6), 
+                0 0 40px rgba(184, 134, 11, 0.4);
+    
+    filter: brightness(1.1);
+}
+
+
+/* Ajuste de Columnas */
+.main-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 60px;
+}

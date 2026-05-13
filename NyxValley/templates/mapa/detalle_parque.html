@@ -41,7 +41,7 @@
         <a href="/reservar/?parque={{ parque.id }}" class="btn btn-primary">
             Reservar
         </a>
-        <a href="/mapa/parque/{{ parque.id }}/" class="btn btn-secondary">
+        <a href="{% url 'info_completa_parque' parque.id %}" class="btn btn-primary">
             Ver más
         </a>
     </div>

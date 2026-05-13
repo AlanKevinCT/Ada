@@ -23,6 +23,7 @@ urlpatterns = [
     # ─── Mapa interactivo (Ayros) ────────────────────────────
     path('mapa/',                   views.mapa,          name='mapa'),
     path('mapa/parque/<int:id>/',   views.detalle_parque, name='detalle_parque'),
+    path('parque/<int:id>/detalle-completo/', views.info_completa_parque, name='info_completa_parque'),
 
     # ─── Reservaciones (cliente) ─────────────────────────────
     path('reservar/',                views.formulario_reserva, name='formulario_reserva'),

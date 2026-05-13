@@ -1,0 +1,80 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block estilos_extra %}
+    <link rel="stylesheet" href="{% static 'css/info_completa.css' %}">
+{% endblock %}
+
+{% block contenido %}
+<div class="landing-visual fade-in">
+    
+    <header class="seccion-titulo">
+        <div class="titulo-wrapper">
+            <span class="glifo">✦</span>
+            <h1>{{ parque.nombre|upper }}</h1>
+        </div>
+        <p class="direccion">📍 {{ parque.direccion|default:"Dirección por confirmar" }}</p>
+    </header>
+
+    <div class="main-grid">
+        
+        <div class="col-left">
+            <section class="caja-info">
+                <p class="etiqueta">BIENVENIDOS AL SANTUARIO</p>
+                <div class="descripcion-box">
+                    <p class="texto-magico">
+                        "En el corazón de Nyx Valley, el tiempo se detiene. Somos un refugio donde la naturaleza susurra secretos y las luciérnagas pintan el aire con destellos de esperanza. Nuestro parque no es solo un destino, es una experiencia mística diseñada para reconectar tu alma con el bosque."
+                    </p>
+                    <hr class="divisor">
+                    <p>{{ parque.descripcion }}</p>
+                </div>
+            </section>
+
+            <section class="caja-info">
+                <p class="etiqueta-separada">SERVICIOS</p>
+                <div class="servicios-grid">
+                    {% if parque.tiene_camping %}
+                    <div class="servicio-card-grande">
+                        <span class="icono-extra-grande">⛺</span>
+                        <div class="detalles">
+                            <strong>ZONA CAMPING</strong>
+                            <span>Capacidad: 2 PERSONAS</span>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    {% if parque.tiene_cabana %}
+                    <div class="servicio-card-grande">
+                        <span class="icono-grande">🏠</span>
+                        <div class="detalles">
+                            <strong>CABAÑA</strong>
+                            <span>10 PERSONAS / 8 PERSONAS</span>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </section>
+        </div>
+
+        <div class="col-right">
+            <section class="caja-reserva">
+                <a href="/reservar/?parque={{ parque.id }}" class="btn-reserva-boceto">
+                    RESERVAR
+                </a>
+            </section>
+
+            <section class="caja-info">
+                <p class="etiqueta">HORARIO</p>
+                <div class="horario-card">
+                    <span class="icono-horario">⏰</span>
+                    <div class="horario-texto">
+                        <span class="rango">1 — 2</span>
+                        <span class="unidad">HRS</span>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

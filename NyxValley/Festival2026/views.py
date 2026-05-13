@@ -106,6 +106,17 @@ def detalle_parque(request, id):
     return JsonResponse(parque)
 
 
+
+def info_completa_parque(request, id):
+    """
+    Carga la página de aterrizaje (Landing Page) con toda la información 
+    detallada, historia, galería y servicios de un parque específico.
+    """
+    parque = get_object_or_404(Parque, id=id)
+    return render(request, 'mapa/info_completa.html', {'parque': parque})
+
+
+
 # ─────────────────────────────────────────────────────────────
 #  Reservaciones — cliente
 # ─────────────────────────────────────────────────────────────

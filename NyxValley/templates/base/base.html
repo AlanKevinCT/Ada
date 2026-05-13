@@ -17,8 +17,10 @@
             <span class="glyph">✦</span> Nyx Valley
         </a>
         <ul class="nav-links">
-            <li><a href="/">Inicio</a></li>
-            <li><a hx-get="/mapa/" hx-target="main" hx-push-url="true" class="cursor-pointer">Mapa</a></li>
+
+
+            <li><a href="/mapa/">Inicio</a></li>
+
             {% if user.is_authenticated %}
                 {% if user.is_admin %}
                     <li><a href="/admin-panel/">Panel admin</a></li>
@@ -26,7 +28,9 @@
                     <li><a href="/panel/">Mi cuenta</a></li>
                     <li><a href="/mis-reservaciones/">Mis reservaciones</a></li>
                 {% endif %}
+
                 <li><a href="/logout/">Cerrar sesión</a></li>
+
             {% else %}
                 <li><a href="/login/">Iniciar sesión</a></li>
                 <li><a href="/registro/">Registrarse</a></li>
