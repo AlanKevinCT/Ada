@@ -1,3 +1,4 @@
+
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate
 from django.contrib.auth import login as auth_login
@@ -8,6 +9,7 @@ from django.http import JsonResponse
 from .models import Usuario, Parque, Reservacion
 from .services import AsistReserva, Disponibilidad
 from .mapa import MapaNavegacion
+from django.utils import timezone
 
 
 # ─────────────────────────────────────────────────────────────
@@ -15,8 +17,18 @@ from .mapa import MapaNavegacion
 # ─────────────────────────────────────────────────────────────
 
 def inicio(request):
-    """Página de inicio — accesible sin login."""
-    return render(request, 'inicio.html')
+    """
+    Página de inicio — accesible sin login. Muestra el mapa interactivo con los parques oficiales
+    """
+    mapa_nav = MapaNavegacion()
+    parques  = mapa_nav.iniciarMapa()
+    geojson  = mapa_nav.parques_como_geojson()
+    # json.dumps convierte True/False de Python a true/false de JavaScript
+    geojson_str = json.dumps(geojson)
+    return render(request, 'mapa/mapa.html', {
+        'parques': parques,
+        'geojson': geojson_str,
+    })
 
 
 def registro(request):
@@ -47,27 +59,32 @@ def panel_cliente(request):
     # TODO: Gera/Danna — agregar contexto del usuario
     return render(request, 'cliente/panel.html')
 
-
 @login_required
 def mis_reservaciones(request):
     """Lista de reservaciones del usuario cliente (RF-06)."""
-    reservaciones = Reservacion.objects.filter(
-        usuario=request.user
-    ).order_by('-fecha_creacion')
-    return render(request, 'cliente/mis_reservaciones.html',
-                  {'reservaciones': reservaciones})
-
+    reservaciones = Reservacion.objects.filter(usuario=request.user).order_by('-fecha_inicio')
+    
+    return render(request, 'cliente/mis_reservaciones.html', {
+        'reservaciones': reservaciones,
+        'hoy': timezone.now().date() 
+    })
 
 @login_required
 def cancelar_reservacion(request, id):
     """Cancela una reservación activa del cliente (RF-05)."""
     reservacion = get_object_or_404(Reservacion, id=id, usuario=request.user)
     if request.method == 'POST':
-        AsistReserva.cancelarReserva(reservacion)
+        # Cambiamos el estado a cancelada
+        reservacion.estado = 'cancelada'
+        reservacion.save()
+        
+        # Si es HTMX, devolvemos solo la lista de reservaciones actualizada
+        if request.headers.get('HX-Request'):
+            reservaciones = Reservacion.objects.filter(usuario=request.user).order_by('-fecha_creacion')
+            return render(request, 'cliente/mis_reservaciones.html#contenedor-reservas', {'reservaciones': reservaciones})
+            
         return redirect('mis_reservaciones')
-    return render(request, 'cliente/cancelar_reservacion.html',
-                  {'reservacion': reservacion})
-
+    return render(request, 'cliente/cancelar_reservacion.html', {'reservacion': reservacion})
 
 # ─────────────────────────────────────────────────────────────
 #  Mapa interactivo — Ayros

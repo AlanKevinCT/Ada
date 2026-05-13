@@ -1,0 +1,106 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block estilos_extra %}
+<link rel="stylesheet" href="{% static 'css/mis_reservaciones.css' %}">
+{% endblock %}
+
+{% block contenido %}
+<div class="bitacora-container fade-in">
+    <header class="bitacora-header">
+        <div class="header-main">
+            <h1>MIS <span class="oro">RESERVACIONES</span></h1>
+            <p class="user-name">Hola, {{ user.nombre_completo }}.</p>
+            <p class="user-email">{{ user.correo_electronico }}</p>
+        </div>
+        <div class="temporada-badge">Temporada: <span>JUN-AGO 2026</span></div>
+    </header>
+
+    <div class="bitacora-grid" id="contenedor-reservas">
+        {% for res in reservaciones %}
+            {# Comparamos si la fecha ya pasó o si está cancelada #}
+            {% if res.estado == 'cancelada' or res.fecha_fin < hoy %}
+                <div class="card-bitacora pasada">
+                    <div class="card-header">
+                        <div class="header-left">
+                            <span class="dot-off"></span>
+                            <h2>{% if res.estado == 'cancelada' %}Noche Cancelada{% else %}Noche Finalizada{% endif %}</h2>
+                        </div>
+                        <span class="fecha-log">{{ res.fecha_inicio|date:"d M, Y" }}</span>
+                    </div>
+                    <div class="card-body-simple">
+                        <h3>{{ res.parque.nombre }}</h3>
+                        <p class="status-text">VISITA {{ res.get_estado_display|upper }}</p>
+                    </div>
+    
+                </div>
+            {% else %}
+                <div class="card-bitacora proxima">
+                    <div class="card-header">
+                        <div class="header-left">
+                            <span class="dot-glow"></span>
+                            <h2>Próxima Noche</h2>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="info-group">
+                            <label>SANTUARIO:</label>
+                            <p>{{ res.parque.nombre }}</p>
+                            <label>FECHA:</label>
+                            <p class="oro">{{ res.fecha_inicio|date:"d M" }} - {{ res.fecha_fin|date:"d M, Y" }}</p>
+                        </div>
+                        <div class="info-group">
+                            <label>HOSPEDAJE:</label>
+                            <p>{{ res.get_tipo_visita_display }} ({{ res.numero_personas }} pers)</p>
+                            <div class="precio-box"><span>$ --.--</span></div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button class="btn-cancelar" 
+                        hx-post="{% url 'cancelar_reservacion' res.id %}" 
+                        hx-target="#contenedor-reservas"
+                        hx-on:click="
+                            event.preventDefault();
+                            
+                            // Extraemos los colores del tema actual de Nyx Valley
+                            const estilo = getComputedStyle(document.documentElement);
+                            const colorFondo = estilo.getPropertyValue('--bg-color') || '#121212';
+                            const colorOro = estilo.getPropertyValue('--accent-color') || '#e2b04a';
+                            const colorTexto = estilo.getPropertyValue('--text-color') || '#ffffff';
+                
+                            Swal.fire({
+                                title: '¿Deseas cancelar esta noche mágica?',
+                                text: 'Esta acción no se puede deshacer.',
+                                icon: 'warning',
+                                iconColor: colorOro,
+                                background: colorFondo,
+                                color: colorTexto,
+                                showCancelButton: true,
+                                confirmButtonText: 'SÍ, CANCELAR',
+                                cancelButtonText: 'REGRESAR',
+                                
+                                customClass: {
+                                    confirmButton: 'btn btn-primary btn-swal', // Añadimos btn-swal para el tamaño
+                                    cancelButton: 'btn btn-secondary btn-swal'
+                                },
+                                buttonsStyling: false,
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    htmx.trigger(this, 'confirmed');
+                                }
+                            })
+                        "
+                        hx-trigger="confirmed">
+                    CANCELAR NOCHE
+                </button>
+                    </div>
+                </div>
+            {% endif %}
+        {% empty %}
+            <div class="empty-state">
+                <p>Aún no tienes historias que contar. ¡Explora el mapa!</p>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
