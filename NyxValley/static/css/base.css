@@ -7,18 +7,27 @@
 /* ── Tema 1: Bosque nocturno (default oscuro) ───────────────── */
 :root,
 [data-theme="bosque-nocturno"] {
-    --fondo-pagina:   #080c08;
-    --fondo-card:     #0d1a0d;
-    --fondo-nav:      #080c08;
-    --verde-medio:    #1a3320;
-    --verde-claro:    #2d5a3d;
-    --acento:         #e8d44d;
-    --acento-hover:   #f5e76a;
-    --texto-principal:#e8f0e8;
-    --texto-suave:    #8fa88f;
-    --borde-brutal:   3px solid var(--acento);
+    --fondo-pagina:   #020408; 
+    --fondo-card:     rgba(15, 22, 35, 0.6);
+    --fondo-nav:      #020408;
+
+    --verde-medio:    #ffcc33;
+    --verde-claro:    #ffcc33;
+    
+    --acento:         #ffcc33; /* El amarillo de la foto */
+    --acento-hover:   #ffd65c;
+    --texto-principal:#ffffff;
+    --texto-suave:    #94a3b8;
+    --texto-boton:    #000000; /* Para que el texto sea negro sobre el amarillo */
+    --borde-brutal:   1px solid rgba(245, 158, 11, 0.3);
+    --sombra-glow:          0 0 15px 5px rgba(250, 204, 21, 0.3);
+    --sombra-glow-intensa:  0 0 20px 8px rgba(250, 204, 21, 0.5);
+    --radio-curva: 50px; /* Estilo redondeado */
+    --radio-card:  24px;  /* Para las cajas de contenido */
+    --glow-linea: 0 0 8px rgba(250, 204, 21, 0.4);
+
     --fuente-titulo:  'Georgia', serif;
-    --fuente-cuerpo:  'Courier New', monospace;
+    --fuente-cuerpo:  'Inter', -apple-system, sans-serif;
 }
 
 /* ── Tema 2: Índigo profundo (oscuro) ───────────────────────── */
@@ -35,6 +44,9 @@
     --borde-brutal:   3px solid var(--acento);
     --fuente-titulo:  'Georgia', serif;
     --fuente-cuerpo:  'Courier New', monospace;
+
+    --radio-curva: 50px; /* Estilo redondeado */
+    --radio-card:  24px;  /* Para las cajas de contenido */
 }
 
 /* ── Tema 3: Bosque esmeralda (oscuro) ──────────────────────── */
@@ -51,6 +63,9 @@
     --borde-brutal:   3px solid var(--acento);
     --fuente-titulo:  'Georgia', serif;
     --fuente-cuerpo:  'Courier New', monospace;
+
+    --radio-curva: 50px; /* Estilo redondeado */
+    --radio-card:  24px;  /* Para las cajas de contenido */
 }
 
 /* ── Tema 4: Crema y dorado (claro) ─────────────────────────── */
@@ -67,6 +82,9 @@
     --borde-brutal:   3px solid var(--acento);
     --fuente-titulo:  'Georgia', serif;
     --fuente-cuerpo:  'Courier New', monospace;
+
+    --radio-curva: 50px; /* Estilo redondeado */
+    --radio-card:  24px;  /* Para las cajas de contenido */
 }
 
 /* ── Tema 5: Bosque de día (claro) ──────────────────────────── */
@@ -83,6 +101,9 @@
     --borde-brutal:   3px solid var(--acento);
     --fuente-titulo:  'Georgia', serif;
     --fuente-cuerpo:  'Courier New', monospace;
+
+    --radio-curva: 50px; /* Estilo redondeado */
+    --radio-card:  24px;  /* Para las cajas de contenido */
 }
 
 /* ── Tema 6: Niebla y musgo (claro) ─────────────────────────── */
@@ -99,6 +120,9 @@
     --borde-brutal:   3px solid var(--acento);
     --fuente-titulo:  'Georgia', serif;
     --fuente-cuerpo:  'Courier New', monospace;
+
+    --radio-curva: 50px; /* Estilo redondeado */
+    --radio-card:  24px;  /* Para las cajas de contenido */
 }
 
 /* ── Reset ──────────────────────────────────────────────────── */
@@ -113,34 +137,43 @@ html { scroll-behavior: smooth; }
 body {
     font-family: var(--fuente-cuerpo);
     background-color: var(--fondo-pagina);
+    background-image: url('https://www.transparenttextures.com/patterns/stardust.png');
     color: var(--texto-principal);
     min-height: 100vh;
     line-height: 1.7;
     transition: background-color 0.3s, color 0.3s;
+            
 }
 
 /* ── Navbar ─────────────────────────────────────────────────── */
 nav {
     background-color: var(--fondo-nav);
     border-bottom: var(--borde-brutal);
-    padding: 0 48px;
-    height: 64px;
+    padding: 0 8%;
+    height: 75px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     position: sticky;
     top: 0;
     z-index: 1000;
+    
+    backdrop-filter: blur(12px); /* Desenfoque */
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 4px 15px -2px rgba(250, 204, 21, 0.3);
+    
 }
 
 .nav-logo {
     font-family: var(--fuente-titulo);
     font-size: 1.5rem;
-    font-weight: 700;
+    font-weight: 900;
     color: var(--acento);
     text-decoration: none;
-    letter-spacing: 2px;
+    letter-spacing: -1px;
     text-transform: uppercase;
+
+    filter: drop-shadow(0 0 5px rgba(250, 204, 21, 0.8));
 }
 
 .nav-logo .glyph { font-size: 1.1rem; margin-right: 8px; }
@@ -154,22 +187,26 @@ nav {
 
 .nav-links li a {
     display: block;
-    padding: 0 20px;
-    height: 64px;
-    line-height: 64px;
-    color: var(--texto-suave);
     text-decoration: none;
     font-size: 0.85rem;
     letter-spacing: 1.5px;
     text-transform: uppercase;
-    border-left: 1px solid var(--verde-medio);
-    transition: all 0.2s;
+
+    border-left: none; /* Adiós línea vertical */
+    border-radius: var(--radio-curva);
+    color: var(--texto-suave);
+    height: 40px;
+    line-height: 40px;
+    margin: 0 5px;
+    padding: 0 20px;
+    transition: all 0.3s ease;
 }
 
 .nav-links li a:hover {
-    color: var(--acento);
-    background-color: var(--fondo-card);
-    border-bottom: 3px solid var(--acento);
+    color: var(--texto-boton);
+    background-color: var(--acento);
+    border-bottom: none;
+    box-shadow: var(--sombra-glow); /* brillo */
 }
 
 /* ── Main ───────────────────────────────────────────────────── */
@@ -233,13 +270,14 @@ p {
 
 .btn-primary {
     background-color: var(--acento);
-    color: var(--fondo-pagina);
-    border: 3px solid var(--acento);
+    color: var(--texto-boton);
+    box-shadow: var(--sombra-glow);
 }
 
 .btn-primary:hover {
-    background-color: transparent;
-    color: var(--acento);
+    background-color: var(--acento-hover);
+    box-shadow: var(--sombra-glow-intensa);
+    transform: translateY(-2px);
 }
 
 .btn-secondary {
@@ -268,23 +306,35 @@ p {
 .card {
     background-color: var(--fondo-card);
     border: var(--borde-brutal);
-    padding: 28px;
-    transition: all 0.2s;
+    border-radius: var(--radio-card);
+    padding: 32px;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: var(--sombra-glow);
+    position: relative;
+    overflow: hidden;
+}
+
+.card:hover {
+    transform: translateY(-6px);
+    border-color: var(--acento);
+    box-shadow: var(--sombra-glow-intensa); 
 }
 
 .card-titulo {
     font-family: var(--fuente-titulo);
-    font-size: 1.2rem;
+    font-size: 1.25rem;
+    font-weight: 900;
     color: var(--acento);
     text-transform: uppercase;
     letter-spacing: 1.5px;
-    margin-bottom: 12px;
-    border-bottom: 1px solid var(--verde-claro);
-    padding-bottom: 8px;
+    margin-bottom: 16px;
+    border-bottom: 1px solid rgba(250, 204, 21, 0.2);
+    padding-bottom: 10px;
 }
 
-.card-dato { font-size: 0.85rem; color: var(--texto-suave); margin-bottom: 6px; }
-.card-dato span { color: var(--texto-principal); }
+.card-dato { font-size: 0.9rem; color: var(--texto-suave); margin-bottom: 8px; }
+.card-dato span { color: var(--texto-principal); font-weight: 600;}
+
 
 /* ── Formularios ────────────────────────────────────────────── */
 .form-grupo { margin-bottom: 24px; }

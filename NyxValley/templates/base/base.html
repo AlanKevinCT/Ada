@@ -18,7 +18,7 @@
         </a>
         <ul class="nav-links">
             <li><a href="/">Inicio</a></li>
-            <li><a href="/mapa/">Mapa</a></li>
+            <li><a hx-get="/mapa/" hx-target="main" hx-push-url="true" class="cursor-pointer">Mapa</a></li>
             {% if user.is_authenticated %}
                 {% if user.is_admin %}
                     <li><a href="/admin-panel/">Panel admin</a></li>
