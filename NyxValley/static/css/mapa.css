@@ -10,29 +10,43 @@
     gap: 24px;
     height: 75vh;
     margin-top: 32px;
+    width: 100%;
 }
 
 /* ── Contenedor del mapa ────────────────────────────────────── */
 #mapa-contenedor {
     border: var(--borde-brutal);
-    overflow: hidden;
+    border-radius: var(--radio-card);
+    background-color: var(--fondo-card);
+    box-shadow: var(--sombra-glow);
+    overflow: hidden; 
     position: relative;
-    isolation: isolate;
+    width: 100%; 
+    height: 100%;
+    padding: 0 !important; 
 }
 
 #mapa {
     width: 100%;
     height: 100%;
-    background-color: var(--verde-bosque);
+    z-index: 1;
 }
 
 /* ── Panel lateral de información ───────────────────────────── */
 .panel-parque {
     border: var(--borde-brutal);
-    background-color: var(--verde-bosque);
-    overflow-y: auto;
+    border-radius: var(--radio-card);
+    background-color: var(--fondo-card);
+    box-shadow: var(--sombra-glow);
+    height: 100%;
     display: flex;
     flex-direction: column;
+    overflow: hidden;
+}
+
+.panel-parque:hover {
+    box-shadow: var(--sombra-glow-intensa);
+    border-color: var(--acento);
 }
 
 .panel-vacio {
@@ -47,10 +61,11 @@
 
 .glyph-grande {
     font-size: 3rem;
-    color: var(--amarillo);
-    opacity: 0.3;
+    color: var(--acento);
+    opacity: 0.4;
     display: block;
     margin-bottom: 16px;
+    text-shadow: 0 0 15px var(--acento);
 }
 
 /* ── Detalle del parque ─────────────────────────────────────── */
@@ -66,7 +81,7 @@
     display: flex;
     align-items: center;
     gap: 12px;
-    border-bottom: 1px solid var(--verde-claro);
+    border-bottom: 1px solid rgba(250, 204, 21, 0.1);
     padding-bottom: 16px;
 }
 
@@ -77,10 +92,10 @@
 
 .detalle-header h2 {
     font-family: var(--fuente-titulo);
-    font-size: 1.3rem;
-    color: var(--crema);
+    font-size: 1.4rem;
+    color: var(--acento);
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 0.5px;
     margin: 0;
 }
 
@@ -100,9 +115,11 @@
 
 .dato-label {
     font-size: 0.72rem;
-    letter-spacing: 2px;
+    font-weight: 600;
+    letter-spacing: 1px;
     text-transform: uppercase;
     color: var(--texto-suave);
+    margin-bottom: 4px;
 }
 
 .dato-valor {
@@ -115,8 +132,9 @@
 .badge {
     display: inline-block;
     padding: 4px 12px;
-    border: 1.5px solid var(--amarillo);
-    color: var(--amarillo);
+    border: 1.5px solid var(--acento);
+    background: rgba(250, 204, 21, 0.05);
+    color: var(--acento);
     font-size: 0.75rem;
     letter-spacing: 1.5px;
     text-transform: uppercase;
@@ -153,10 +171,10 @@
 
 .pin-lucier:hover,
 .pin-lucier.activo {
-    color: var(--amarillo-glow);
-    text-shadow: 0 0 24px rgba(245,231,106,1),
-                 0 0 48px rgba(245,231,106,0.6);
+    color: #ffffff;
+    text-shadow: 0 0 20px var(--acento), 0 0 40px var(--acento);
     transform: scale(1.3);
+    animation: none;
 }
 
 /* ── Responsive ─────────────────────────────────────────────── */
@@ -178,5 +196,6 @@
 }
 
 .leaflet-control-zoom {
-    margin: 12px !important;
+    position: absolute;
+    z-index: 1000;
 }
