@@ -1,0 +1,15 @@
+{% extends "base/base.html" %}
+
+{% block contenido %}
+<div class="card" style="max-width: 500px; margin: 50px auto; text-align: center;">
+    <h2 style="color: #e05252;">⚠️ Confirmar Eliminación</h2>
+    <p>¿Estás seguro de que deseas eliminar el parque <strong>{{ parque.nombre }}</strong>?</p>
+    <p style="font-size: 0.8rem; color: var(--texto-suave);">Esta acción no se puede deshacer y notificará a los clientes.</p>
+    
+    <form method="POST" style="margin-top: 20px; display: flex; gap: 10px; justify-content: center;">
+        {% csrf_token %}
+        <a href="{% url 'panel_admin' %}" class="btn btn-secondary">Cancelar</a>
+        <button type="submit" class="btn btn-danger">Sí, Eliminar</button>
+    </form>
+</div>
+{% endblock %}
