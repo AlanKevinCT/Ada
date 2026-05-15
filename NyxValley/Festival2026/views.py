@@ -69,22 +69,16 @@ def mis_reservaciones(request):
         'hoy': timezone.now().date() 
     })
 
+
 @login_required
 def cancelar_reservacion(request, id):
     """Cancela una reservación activa del cliente (RF-05)."""
     reservacion = get_object_or_404(Reservacion, id=id, usuario=request.user)
     if request.method == 'POST':
-        # Cambiamos el estado a cancelada
-        reservacion.estado = 'cancelada'
-        reservacion.save()
-        
-        # Si es HTMX, devolvemos solo la lista de reservaciones actualizada
-        if request.headers.get('HX-Request'):
-            reservaciones = Reservacion.objects.filter(usuario=request.user).order_by('-fecha_creacion')
-            return render(request, 'cliente/mis_reservaciones.html#contenedor-reservas', {'reservaciones': reservaciones})
-            
+        AsistReserva.cancelarReserva(reservacion)
         return redirect('mis_reservaciones')
-    return render(request, 'cliente/cancelar_reservacion.html', {'reservacion': reservacion})
+    return render(request, 'cliente/cancelar_reservacion.html',
+                  {'reservacion': reservacion})
 
 # ─────────────────────────────────────────────────────────────
 #  Mapa interactivo — Ayros
@@ -163,7 +157,12 @@ def panel_admin(request):
     """Panel principal del administrador."""
     if not request.user.is_admin:
         return redirect('inicio')
-    return render(request, 'admin/panel.html')
+    context = {
+        'total_parques': Parque.objects.filter(activo=True).count(),
+        'total_reservas': Reservacion.objects.filter(estado='activa').count(),
+        'parques': Parque.objects.all(),
+    }
+    return render(request, 'admin/panel.html', context)
 
 
 @login_required
@@ -194,7 +193,6 @@ def crear_parque(request):
         return redirect('inicio')
     # TODO: Gera/Danna — implementar formulario de creación
     return render(request, 'admin/crear_parque.html')
-
 
 @login_required
 def editar_parque(request, id):

@@ -1,0 +1,74 @@
+{% extends "base/base.html" %}
+{% load static %}
+
+{% block estilos_extra %}
+<link rel="stylesheet" href="{% static 'css/admin_panel.css' %}">
+{% endblock %}
+
+{% block contenido %}
+<h1 style="text-align: center; color: var(--acento); margin-bottom: 40px; letter-spacing: 2px;">GESTIÓN DEL FESTIVAL 2026</h1>
+
+<div class="stats-container">
+    <div class="card">
+        <h3 class="card-dato">PARQUES AUTORIZADOS</h3>
+        <p style="font-size: 3.5rem; color: var(--acento); margin: 0; line-height: 1;">{{ total_parques }}</p>
+    </div>
+    
+    <div class="card">
+        <h3 class="card-dato">RESERVACIONES ACTIVAS</h3>
+        <p style="font-size: 3.5rem; color: var(--acento); margin: 0; line-height: 1;">{{ total_reservas }}</p>
+        <a href="{% url 'gestionar_reservaciones' %}" class="link-reservas">ADMINISTRAR RESERVACIONES →</a>
+    </div>
+</div>
+
+<div class="card">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+        <h2 class="card-titulo" style="border:none; margin:0;">REGISTRO DE PARQUES </h2>
+        <a href="{% url 'crear_parque' %}" class="btn btn-primary" style="padding: 10px 20px;">+ CREAR NUEVO PARQUE</a>
+    </div>
+
+    <div style="overflow-x: auto;">
+        <table class="nyx-table">
+            <thead>
+                <tr>
+                    <th>Nombre del Parque</th>
+                    <th>Dirección / Ubicación</th>
+                    <th style="text-align: center;">Capacidad</th>
+                    <th style="text-align: center;">Servicios</th>
+                    <th style="text-align: center;">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for p in parques %}
+                <tr>
+                    <td><strong style="color: var(--texto-principal);">{{ p.nombre|upper }}</strong></td>
+                    <td style="max-width: 250px; color: var(--texto-suave); font-size: 0.8rem;">{{ p.direccion }}</td>
+                    <td style="text-align: center;">
+                        <span class="capacidad-num">{{ p.capacidad }}</span>
+                        <div style="font-size: 0.6rem; color: var(--texto-suave);">PERSONAS</div>
+                    </td>
+                    <td style="text-align: center;">
+                        <div class="servicios-icon-group">
+                            <div class="servicio-item {% if p.tiene_cabanas %}disponible{% else %}no-disponible{% endif %}">
+                                <span>🏠</span> <span class="servicio-label">Cabañas</span>
+                            </div>
+                            <div class="servicio-item {% if p.tiene_camping %}disponible{% else %}no-disponible{% endif %}">
+                                <span>⛺</span> <span class="servicio-label">Camping</span>
+                            </div>
+                        </div>
+                    </td>
+                    <td style="text-align: center;">
+                        <div style="display: flex; gap: 8px; justify-content: center;">
+                            <a href="{% url 'editar_parque' p.id %}" class="btn-secondary" style="padding: 5px 12px; font-size: 0.65rem;">EDITAR</a>
+                            <a href="{% url 'eliminar_parque' p.id %}" class="btn-danger" style="padding: 5px 12px; font-size: 0.65rem;">BORRAR</a>
+                        </div>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="5" style="text-align: center; padding: 40px;">No hay parques registrados.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
