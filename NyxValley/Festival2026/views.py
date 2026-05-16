@@ -6,7 +6,7 @@ from django.http import JsonResponse
 from .models import Usuario, Parque, Reservacion
 from .services import AsistReserva, Disponibilidad
 from .mapa import MapaNavegacion
-from .forms import RegistroForm, LoginForm
+from .forms import RegistroForm, LoginForm, ReservaForm
 
 from django.core.mail import send_mail
 from django.conf import settings
@@ -99,13 +99,19 @@ def logout(request):
 @login_required
 def panel_cliente(request):
     """Panel personal del usuario cliente."""
-    # TODO: Gera/Danna — agregar contexto del usuario
-    return render(request, 'cliente/panel.html')
+    reservaciones_activas = Reservacion.objects.filter(
+        usuario=request.user, estado='activa'
+    ).order_by('fecha_inicio')
+    contexto = {
+        'usuario': request.user,
+        'reservaciones': reservaciones_activas,
+    }
+    return render(request, 'cliente/panel.html', contexto)
 
 
 @login_required
 def mis_reservaciones(request):
-    """Lista de reservaciones del usuario cliente (RF-06)."""
+    """Lista de todas las reservaciones del usuario cliente (RF-06)."""
     reservaciones = Reservacion.objects.filter(
         usuario=request.user
     ).order_by('-fecha_creacion')
@@ -164,17 +170,45 @@ def detalle_parque(request, id):
 @login_required
 def formulario_reserva(request):
     """Formulario para realizar una reservación (RF-04, RF-10)."""
-    # TODO: Gera/Danna — implementar formulario y validaciones
     parques = Parque.objects.filter(activo=True)
-    return render(request, 'cliente/formulario_reserva.html',
-                  {'parques': parques})
+    form    = ReservaForm()
+    if request.method == 'POST':
+        form = ReservaForm(data=request.POST)
+        if form.is_valid():
+            try:
+                reservacion = AsistReserva.reservar(
+                    usuario=request.user,
+                    parque=form.cleaned_data['parque'],
+                    fecha_inicio=form.cleaned_data['fecha_inicio'],
+                    fecha_fin=form.cleaned_data['fecha_fin'],
+                    numero_personas=form.cleaned_data['numero_personas'],
+                    tipo_visita=form.cleaned_data['tipo_visita'],
+                )
+                # Guardamos el id para poder mostrarlo en la confirmación
+                request.session['ultima_reservacion_id'] = reservacion.id
+                return redirect('confirmacion')
+            except ValueError as e:
+                form.add_error(None, str(e))
+
+    return render(request, 'cliente/formulario_reserva.html', {
+        'form': form,
+        'parques': parques,
+    })
 
 
 @login_required
 def confirmacion(request):
     """Página de confirmación tras realizar una reservación (RF-11)."""
-    # TODO: Gera/Danna — mostrar datos de la reservación recién creada
-    return render(request, 'cliente/confirmacion.html')
+    reservacion_id = request.session.pop('ultima_reservacion_id', None)
+    reservacion    = None
+
+    if reservacion_id:
+        reservacion = get_object_or_404(
+            Reservacion, id=reservacion_id, usuario=request.user
+        )
+
+    return render(request, 'cliente/confirmacion.html',
+                  {'reservacion': reservacion})
 
 
 # ─────────────────────────────────────────────────────────────
@@ -186,7 +220,14 @@ def panel_admin(request):
     """Panel principal del administrador."""
     if not request.user.is_admin:
         return redirect('inicio')
-    return render(request, 'admin/panel.html')
+    
+    contexto = {
+        'total_parques':      Parque.objects.filter(activo=True).count(),
+        'total_reservaciones': Reservacion.objects.count(),
+        'reservaciones_activas': Reservacion.objects.filter(estado='activa').count(),
+        'total_usuarios':     Usuario.objects.filter(is_admin=False).count(),
+    }
+    return render(request, 'admin/panel.html', contexto)
 
 
 @login_required
