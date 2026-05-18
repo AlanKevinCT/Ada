@@ -36,19 +36,23 @@
                     {% if parque.tiene_camping %}
                     <div class="servicio-card-grande">
                         <span class="icono-extra-grande">⛺</span>
-                        <div class="detalles">
-                            <strong>ZONA CAMPING</strong>
-                            <span>Capacidad: 2 PERSONAS</span>
+                        <div class="detalles" style="display: flex; flex-direction: column; justify-content: center;">
+                            <strong style="display: block; margin-bottom: 4px;">ZONA CAMPING</strong>
+                            <span style="display: block; font-size: 0.85rem; color: var(--texto-suave);">
+                                Capacidad máxima: {{ parque.capacidad }} personas
+                            </span>
                         </div>
                     </div>
                     {% endif %}
 
-                    {% if parque.tiene_cabana %}
+                    {% if parque.tiene_cabanas %}
                     <div class="servicio-card-grande">
                         <span class="icono-grande">🏠</span>
-                        <div class="detalles">
-                            <strong>CABAÑA</strong>
-                            <span>10 PERSONAS / 8 PERSONAS</span>
+                        <div class="detalles" style="display: flex; flex-direction: column; justify-content: center;">
+                            <strong style="display: block; margin-bottom: 4px;">CABAÑA</strong>
+                            <span style="display: block; font-size: 0.85rem; color: var(--texto-suave);">
+                                Capacidad máxima: {{ parque.capacidad }} personas
+                            </span>
                         </div>
                     </div>
                     {% endif %}
@@ -68,7 +72,7 @@
                 <div class="horario-card">
                     <span class="icono-horario">⏰</span>
                     <div class="horario-texto">
-                        <span class="rango">1 — 2</span>
+                        <span class="rango">{{ parque.horario }}</span>
                         <span class="unidad">HRS</span>
                     </div>
                 </div>
