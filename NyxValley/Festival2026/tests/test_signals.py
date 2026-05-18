@@ -65,10 +65,9 @@ class TestSignalsFestival(TestCase):
         reserva.estado = 'cancelada'
         reserva.save()
 
-        correo = mail.outbox[0]
-        
         # Validamos que se envió un correo de cancelación
         self.assertEqual(len(mail.outbox), 1)
+        correo = mail.outbox[0]
         self.assertIn('Reservación cancelada — Festival de las Luciérnagas', correo.subject)
         self.assertEqual(correo.to, ['pablo@ciencias.unam.mx'])
         self.assertIn('Parque Bicentenario', correo.body)
@@ -90,11 +89,10 @@ class TestSignalsFestival(TestCase):
         reserva.fecha_inicio = date(2026, 6, 20)
         reserva.fecha_fin = date(2026, 6, 25)
         reserva.save()
-
-        correo = mail.outbox[0]
         
         # Validamos que se envió un correo de actualización
         self.assertEqual(len(mail.outbox), 1)
+        correo = mail.outbox[0]
         self.assertIn('Reservación modificada — Festival de las Luciérnagas', correo.subject)
         self.assertEqual(correo.to, ['pablo@ciencias.unam.mx'])
         self.assertIn('Parque Bicentenario', correo.body)
