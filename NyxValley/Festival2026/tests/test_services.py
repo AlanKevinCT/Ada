@@ -80,6 +80,17 @@ class TestServiciosFestival(TestCase):
         fechas_validas = Disponibilidad.verificaFechas(fecha_inicio, fecha_fin)
         self.assertFalse(fechas_validas)
 
+    def test_bloqueo_martes_intermedio(self):
+        """Debe rechazar rangos que contengan un martes en medio."""
+        # Lunes 15 de Junio a Jueves 18 de Junio. El Martes 16 queda en medio.
+        fecha_inicio = date(2026, 6, 15)
+        fecha_fin = date(2026, 6, 18)
+        
+        with self.assertRaises(ValueError):
+            AsistReserva.reservar(
+                self.usuario, self.parque, fecha_inicio, fecha_fin, 2, 'cabana'
+            )
+
     # Falta implementar lógica en services.py para verificar horas, por ahora solo se prueba que no sea None
     def test_verificar_hora_valida(self):
         """Verifica que la hora esté dentro del horario del parque."""
@@ -142,11 +153,66 @@ class TestServiciosFestival(TestCase):
 
     def test_modificar_reserva_fechas_invalidas(self):
         """Verifica que no se puedan modificar las fechas a valores inválidos."""
+        # Dia fuera de rango (mayo) y martes incluido
         fecha_inicio_invalida = date(2026, 5, 10)
         fecha_fin_invalida = date(2026, 5, 12)
         with self.assertRaises(ValueError):
             AsistReserva.modificarReserva(
                 self.reserva_base, fecha_inicio_invalida, fecha_fin_invalida
+            )
+
+        # Fechas invertidas (inicio después de fin)
+        fecha_inicio_al_reves = date(2026, 7, 20)
+        fecha_fin_al_reves = date(2026, 7, 15)
+        
+        with self.assertRaises(ValueError):
+            AsistReserva.modificarReserva(
+                self.reserva_base, fecha_inicio_al_reves, fecha_fin_al_reves
+            )
+
+        # Fechas pasadas (antes del 2026)
+        fecha_pasado_inicio = date(2024, 7, 10) # Julio de 2024
+        fecha_pasado_fin = date(2024, 7, 12)
+        
+        with self.assertRaises(ValueError):
+            AsistReserva.reservar(
+                self.usuario, self.parque, fecha_pasado_inicio, fecha_pasado_fin, 2, 'cabana'
+            )
+
+    def test_reserva_numero_personas_invalido(self):
+        """Verifica que el sistema rechace reservaciones para 0 o menos personas."""
+        # Intentar reservar para 0 personas deberia lanzar un error de negocio
+        with self.assertRaises(ValueError):
+            AsistReserva.reservar(
+                self.usuario, self.parque, date(2026, 7, 15), date(2026, 7, 17), 0, 'camping'
+            )
+
+    def test_usuario_no_duplica_estancia(self):
+        """Verifica que un usuario no pueda hacer dos reservas que se solapen en el tiempo."""
+        # Ya tiene 'reserva_base' del 10 al 12 de junio.
+        # Intentamos crear otra el 11 de junio (mientras está allá).
+        with self.assertRaises(ValueError):
+            AsistReserva.reservar(
+                self.usuario, self.parque, date(2026, 6, 11), date(2026, 6, 13), 2, 'cabana'
+            )
+
+    def test_modificar_reserva_sin_disponibilidad(self):
+        """Verifica que no se permita modificar fechas si el parque ya está lleno en el nuevo rango."""
+        # Creamos una segunda reservación en un rango futuro (ej. 24 al 26 de junio)
+        Reservacion.objects.create(
+            usuario=self.usuario, parque=self.parque,
+            fecha_inicio=date(2026, 6, 24), fecha_fin=date(2026, 6, 26),
+            numero_personas=50, tipo_visita='cabana', estado='activa'
+        )
+        
+        # Forzamos que la capacidad del parque sea 50 (ya está lleno para esas fechas del 24 al 26)
+        self.parque.capacidad = 50
+        self.parque.save()
+
+        # Intentamos mover nuestra 'reserva_base' (que era del 10 al 12) hacia las fechas llenas.
+        with self.assertRaises(ValueError):
+            AsistReserva.modificarReserva(
+                self.reserva_base, date(2026, 6, 24), date(2026, 6, 26)
             )
 
     def test_cancelar_reserva(self):
@@ -161,3 +227,14 @@ class TestServiciosFestival(TestCase):
         AsistReserva.cancelarReserva(self.reserva_base)
         resultado_segunda_vez = AsistReserva.cancelarReserva(self.reserva_base)
         self.assertFalse(resultado_segunda_vez)
+
+    def test_modificar_reserva_ya_cancelada(self):
+        """Verifica que no se permita modificar las fechas de una reserva cancelada."""
+        # Cancelamos la reserva primero
+        AsistReserva.cancelarReserva(self.reserva_base)
+        
+        # Intentamos modificarla. Debería arrojar un error o denegar la operación.
+        resultado = AsistReserva.modificarReserva(
+            self.reserva_base, date(2026, 6, 17), date(2026, 6, 19)
+        )
+        self.assertFalse(resultado)

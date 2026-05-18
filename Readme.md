@@ -54,6 +54,12 @@ python manage.py runserver
 ```
 Abre tu navegador en **http://127.0.0.1:8000**
 
+### 7. Ejecutar pruebas
+```bash
+python manage.py test Festival2026.tests.test_models
+python manage.py test Festival2026.tests.test_services
+```
+
 ---
 
 ## Estructura del proyecto
