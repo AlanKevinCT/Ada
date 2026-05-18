@@ -20,7 +20,7 @@
         {% for res in reservaciones %}
             {# Comparamos si la fecha ya pasó o si está cancelada #}
             {% if res.estado == 'cancelada' or res.fecha_fin < hoy %}
-                <div class="card-bitacora pasada">
+                <div class="card-bitacora pasada" style="opacity: 0.6; filter: grayscale(100%);">
                     <div class="card-header">
                         <div class="header-left">
                             <span class="dot-off"></span>
@@ -32,7 +32,6 @@
                         <h3>{{ res.parque.nombre }}</h3>
                         <p class="status-text">VISITA {{ res.get_estado_display|upper }}</p>
                     </div>
-    
                 </div>
             {% else %}
                 <div class="card-bitacora proxima">
@@ -44,7 +43,7 @@
                     </div>
                     <div class="card-body">
                         <div class="info-group">
-                            <label>SANTUARIO:</label>
+                            <label>PARQUE:</label>
                             <p>{{ res.parque.nombre }}</p>
                             <label>FECHA:</label>
                             <p class="oro">{{ res.fecha_inicio|date:"d M" }} - {{ res.fecha_fin|date:"d M, Y" }}</p>
@@ -56,21 +55,22 @@
                         </div>
                     </div>
                     <div class="card-footer">
+                        <form id="form-cancelar-{{ res.id }}" action="{% url 'cancelar_reservacion' res.id %}" method="POST" style="display: none;">
+                            {% csrf_token %}
+                        </form>
+
                         <button class="btn-cancelar" 
-                        hx-post="{% url 'cancelar_reservacion' res.id %}" 
-                        hx-target="#contenedor-reservas"
-                        hx-on:click="
+                        onclick="
                             event.preventDefault();
                             
-                            // Extraemos los colores del tema actual de Nyx Valley
                             const estilo = getComputedStyle(document.documentElement);
-                            const colorFondo = estilo.getPropertyValue('--bg-color') || '#121212';
-                            const colorOro = estilo.getPropertyValue('--accent-color') || '#e2b04a';
-                            const colorTexto = estilo.getPropertyValue('--text-color') || '#ffffff';
+                            const colorFondo = estilo.getPropertyValue('--fondo-card') || '#121212';
+                            const colorOro = estilo.getPropertyValue('--acento') || '#e2b04a';
+                            const colorTexto = estilo.getPropertyValue('--texto-principal') || '#ffffff';
                 
                             Swal.fire({
                                 title: '¿Deseas cancelar esta noche mágica?',
-                                text: 'Esta acción no se puede deshacer.',
+                                text: 'Esta acción cambiará el estado de tu reservación.',
                                 icon: 'warning',
                                 iconColor: colorOro,
                                 background: colorFondo,
@@ -78,27 +78,25 @@
                                 showCancelButton: true,
                                 confirmButtonText: 'SÍ, CANCELAR',
                                 cancelButtonText: 'REGRESAR',
-                                
                                 customClass: {
-                                    confirmButton: 'btn btn-primary btn-swal', // Añadimos btn-swal para el tamaño
+                                    confirmButton: 'btn btn-primary btn-swal',
                                     cancelButton: 'btn btn-secondary btn-swal'
                                 },
                                 buttonsStyling: false,
                             }).then((result) => {
                                 if (result.isConfirmed) {
-                                    htmx.trigger(this, 'confirmed');
+                                    document.getElementById('form-cancelar-{{ res.id }}').submit();
                                 }
                             })
-                        "
-                        hx-trigger="confirmed">
-                    CANCELAR NOCHE
-                </button>
+                        ">
+                            CANCELAR NOCHE
+                        </button>
                     </div>
                 </div>
             {% endif %}
         {% empty %}
             <div class="empty-state">
-                <p>Aún no tienes historias que contar. ¡Explora el mapa!</p>
+                <p>Aún no cuentas con ninguna reservación. ¡Explora el mapa!</p>
             </div>
         {% endfor %}
     </div>
