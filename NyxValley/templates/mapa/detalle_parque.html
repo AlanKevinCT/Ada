@@ -1,4 +1,4 @@
-<!-- Fragmento HTMX — detalle del parque seleccionado -->
+{% load i18n %}
 <div class="detalle-parque">
 
     <div class="detalle-header">
@@ -9,28 +9,28 @@
     <div class="detalle-datos">
 
         <div class="dato-fila">
-            <span class="dato-label">Dirección</span>
+            <span class="dato-label">{% translate "Dirección" %}</span>
             <span class="dato-valor">{{ parque.direccion }}</span>
         </div>
 
         <div class="dato-fila">
-            <span class="dato-label">Horario</span>
+            <span class="dato-label">{% translate "Horario" %}</span>
             <span class="dato-valor">{{ parque.horario }}</span>
         </div>
 
         <div class="dato-fila">
-            <span class="dato-label">Servicios</span>
+            <span class="dato-label">{% translate "Servicios" %}</span>
             <span class="dato-valor">{{ parque.servicios }}</span>
         </div>
 
         <div class="dato-fila">
-            <span class="dato-label">Hospedaje</span>
+            <span class="dato-label">{% translate "Hospedaje" %}</span>
             <span class="dato-valor">
                 {% if parque.tiene_camping %}
-                    <span class="badge">Camping</span>
+                    <span class="badge">{% translate "Camping" %}</span>
                 {% endif %}
                 {% if parque.tiene_cabanas %}
-                    <span class="badge">Cabañas</span>
+                    <span class="badge">{% translate "Cabañas" %}</span>
                 {% endif %}
             </span>
         </div>
@@ -39,10 +39,10 @@
 
     <div class="detalle-acciones">
         <a href="/reservar/?parque={{ parque.id }}" class="btn btn-primary">
-            Reservar
+            {% translate "Reservar" %}
         </a>
         <a href="{% url 'info_completa_parque' parque.id %}" class="btn btn-primary">
-            Ver más
+            {% translate "Ver más" %}
         </a>
     </div>
 

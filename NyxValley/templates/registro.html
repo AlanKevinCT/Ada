@@ -1,5 +1,6 @@
 {% extends 'base/base.html' %}
 {% load static %}
+{% load i18n %}
 
 {% block contenido %}
 <div style="display: flex; justify-content: center; align-items: center; min-height: calc(100vh - 120px); padding: 20px;">
@@ -8,9 +9,9 @@
         
         <div style="text-align: center; margin-bottom: 30px;">
             <span style="color: var(--acento); font-size: 1.5rem; filter: drop-shadow(0 0 5px rgba(250, 204, 21, 0.8));">✦</span>
-            <h2 class="card-titulo" style="border-bottom: none; margin-bottom: 5px; padding-bottom: 0;">UNIRSE</h2>
+            <h2 class="card-titulo" style="border-bottom: none; margin-bottom: 5px; padding-bottom: 0;">{% translate "UNIRSE" %}</h2>
             <p style="font-size: 0.85rem; color: var(--texto-suave); letter-spacing: 1px; text-transform: uppercase;">
-                Crea tu cuenta para explorar y reservar
+                {% translate "Crea tu cuenta para explorar y reservar" %}
             </p>
         </div>
 
@@ -26,7 +27,7 @@
             {% csrf_token %}
 
             <div class="form-grupo">
-                <label for="{{ form.correo_electronico.id_for_label }}">CORREO ELECTRÓNICO</label>
+                <label for="{{ form.correo_electronico.id_for_label }}">{% translate "CORREO ELECTRÓNICO" %}</label>
                 {{ form.correo_electronico }}
                 {% if form.correo_electronico.errors %}
                     <span style="color: #e05252; font-size: 0.8rem;">{{ form.correo_electronico.errors.0 }}</span>
@@ -34,7 +35,7 @@
             </div>
 
             <div class="form-grupo">
-                <label for="{{ form.nombre.id_for_label }}">NOMBRE</label>
+                <label for="{{ form.nombre.id_for_label }}">{% translate "NOMBRE" %}</label>
                 {{ form.nombre }}
                 {% if form.nombre.errors %}
                     <span style="color: #e05252; font-size: 0.8rem;">{{ form.nombre.errors.0 }}</span>
@@ -43,7 +44,7 @@
 
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
                 <div class="form-grupo">
-                    <label for="{{ form.apellido_paterno.id_for_label }}">APELLIDO PATERNO</label>
+                    <label for="{{ form.apellido_paterno.id_for_label }}">{% translate "APELLIDO PATERNO" %}</label>
                     {{ form.apellido_paterno }}
                     {% if form.apellido_paterno.errors %}
                         <span style="color: #e05252; font-size: 0.8rem;">{{ form.apellido_paterno.errors.0 }}</span>
@@ -51,7 +52,7 @@
                 </div>
 
                 <div class="form-grupo">
-                    <label for="{{ form.apellido_materno.id_for_label }}">APELLIDO MATERNO</label>
+                    <label for="{{ form.apellido_materno.id_for_label }}">{% translate "APELLIDO MATERNO" %}</label>
                     {{ form.apellido_materno }}
                     {% if form.apellido_materno.errors %}
                         <span style="color: #e05252; font-size: 0.8rem;">{{ form.apellido_materno.errors.0 }}</span>
@@ -61,7 +62,7 @@
 
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
                 <div class="form-grupo">
-                    <label for="{{ form.password.id_for_label }}">CONTRASEÑA</label>
+                    <label for="{{ form.password.id_for_label }}">{% translate "CONTRASEÑA" %}</label>
                     {{ form.password }}
                     {% if form.password.errors %}
                         <span style="color: #e05252; font-size: 0.8rem;">{{ form.password.errors.0 }}</span>
@@ -69,7 +70,7 @@
                 </div>
 
                 <div class="form-grupo">
-                    <label for="{{ form.confirmar_password.id_for_label }}">CONFIRMAR CONTRASEÑA</label>
+                    <label for="{{ form.confirmar_password.id_for_label }}">{% translate "CONFIRMAR CONTRASEÑA" %}</label>
                     {{ form.confirmar_password }}
                     {% if form.confirmar_password.errors %}
                         <span style="color: #e05252; font-size: 0.8rem;">{{ form.confirmar_password.errors.0 }}</span>
@@ -79,13 +80,13 @@
 
             <div style="margin-top: 30px;">
                 <button type="submit" class="btn btn-primary" style="width: 100%; padding: 14px; font-weight: bold; font-size: 0.9rem; letter-spacing: 2px;">
-                    REGISTRAR CUENTA
+                    {% translate "REGISTRAR CUENTA" %}
                 </button>
             </div>
 
             <div style="text-align: center; margin-top: 20px; font-size: 0.85rem;">
-                <span style="color: var(--texto-suave);">¿YA TIENES UNA CUENTA? </span>
-                <a href="{% url 'login' %}" style="color: var(--acento); text-decoration: none; font-weight: bold; letter-spacing: 0.5px;">INICIA SESIÓN AQUÍ</a>
+                <span style="color: var(--texto-suave);">{% translate "¿YA TIENES UNA CUENTA?" %} </span>
+                <a href="{% url 'login' %}" style="color: var(--acento); text-decoration: none; font-weight: bold; letter-spacing: 0.5px;">{% translate "INICIA SESIÓN AQUÍ" %}</a>
             </div>
 
         </form>

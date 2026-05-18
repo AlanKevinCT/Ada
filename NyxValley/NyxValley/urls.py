@@ -1,5 +1,5 @@
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from Festival2026 import views
@@ -8,6 +8,7 @@ urlpatterns = [
 
     # ─── Django admin (panel interno) ────────────────────────
     path('django-admin/', admin.site.urls),
+    path('i18n/', include('django.conf.urls.i18n')),
 
     # ─── Autenticación ───────────────────────────────────────
     path('',        views.inicio,    name='inicio'),

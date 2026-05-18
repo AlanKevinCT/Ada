@@ -1,17 +1,17 @@
 {% extends 'base/base.html' %}
 {% load static %}
+{% load i18n %}
 
-{% block titulo %}Mapa de Parques — Nyx Valley{% endblock %}
+{% block titulo %}{% translate "Mapa de Parques — Nyx Valley" %}{% endblock %}
 
 {% block estilos_extra %}
-
 <link rel="stylesheet" href="{% static 'css/mapa.css' %}">
 {% endblock %}
 
 {% block contenido %}
 
-<h1>Parques del Festival</h1>
-<p>Selecciona un marcador en el mapa para ver la información del parque.</p>
+<h1>{% translate "Parques del Festival" %}</h1>
+<p>{% translate "Selecciona un marcador en el mapa para ver la información del parque." %}</p>
 
 <div class="mapa-layout">
 
@@ -21,7 +21,7 @@
     <div id="panel-parque" class="panel-parque panel-vacio card">
         <div class="panel-placeholder">
             <span class="glyph-grande">✦</span>
-            <p>Selecciona un parque<br>en el mapa</p>
+            <p>{% translate "Selecciona un parque" %}<br>{% translate "en el mapa" %}</p>
         </div>
     </div>
 

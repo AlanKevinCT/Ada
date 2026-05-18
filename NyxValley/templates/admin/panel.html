@@ -1,85 +1,82 @@
 {% extends "base/base.html" %}
 {% load static %}
+{% load i18n %}
 
 {% block estilos_extra %}
 <link rel="stylesheet" href="{% static 'css/admin_panel.css' %}">
 {% endblock %}
 
 {% block contenido %}
-<h1 style="text-align: center; color: var(--acento); margin-bottom: 40px; letter-spacing: 2px;">GESTIÓN DEL FESTIVAL 2026</h1>
+<h1 style="text-align: center; color: var(--acento); margin-bottom: 40px; letter-spacing: 2px;">{% translate "GESTIÓN DEL FESTIVAL 2026" %}</h1>
 
 <div class="stats-container">
     <div class="card">
-        <h3 class="card-dato">PARQUES AUTORIZADOS</h3>
+        <h3 class="card-dato">{% translate "PARQUES AUTORIZADOS" %}</h3>
         <p style="font-size: 3.5rem; color: var(--acento); margin: 0; line-height: 1;">{{ total_parques }}</p>
     </div>
     
     <div class="card">
-        <h3 class="card-dato">RESERVACIONES ACTIVAS</h3>
+        <h3 class="card-dato">{% translate "RESERVACIONES ACTIVAS" %}</h3>
         <p style="font-size: 3.5rem; color: var(--acento); margin: 0; line-height: 1;">{{ reservaciones_activas }}</p>
-        <a href="{% url 'gestionar_reservaciones' %}" class="link-reservas">ADMINISTRAR RESERVACIONES →</a>
+        <a href="{% url 'gestionar_reservaciones' %}" class="link-reservas">{% translate "ADMINISTRAR RESERVACIONES →" %}</a>
     </div>
 </div>
 
 <div class="card">
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
-        <h2 class="card-titulo" style="border:none; margin:0;">REGISTRO DE PARQUES </h2>
-        <a href="{% url 'crear_parque' %}" class="btn btn-primary" style="padding: 10px 20px;">+ CREAR NUEVO PARQUE</a>
+        <h2 class="card-titulo" style="border:none; margin:0;">{% translate "REGISTRO DE PARQUES" %}</h2>
+        <a href="{% url 'crear_parque' %}" class="btn btn-primary" style="padding: 10px 20px;">+ {% translate "CREAR NUEVO PARQUE" %}</a>
     </div>
 
     <div style="overflow-x: auto;">
         <table class="nyx-table">
             <thead>
                 <tr>
-                    <th>Nombre del Parque</th>
-                    <th>Dirección / Ubicación</th>
-                    <th style="text-align: center;">Capacidad</th>
-                    <th style="text-align: center;">Servicios</th>
-                    <th style="text-align: center;">Acciones</th>
+                    <th>{% translate "Nombre del Parque" %}</th>
+                    <th>{% translate "Dirección / Ubicación" %}</th>
+                    <th style="text-align: center;">{% translate "Capacidad" %}</th>
+                    <th style="text-align: center;">{% translate "Servicios" %}</th>
+                    <th style="text-align: center;">{% translate "Acciones" %}</th>
                 </tr>
             </thead>
             <tbody>
-                <tbody>
-                    {% for p in parques %}
-                    <tr>
-                        <td><strong style="color: var(--texto-principal);">{{ p.nombre|upper }}</strong></td>
-                        <td style="max-width: 250px; color: var(--texto-suave); font-size: 0.8rem;">{{ p.direccion }}</td>
-                        <td style="text-align: center;">
-                            <span class="capacidad-num">{{ p.capacidad }}</span>
-                            <div style="font-size: 0.6rem; color: var(--texto-suave);">PERSONAS</div>
-                        </td>
-                        <td style="text-align: center;">
-                            <div class="servicios-icon-group">
-                                <div class="servicio-item {% if p.tiene_cabanas %}disponible{% else %}no-disponible{% endif %}">
-                                    <span>🏠</span> <span class="servicio-label">Cabañas</span>
-                                </div>
-                                <div class="servicio-item {% if p.tiene_camping %}disponible{% else %}no-disponible{% endif %}">
-                                    <span>⛺</span> <span class="servicio-label">Camping</span>
-                                </div>
+                {% for p in parques %}
+                <tr>
+                    <td><strong style="color: var(--texto-principal);">{{ p.nombre|upper }}</strong></td>
+                    <td style="max-width: 250px; color: var(--texto-suave); font-size: 0.8rem;">{{ p.direccion }}</td>
+                    <td style="text-align: center;">
+                        <span class="capacidad-num">{{ p.capacidad }}</span>
+                        <div style="font-size: 0.6rem; color: var(--texto-suave);">{% translate "PERSONAS" %}</div>
+                    </td>
+                    <td style="text-align: center;">
+                        <div class="servicios-icon-group">
+                            <div class="servicio-item {% if p.tiene_cabanas %}disponible{% else %}no-disponible{% endif %}">
+                                <span>🏠</span> <span class="servicio-label">{% translate "Cabañas" %}</span>
                             </div>
-                        </td>
-
-                        <td style="text-align: center;">
-                            <div style="display: flex; gap: 8px; justify-content: center; align-items: center;">
-                                <a href="{% url 'editar_parque' p.id %}" class="btn-secondary" style="text-decoration: none; padding: 5px 12px; font-size: 0.65rem;">EDITAR</a>
-                                
-                                <form id="form-eliminar-parque-{{ p.id }}" action="{% url 'eliminar_parque' p.id %}" method="POST" style="display: none;">
-                                    {% csrf_token %}
-                                </form>
-                        
-                                <a href="#" class="btn-danger" style="text-decoration: none; padding: 5px 12px; font-size: 0.65rem;"
-                                   onclick="confirmarEliminacionParque('{{ p.id }}', '{{ p.nombre }}'); return false;">
-                                    BORRAR
-                                </a>
+                            <div class="servicio-item {% if p.tiene_camping %}disponible{% else %}no-disponible{% endif %}">
+                                <span>⛺</span> <span class="servicio-label">{% translate "Camping" %}</span>
                             </div>
-                        </td>
+                        </div>
+                    </td>
 
-
-                    </tr>
-                    {% empty %}
-                    <tr><td colspan="5" style="text-align: center; padding: 40px;">No hay parques registrados.</td></tr>
-                    {% endfor %}
-                </tbody>
+                    <td style="text-align: center;">
+                        <div style="display: flex; gap: 8px; justify-content: center; align-items: center;">
+                            <a href="{% url 'editar_parque' p.id %}" class="btn-secondary" style="text-decoration: none; padding: 5px 12px; font-size: 0.65rem;">{% translate "EDITAR" %}</a>
+                            
+                            <form id="form-eliminar-parque-{{ p.id }}" action="{% url 'eliminar_parque' p.id %}" method="POST" style="display: none;">
+                                {% csrf_token %}
+                            </form>
+                    
+                            <a href="#" class="btn-danger" style="text-decoration: none; padding: 5px 12px; font-size: 0.65rem;"
+                               onclick="confirmarEliminacionParque('{{ p.id }}', '{{ p.nombre }}'); return false;">
+                                {% translate "BORRAR" %}
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="5" style="text-align: center; padding: 40px;">{% translate "No hay parques registrados." %}</td></tr>
+                {% endfor %}
             </tbody>
         </table>
     </div>
@@ -87,19 +84,24 @@
 
 <script>
     function confirmarEliminacionParque(parqueId, parqueNombre) {
+        // Obtenemos los textos traducidos para usarlos en SweetAlert
+        const titulo = "{% translate 'Confirmar Eliminación' %}";
+        const texto = "{% translate '¿Estás seguro de que deseas eliminar el parque {nombre}? Esta acción notificará a los clientes afectados.' %}".replace('{nombre}', parqueNombre);
+        const botonConfirmar = "{% translate 'SÍ, ELIMINAR' %}";
+        const botonCancelar = "{% translate 'CANCELAR' %}";
+
         Swal.fire({
-            title: 'Confirmar Eliminación',
-            text: `¿Estás seguro de que deseas eliminar el parque ${parqueNombre}? Esta acción notificará a los clientes afectados.`,
+            title: titulo,
+            text: texto,
             icon: 'warning',
             iconColor: '#e05252',
             background: getComputedStyle(document.documentElement).getPropertyValue('--fondo-card') || '#121212',
             color: '#ffffff',
             showCancelButton: true,
-            confirmButtonText: 'SÍ, ELIMINAR',
-            cancelButtonText: 'CANCELAR',            
+            confirmButtonText: botonConfirmar,
+            cancelButtonText: botonCancelar,            
             confirmButtonColor: '#e05252', 
             
-
             customClass: {
                 confirmButton: 'btn btn-primary btn-swal',
                 cancelButton: 'btn btn-secondary btn-swal'
@@ -111,7 +113,5 @@
             }
         });
     }
-    </script>
+</script>
 {% endblock %}
-
-

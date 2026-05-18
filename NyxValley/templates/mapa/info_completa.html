@@ -1,5 +1,6 @@
 {% extends 'base/base.html' %}
 {% load static %}
+{% load i18n %}
 
 {% block estilos_extra %}
     <link rel="stylesheet" href="{% static 'css/info_completa.css' %}">
@@ -20,10 +21,10 @@
         
         <div class="col-left">
             <section class="caja-info">
-                <p class="etiqueta">BIENVENIDOS AL SANTUARIO</p>
+                <p class="etiqueta">{% translate "BIENVENIDOS AL SANTUARIO" %}</p>
                 <div class="descripcion-box">
                     <p class="texto-magico">
-                        "En el corazón de Nyx Valley, el tiempo se detiene. Somos un refugio donde la naturaleza susurra secretos y las luciérnagas pintan el aire con destellos de esperanza. Nuestro parque no es solo un destino, es una experiencia mística diseñada para reconectar tu alma con el bosque."
+                        {% translate '"En el corazón de Nyx Valley, el tiempo se detiene. Somos un refugio donde la naturaleza susurra secretos y las luciérnagas pintan el aire con destellos de esperanza. Nuestro parque no es solo un destino, es una experiencia mística diseñada para reconectar tu alma con el bosque."' %}
                     </p>
                     <hr class="divisor">
                     <p>{{ parque.descripcion }}</p>
@@ -31,15 +32,15 @@
             </section>
 
             <section class="caja-info">
-                <p class="etiqueta-separada">SERVICIOS</p>
+                <p class="etiqueta-separada">{% translate "SERVICIOS" %}</p>
                 <div class="servicios-grid">
                     {% if parque.tiene_camping %}
                     <div class="servicio-card-grande">
                         <span class="icono-extra-grande">⛺</span>
                         <div class="detalles" style="display: flex; flex-direction: column; justify-content: center;">
-                            <strong style="display: block; margin-bottom: 4px;">ZONA CAMPING</strong>
+                            <strong style="display: block; margin-bottom: 4px;">{% translate "ZONA CAMPING" %}</strong>
                             <span style="display: block; font-size: 0.85rem; color: var(--texto-suave);">
-                                Capacidad máxima: {{ parque.capacidad }} personas
+                                {% translate "Capacidad máxima:" %} {{ parque.capacidad }} {% translate "personas" %}
                             </span>
                         </div>
                     </div>
@@ -49,9 +50,9 @@
                     <div class="servicio-card-grande">
                         <span class="icono-grande">🏠</span>
                         <div class="detalles" style="display: flex; flex-direction: column; justify-content: center;">
-                            <strong style="display: block; margin-bottom: 4px;">CABAÑA</strong>
+                            <strong style="display: block; margin-bottom: 4px;">{% translate "CABAÑA" %}</strong>
                             <span style="display: block; font-size: 0.85rem; color: var(--texto-suave);">
-                                Capacidad máxima: {{ parque.capacidad }} personas
+                                {% translate "Capacidad máxima:" %} {{ parque.capacidad }} {% translate "personas" %}
                             </span>
                         </div>
                     </div>
@@ -63,17 +64,17 @@
         <div class="col-right">
             <section class="caja-reserva">
                 <a href="/reservar/?parque={{ parque.id }}" class="btn-reserva-boceto">
-                    RESERVAR
+                    {% translate "RESERVAR" %}
                 </a>
             </section>
 
             <section class="caja-info">
-                <p class="etiqueta">HORARIO</p>
+                <p class="etiqueta">{% translate "HORARIO" %}</p>
                 <div class="horario-card">
                     <span class="icono-horario">⏰</span>
                     <div class="horario-texto">
                         <span class="rango">{{ parque.horario }}</span>
-                        <span class="unidad">HRS</span>
+                        <span class="unidad">{% translate "HRS" %}</span>
                     </div>
                 </div>
             </section>

@@ -1,5 +1,6 @@
 {% extends 'base/base.html' %}
 {% load static %}
+{% load i18n %}
 
 {% block contenido %}
 <div style="display: flex; justify-content: center; align-items: center; min-height: calc(100vh - 120px); padding: 20px;">
@@ -8,10 +9,9 @@
         
         <div style="text-align: center; margin-bottom: 30px;">
             <span style="color: var(--acento); font-size: 1.5rem; filter: drop-shadow(0 0 5px rgba(250, 204, 21, 0.8));">✦</span>
-            <h2 class="card-titulo" style="border-bottom: none; margin-bottom: 5px; padding-bottom: 0;">PROGRAMAR VISITA</h2>
+            <h2 class="card-titulo" style="border-bottom: none; margin-bottom: 5px; padding-bottom: 0;">{% translate "PROGRAMAR VISITA" %}</h2>
             <p style="font-size: 0.85rem; color: var(--texto-suave); letter-spacing: 1px; text-transform: uppercase;">
-                Reserva tu lugar para el Festival Internacional de las Luciérnagas 2026
-
+                {% translate "Reserva tu lugar para el Festival Internacional de las Luciérnagas 2026" %}
             </p>
         </div>
 
@@ -27,7 +27,7 @@
             {% csrf_token %}
 
             <div class="form-grupo">
-                <label for="{{ form.parque.id_for_label }}">SELECCIONA EL PARQUE </label>
+                <label for="{{ form.parque.id_for_label }}">{% translate "SELECCIONA EL PARQUE" %}</label>
                 {{ form.parque }}
                 {% if form.parque.errors %}
                     <span style="color: #e05252; font-size: 0.8rem;">{{ form.parque.errors.0 }}</span>
@@ -36,7 +36,7 @@
 
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
                 <div class="form-grupo">
-                    <label for="{{ form.fecha_inicio.id_for_label }}">FECHA DE ENTRADA</label>
+                    <label for="{{ form.fecha_inicio.id_for_label }}">{% translate "FECHA DE ENTRADA" %}</label>
                     {{ form.fecha_inicio }}
                     {% if form.fecha_inicio.errors %}
                         <span style="color: #e05252; font-size: 0.8rem;">{{ form.fecha_inicio.errors.0 }}</span>
@@ -44,7 +44,7 @@
                 </div>
 
                 <div class="form-grupo">
-                    <label for="{{ form.fecha_fin.id_for_label }}">FECHA DE SALIDA</label>
+                    <label for="{{ form.fecha_fin.id_for_label }}">{% translate "FECHA DE SALIDA" %}</label>
                     {{ form.fecha_fin }}
                     {% if form.fecha_fin.errors %}
                         <span style="color: #e05252; font-size: 0.8rem;">{{ form.fecha_fin.errors.0 }}</span>
@@ -54,7 +54,7 @@
 
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
                 <div class="form-grupo">
-                    <label for="{{ form.numero_personas.id_for_label }}">CANTIDAD DE VISITANTES</label>
+                    <label for="{{ form.numero_personas.id_for_label }}">{% translate "CANTIDAD DE VISITANTES" %}</label>
                     {{ form.numero_personas }}
                     {% if form.numero_personas.errors %}
                         <span style="color: #e05252; font-size: 0.8rem;">{{ form.numero_personas.errors.0 }}</span>
@@ -62,7 +62,7 @@
                 </div>
 
                 <div class="form-grupo">
-                    <label for="{{ form.tipo_visita.id_for_label }}">TIPO DE ESTANCIA</label>
+                    <label for="{{ form.tipo_visita.id_for_label }}">{% translate "TIPO DE ESTANCIA" %}</label>
                     {{ form.tipo_visita }}
                     {% if form.tipo_visita.errors %}
                         <span style="color: #e05252; font-size: 0.8rem;">{{ form.tipo_visita.errors.0 }}</span>
@@ -72,13 +72,13 @@
 
             <div style="background-color: rgba(255, 204, 51, 0.05); border-left: 3px solid var(--acento); padding: 12px 16px; margin: 24px 0; border-radius: 0 var(--radio-card) var(--radio-card) 0;">
                 <p style="margin: 0; font-size: 0.8rem; color: var(--texto-suave); line-height: 1.4;">
-                    * Temporada oficial: Junio 01 a Agosto 31. Los días martes el santuario permanece cerrado para mantenimiento
+                    * {% translate "Temporada oficial: Junio 01 a Agosto 31. Los días martes el santuario permanece cerrado para mantenimiento" %}
                 </p>
             </div>
 
             <div style="margin-top: 20px;">
                 <button type="submit" class="btn btn-primary" style="width: 100%; padding: 14px; font-weight: bold; font-size: 0.9rem; letter-spacing: 2px;">
-                    SOLICITAR RESERVACIÓN
+                    {% translate "SOLICITAR RESERVACIÓN" %}
                 </button>
             </div>
         </form>
@@ -87,12 +87,12 @@
 
 <div id="modalSantuario" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(2, 4, 8, 0.85); backdrop-filter: blur(8px); justify-content: center; align-items: center; z-index: 9999; padding: 20px;">
     <div class="card" style="width: 100%; max-width: 460px; background-color: var(--fondo-card); border: var(--borde-brutal); text-align: center; box-shadow: var(--sombra-glow-intensa); transform: scale(0.9); transition: transform 0.3s ease;">
-        <span style="color: var(--acento); font-size: 2rem; display: block; margin-bottom: 15px; filter: drop-shadow(0 0 8px var(--acento));">✦ Lo sentimos ✦</span>
+        <span style="color: var(--acento); font-size: 2rem; display: block; margin-bottom: 15px; filter: drop-shadow(0 0 8px var(--acento));">✦ {% translate "Lo sentimos" %} ✦</span>
         <h2 class="card-titulo" style="border: none; font-size: 1.1rem; letter-spacing: 1px; color: var(--texto-principal); margin-bottom: 20px; line-height: 1.6;">
-            Los martes los parques se encuentran en mantenimiento
+            {% translate "Los martes los parques se encuentran en mantenimiento" %}
         </h2>
         <button id="btnCerrarModal" class="btn btn-primary" style="padding: 10px 35px; font-size: 0.8rem; border-radius: var(--radio-curva);">
-            ENTENDIDO
+            {% translate "ENTENDIDO" %}
         </button>
     </div>
 </div>
@@ -112,13 +112,12 @@
                 input.setAttribute("min", minVal);
                 input.setAttribute("max", "2026-08-31");
                 
-                // Monitorear selección para advertir sobre los martes
                 input.addEventListener("input", function() {
                     if (!this.value) return;
                     const partes = this.value.split('-');
                     const fecha = new Date(partes[0], partes[1] - 1, partes[2]);
                     
-                    if (fecha.getDay() === 2) { // 2 es Martes en JS
+                    if (fecha.getDay() === 2) {
                         modal.style.display = "flex";
                         setTimeout(() => { modal.children[0].style.transform = "scale(1)"; }, 10);
                         this.value = ""; 
@@ -132,7 +131,6 @@
             setTimeout(() => { modal.style.display = "none"; }, 150);
         });
 
-        // Asegurar consistencia de rangos entre fechas (Salida >= Entrada)
         if (inputInicio && inputFin) {
             inputInicio.addEventListener("change", function() {
                 if (inputInicio.value) inputFin.setAttribute("min", inputInicio.value);
