@@ -1,3 +1,4 @@
+
 from .autenticacion import (
     inicio,
     registro,
@@ -6,7 +7,7 @@ from .autenticacion import (
     enviar_bienvenida,
 )
 
-from .mapa import (
+from .mapa_interactivo import (
     mapa,
     detalle_parque,
     info_completa_parque,
@@ -15,12 +16,12 @@ from .mapa import (
 from .reservaciones import (
     formulario_reserva,
     confirmacion,
-    cancelar_reservacion,
 )
 
 from .cliente import (
     panel_cliente,
     mis_reservaciones,
+    cancelar_reservacion,
 )
 
 from .admin import (

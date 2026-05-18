@@ -1,13 +1,16 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth import authenticate
-from django.contrib.auth import login as auth_login
-from django.contrib.auth import logout as auth_logout
+from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 
 from ..models import Usuario, Parque, Reservacion
 from ..services import AsistReserva, Disponibilidad
 from ..mapa import MapaNavegacion
+from ..forms import RegistroForm, LoginForm, ReservaForm
+
+from django.core.mail import send_mail
+from django.conf import settings
+from django.utils import timezone
 
 
 @login_required
