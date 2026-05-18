@@ -15,7 +15,7 @@
     text-align: center;
 }
 
-
+/* ── Tabla Nyx Valey ── */
 .nyx-table {
     width: 100%;
     border-collapse: separate;
@@ -41,13 +41,6 @@
 .nyx-table td:first-child { border-radius: 15px 0 0 15px; }
 .nyx-table td:last-child { border-radius: 0 15px 15px 0; }
 
-/* ── Badges de Servicios ── */
-.badge-group {
-    display: flex;
-    gap: 5px;
-    justify-content: center;
-}
-
 /* ── Contenedor de Iconos de Servicio ── */
 .servicios-icon-group {
     display: flex;
@@ -61,25 +54,6 @@
     flex-direction: column;
     align-items: center;
     gap: 5px;
-    transition: all 0.3s ease;
-}
-
-.servicio-icon {
-    width: 24px;
-    height: 24px;
-    object-fit: contain;
-}
-
-/* Estado: Disponible Brilla */
-.disponible {
-    filter: drop-shadow(0 0 5px var(--acento));
-    opacity: 1;
-}
-
-/* Estado: No disponible (Se apaga y se vuelve grisáceo) */
-.no-disponible {
-    filter: grayscale(100%);
-    opacity: 0.2;
 }
 
 .servicio-label {
@@ -89,8 +63,17 @@
     color: var(--texto-suave);
 }
 
-.badge-on { background: rgba(62, 207, 142, 0.1); color: #3ecf8e; border-color: #3ecf8e; }
-.badge-off { background: rgba(224, 82, 82, 0.1); color: #e05252; border-color: #e05252; }
+/* Disponible brilla */
+.disponible {
+    filter: drop-shadow(0 0 5px var(--acento));
+    opacity: 1;
+}
+
+/* No disponible, se apaga y se vuelve grisáceo) */
+.no-disponible {
+    filter: grayscale(100%);
+    opacity: 0.2;
+}
 
 .capacidad-num {
     color: var(--acento);
@@ -107,4 +90,7 @@
     letter-spacing: 1px;
     transition: 0.3s;
 }
-.link-reservas:hover { text-shadow: var(--sombra-glow); }
+
+.link-reservas:hover { 
+    text-shadow: var(--sombra-glow); 
+}
