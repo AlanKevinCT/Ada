@@ -1,4 +1,5 @@
 {% load static %}
+{% load i18n %}
 <!DOCTYPE html>
 <html lang="es" data-theme="bosque-nocturno">
 <head>
@@ -8,6 +9,7 @@
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
     <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     {% block estilos_extra %}{% endblock %}
 </head>
 <body>
@@ -17,20 +19,38 @@
             <span class="glyph">✦</span> Nyx Valley
         </a>
         <ul class="nav-links">
-            <li><a href="/">Inicio</a></li>
-            <li><a href="/mapa/">Mapa</a></li>
+            <li><a href="/">{% translate "Inicio" %}</a></li>
+
             {% if user.is_authenticated %}
                 {% if user.is_admin %}
-                    <li><a href="/admin-panel/">Panel admin</a></li>
+                    <li><a href="/admin-panel/">{% translate "Panel admin" %}</a></li>
                 {% else %}
-                    <li><a href="/panel/">Mi cuenta</a></li>
-                    <li><a href="/mis-reservaciones/">Mis reservaciones</a></li>
+                    <li><a href="/panel/">{% translate "Mi cuenta" %}</a></li>
+                    <li><a href="/mis-reservaciones/">{% translate "Mis reservaciones" %}</a></li>
                 {% endif %}
-                <li><a href="/logout/">Cerrar sesión</a></li>
+
+                <li><a href="/logout/">{% translate "Cerrar sesión" %}</a></li>
+
             {% else %}
-                <li><a href="/login/">Iniciar sesión</a></li>
-                <li><a href="/registro/">Registrarse</a></li>
+                <li><a href="/login/">{% translate "Iniciar sesión" %}</a></li>
+                <li><a href="/registro/">{% translate "Registrarse" %}</a></li>
             {% endif %}
+
+            <li>
+                <form action="{% url 'set_language' %}" method="post" style="display: inline; margin-left: 10px;">
+                    {% csrf_token %}
+                    <input name="next" type="hidden" value="{{ request.get_full_path }}">
+                    <select name="language" onchange="this.form.submit()" class="selector-tema-toggle" style="background: var(--fondo-card); color: var(--acento); border: var(--borde-brutal); padding: 5px 10px; border-radius: var(--radio-curva); cursor: pointer; font-size: 0.75rem;">
+                        {% get_current_language as LANGUAGE_CODE %}
+                        {% get_available_languages as LANGUAGES %}
+                        {% for lang in LANGUAGES %}
+                            <option value="{{ lang.0 }}" {% if lang.0 == LANGUAGE_CODE %}selected{% endif %}>
+                                {{ lang.1 }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </form>
+            </li>
         </ul>
     </nav>
 
@@ -38,57 +58,54 @@
         {% block contenido %}{% endblock %}
     </main>
 
-    <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
     {% block scripts_extra %}{% endblock %}
 
-    <!-- ── Selector de tema ── -->
     <div class="selector-tema">
         <div class="selector-tema-menu" id="menu-temas">
 
             <button class="tema-opcion activo" onclick="cambiarTema('bosque-nocturno', this)">
                 <div class="tema-muestra" style="background:#0d1a0d; border-color:#e8d44d;"></div>
-                Bosque nocturno
+                {% translate "Bosque nocturno" %}
             </button>
 
             <button class="tema-opcion" onclick="cambiarTema('indigo-profundo', this)">
                 <div class="tema-muestra" style="background:#12122e; border-color:#7c6fff;"></div>
-                Índigo profundo
+                {% translate "Índigo profundo" %}
             </button>
 
             <button class="tema-opcion" onclick="cambiarTema('bosque-esmeralda', this)">
                 <div class="tema-muestra" style="background:#0a1f18; border-color:#3ecf8e;"></div>
-                Bosque esmeralda
+                {% translate "Bosque esmeralda" %}
             </button>
 
             <button class="tema-opcion" onclick="cambiarTema('crema-dorado', this)">
                 <div class="tema-muestra" style="background:#fffdf7; border-color:#b8860b;"></div>
-                Crema y dorado
+                {% translate "Crema y dorado" %}
             </button>
 
             <button class="tema-opcion" onclick="cambiarTema('bosque-dia', this)">
                 <div class="tema-muestra" style="background:#ffffff; border-color:#2d6a4f;"></div>
-                Bosque de día
+                {% translate "Bosque de día" %}
             </button>
 
             <button class="tema-opcion" onclick="cambiarTema('niebla-musgo', this)">
                 <div class="tema-muestra" style="background:#f8faf8; border-color:#606c38;"></div>
-                Niebla y musgo
+                {% translate "Niebla y musgo" %}
             </button>
 
         </div>
-        <button class="selector-tema-toggle" onclick="toggleMenu()">✦ Tema</button>
+        <button class="selector-tema-toggle" onclick="toggleMenu()">✦ {% translate "Tema" %}</button>
     </div>
 
     <footer>
         <span class="glyph">✦</span>
-        Festival Internacional de las Luciérnagas 2026 — Nyx Valley
+        {% translate "Festival Internacional de las Luciérnagas 2026 — Nyx Valley" %}
         <span class="glyph">✦</span>
     </footer>
 
     <script>
-        // ── Cargar tema guardado ──────────────────────────────
         const temaGuardado = localStorage.getItem('nyx-tema') || 'bosque-nocturno';
         aplicarTema(temaGuardado);
 
@@ -111,7 +128,6 @@
             document.getElementById('menu-temas').classList.toggle('abierto');
         }
 
-        // Cerrar menú al hacer clic fuera
         document.addEventListener('click', function(e) {
             const selector = document.querySelector('.selector-tema');
             if (!selector.contains(e.target)) {

@@ -1,13 +1,25 @@
 from pathlib import Path
+from decouple import config
+from django.utils.translation import gettext_lazy as _
 
 # ─── Rutas base ───────────────────────────────────────────────
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # ─── Seguridad ────────────────────────────────────────────────
 # ADVERTENCIA: cambia esta clave antes de subir a producción
-SECRET_KEY = 'django-insecure-nyxvalley-festival-luciernagas-2026-changeme'
-DEBUG = True
+SECRET_KEY = config('SECRET_KEY')
+DEBUG       = config('DEBUG', default=False, cast=bool)
 ALLOWED_HOSTS = []
+
+
+# ─── Correo electrónico ───────────────────────────────────────
+EMAIL_BACKEND       = 'django.core.mail.backends.console.EmailBackend'  # cambiar a 'django.core.mail.backends.smtp.EmailBackend' al terminar el proyecto
+EMAIL_HOST          = config('EMAIL_HOST')
+EMAIL_PORT          = config('EMAIL_PORT', cast=int)
+EMAIL_USE_TLS       = config('EMAIL_USE_TLS', cast=bool)
+EMAIL_HOST_USER     = config('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
+DEFAULT_FROM_EMAIL  = config('DEFAULT_FROM_EMAIL')
 
 # ─── Aplicaciones instaladas ──────────────────────────────────
 INSTALLED_APPS = [
@@ -18,15 +30,22 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    #Para los forms
+        'crispy_forms',
+        'crispy_bootstrap5',
 
     # Nuestra app
     'Festival2026',
 ]
 
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+CRISPY_TEMPLATE_PACK = "bootstrap5"
+
 # ─── Middleware ───────────────────────────────────────────────
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -72,11 +91,27 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
+
+# ─── Idiomas disponibles  ─────────────────────────────────────
+
+
+LANGUAGES = [
+    ('es', _('Español')),
+    ('en', _('English')),
+]
+
+
 # ─── Internacionalización ─────────────────────────────────────
 LANGUAGE_CODE = 'es-mx'          # Español de México
 TIME_ZONE     = 'America/Mexico_City'
 USE_I18N      = True
 USE_TZ        = True
+
+# ─── Ruta para guardar los textos traducidos ──────────────────
+import os
+LOCALE_PATHS = [
+    os.path.join(BASE_DIR, 'locale'),
+]
 
 # ─── Archivos estáticos (CSS, JS, imágenes) ───────────────────
 STATIC_URL  = '/static/'

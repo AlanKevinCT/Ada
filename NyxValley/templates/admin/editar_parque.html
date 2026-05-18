@@ -1,0 +1,75 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block contenido %}
+<div style="display: flex; justify-content: center; align-items: center; min-height: calc(100vh - 120px); padding: 20px;">
+    
+    <div class="card fade-in" style="width: 100%; max-width: 600px; background-color: var(--fondo-card); border: var(--borde-brutal);">
+        
+        <div style="text-align: center; margin-bottom: 30px;">
+            <span style="color: var(--acento); font-size: 1.5rem; filter: drop-shadow(0 0 5px rgba(250, 204, 21, 0.8));">✦</span>
+            <h2 class="card-titulo" style="border-bottom: none; margin-bottom: 5px; padding-bottom: 0;">{% translate "MODIFICAR PARQUE" %}</h2>
+            <p style="font-size: 0.85rem; color: var(--texto-suave); letter-spacing: 1px; text-transform: uppercase;">
+                {% translate "Editar los datos del santuario oficial:" %} {{ parque.nombre }}
+            </p>
+        </div>
+
+        <form method="POST" action="{% url 'editar_parque' parque.id %}">
+            {% csrf_token %}
+
+            <div class="form-grupo">
+                <label>{% translate "NOMBRE DEL PARQUE" %}</label>
+                <input type="text" name="nombre" class="form-control" value="{{ parque.nombre }}" required>
+            </div>
+
+            <div class="form-grupo">
+                <label>{% translate "DIRECCIÓN FÍSICA" %}</label>
+                <input type="text" name="direccion" class="form-control" value="{{ parque.direccion }}" required>
+            </div>
+
+            <div class="form-grupo">
+                <label>{% translate "CAPACIDAD MÁXIMA (PERSONAS)" %}</label>
+                <input type="number" name="capacidad" class="form-control" value="{{ parque.capacidad }}" min="1" required>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                <div class="form-grupo">
+                    <label>{% translate "LATITUD" %}</label>
+                    <input type="number" step="any" name="latitud" class="form-control" value="{% if parque.latitud %}{{ parque.latitud }}{% endif %}" placeholder="0.000000">
+                </div>
+
+                <div class="form-grupo">
+                    <label>{% translate "LONGITUD" %}</label>
+                    <input type="number" step="any" name="longitud" class="form-control" value="{% if parque.longitud %}{{ parque.longitud }}{% endif %}" placeholder="0.000000">
+                </div>
+            </div>
+
+            <div class="form-grupo">
+                <label>{% translate "SERVICIOS DISPONIBLES" %}</label>
+                <textarea name="servicios" class="form-control" rows="3">{% if parque.servicios %}{{ parque.servicios }}{% endif %}</textarea>
+            </div>
+
+            <div class="form-grupo" style="display: flex; gap: 30px; margin: 24px 0; background: rgba(255, 255, 255, 0.02); padding: 15px; border-radius: var(--radio-card); border: 1px solid rgba(255, 255, 255, 0.05);">
+                <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; color: var(--texto-suave); font-size: 0.85rem; letter-spacing: 1px;">
+                    <input type="checkbox" name="tiene_cabanas" style="width: 18px; height: 18px; accent-color: var(--acento);" {% if parque.tiene_cabanas %}checked{% endif %}> 
+                    🏠 {% translate "¿TIENE CABAÑAS?" %}
+                </label>
+                <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; color: var(--texto-suave); font-size: 0.85rem; letter-spacing: 1px;">
+                    <input type="checkbox" name="tiene_camping" style="width: 18px; height: 18px; accent-color: var(--acento);" {% if parque.tiene_camping %}checked{% endif %}> 
+                    ⛺ {% translate "¿TIENE CAMPING?" %}
+                </label>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px;">
+                <a href="{% url 'panel_admin' %}" class="btn btn-secondary" style="width: 100%; padding: 14px; font-weight: bold; font-size: 0.9rem; letter-spacing: 2px; text-align: center;">
+                    {% translate "CANCELAR" %}
+                </a>
+                <button type="submit" class="btn btn-primary" style="width: 100%; padding: 14px; font-weight: bold; font-size: 0.9rem; letter-spacing: 2px;">
+                    {% translate "ACTUALIZAR" %}
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from Festival2026 import views
@@ -8,6 +8,7 @@ urlpatterns = [
 
     # ─── Django admin (panel interno) ────────────────────────
     path('django-admin/', admin.site.urls),
+    path('i18n/', include('django.conf.urls.i18n')),
 
     # ─── Autenticación ───────────────────────────────────────
     path('',        views.inicio,    name='inicio'),
@@ -23,6 +24,7 @@ urlpatterns = [
     # ─── Mapa interactivo (Ayros) ────────────────────────────
     path('mapa/',                   views.mapa,          name='mapa'),
     path('mapa/parque/<int:id>/',   views.detalle_parque, name='detalle_parque'),
+    path('parque/<int:id>/detalle-completo/', views.info_completa_parque, name='info_completa_parque'),
 
     # ─── Reservaciones (cliente) ─────────────────────────────
     path('reservar/',                views.formulario_reserva, name='formulario_reserva'),

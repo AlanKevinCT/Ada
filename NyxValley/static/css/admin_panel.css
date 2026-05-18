@@ -1,0 +1,96 @@
+/* ── Layout del Panel ── */
+.stats-container {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.stats-container .card {
+    flex: 1; /* Hace que los dos cuadros midan lo mismo */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 30px;
+    text-align: center;
+}
+
+/* ── Tabla Nyx Valey ── */
+.nyx-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 12px; /* Espacio entre filas */
+}
+
+.nyx-table th {
+    padding: 10px 20px;
+    color: var(--acento);
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 1px;
+    text-align: left;
+}
+
+.nyx-table td {
+    padding: 18px 20px;
+    background: rgba(255, 255, 255, 0.03);
+    vertical-align: middle;
+}
+
+/* Bordes redondeados por fila */
+.nyx-table td:first-child { border-radius: 15px 0 0 15px; }
+.nyx-table td:last-child { border-radius: 0 15px 15px 0; }
+
+/* ── Contenedor de Iconos de Servicio ── */
+.servicios-icon-group {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    align-items: center;
+}
+
+.servicio-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+
+.servicio-label {
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--texto-suave);
+}
+
+/* Disponible brilla */
+.disponible {
+    filter: drop-shadow(0 0 5px var(--acento));
+    opacity: 1;
+}
+
+/* No disponible, se apaga y se vuelve grisáceo) */
+.no-disponible {
+    filter: grayscale(100%);
+    opacity: 0.2;
+}
+
+.capacidad-num {
+    color: var(--acento);
+    font-weight: 800;
+    font-size: 1.1rem;
+}
+
+/* Botón Ver Reservas */
+.link-reservas {
+    margin-top: 15px;
+    color: var(--acento);
+    text-decoration: none;
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+    transition: 0.3s;
+}
+
+.link-reservas:hover { 
+    text-shadow: var(--sombra-glow); 
+}
