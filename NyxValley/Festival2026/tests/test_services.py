@@ -91,15 +91,19 @@ class TestServiciosFestival(TestCase):
                 self.usuario, self.parque, fecha_inicio, fecha_fin, 2, 'cabana'
             )
 
-    # Falta implementar lógica en services.py para verificar horas, por ahora solo se prueba que no sea None
     def test_verificar_hora_valida(self):
-        """Verifica que la hora esté dentro del horario del parque."""
+        """Verifica que la hora esté estrictamente dentro del horario del parque."""
+        # 1. Hora dentro del rango (08:00 - 17:00)
         hora_valida = Disponibilidad.verificaHora('10:00')
-        self.assertTrue(hora_valida)
+        self.assertTrue(hora_valida, "Debería aceptar una hora dentro del rango del parque (10:00).")
 
-        # Verificar que una hora inválida (None) no sea aceptada
+        # 2. Hora fuera del rango (en la noche)
+        hora_tarde = Disponibilidad.verificaHora('22:00')
+        self.assertFalse(hora_tarde, "Debería rechazar una hora fuera del horario del parque (22:00).")
+
+        # 3. Entrada inválida o nula
         hora_invalida = Disponibilidad.verificaHora(None)
-        self.assertFalse(hora_invalida)
+        self.assertFalse(hora_invalida, "Debería rechazar un valor nulo (None) en la hora.")
 
     # ─────────────────────────────────────────────────────────────
     #  Pruebas para la lógica de reservaciones
@@ -137,6 +141,22 @@ class TestServiciosFestival(TestCase):
             )
         self.assertEqual(str(cm.exception), 'No hay disponibilidad en el parque para esas fechas.')
 
+    def test_reserva_numero_personas_invalido(self):
+        """Verifica que el sistema rechace reservaciones para 0 o menos personas."""
+        # Intentar reservar para 0 personas deberia lanzar un error de negocio
+        with self.assertRaises(ValueError):
+            AsistReserva.reservar(
+                self.usuario, self.parque, date(2026, 7, 15), date(2026, 7, 17), 0, 'camping'
+            )
+
+    def test_usuario_no_duplica_estancia(self):
+        """Verifica que un usuario no pueda hacer dos reservas que se solapen en el tiempo."""
+        # Ya tiene 'reserva_base' del 10 al 12 de junio.
+        # Intentamos crear otra el 11 de junio (mientras está allá).
+        with self.assertRaises(ValueError):
+            AsistReserva.reservar(
+                self.usuario, self.parque, date(2026, 6, 11), date(2026, 6, 13), 2, 'cabana'
+            )
 
     def test_modificar_reserva(self):
         """Verifica que se puedan modificar las fechas de una reservación activa."""
@@ -177,23 +197,6 @@ class TestServiciosFestival(TestCase):
         with self.assertRaises(ValueError):
             AsistReserva.reservar(
                 self.usuario, self.parque, fecha_pasado_inicio, fecha_pasado_fin, 2, 'cabana'
-            )
-
-    def test_reserva_numero_personas_invalido(self):
-        """Verifica que el sistema rechace reservaciones para 0 o menos personas."""
-        # Intentar reservar para 0 personas deberia lanzar un error de negocio
-        with self.assertRaises(ValueError):
-            AsistReserva.reservar(
-                self.usuario, self.parque, date(2026, 7, 15), date(2026, 7, 17), 0, 'camping'
-            )
-
-    def test_usuario_no_duplica_estancia(self):
-        """Verifica que un usuario no pueda hacer dos reservas que se solapen en el tiempo."""
-        # Ya tiene 'reserva_base' del 10 al 12 de junio.
-        # Intentamos crear otra el 11 de junio (mientras está allá).
-        with self.assertRaises(ValueError):
-            AsistReserva.reservar(
-                self.usuario, self.parque, date(2026, 6, 11), date(2026, 6, 13), 2, 'cabana'
             )
 
     def test_modificar_reserva_sin_disponibilidad(self):
