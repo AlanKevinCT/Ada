@@ -1,0 +1,49 @@
+<!-- Fragmento HTMX — detalle del parque seleccionado -->
+<div class="detalle-parque">
+
+    <div class="detalle-header">
+        <span class="glyph">✦</span>
+        <h2>{{ parque.nombre }}</h2>
+    </div>
+
+    <div class="detalle-datos">
+
+        <div class="dato-fila">
+            <span class="dato-label">Dirección</span>
+            <span class="dato-valor">{{ parque.direccion }}</span>
+        </div>
+
+        <div class="dato-fila">
+            <span class="dato-label">Horario</span>
+            <span class="dato-valor">{{ parque.horario }}</span>
+        </div>
+
+        <div class="dato-fila">
+            <span class="dato-label">Servicios</span>
+            <span class="dato-valor">{{ parque.servicios }}</span>
+        </div>
+
+        <div class="dato-fila">
+            <span class="dato-label">Hospedaje</span>
+            <span class="dato-valor">
+                {% if parque.tiene_camping %}
+                    <span class="badge">Camping</span>
+                {% endif %}
+                {% if parque.tiene_cabanas %}
+                    <span class="badge">Cabañas</span>
+                {% endif %}
+            </span>
+        </div>
+
+    </div>
+
+    <div class="detalle-acciones">
+        <a href="/reservar/?parque={{ parque.id }}" class="btn btn-primary">
+            Reservar
+        </a>
+        <a href="/mapa/parque/{{ parque.id }}/" class="btn btn-secondary">
+            Ver más
+        </a>
+    </div>
+
+</div>

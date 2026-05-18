@@ -1,0 +1,417 @@
+/* ══════════════════════════════════════════════════════════════
+   Nyx Valley — Festival Internacional de las Luciérnagas 2026
+   Estilo: brutalismo elegante + temática bosque nocturno
+   Autora: Ayros / Equipo Ada
+══════════════════════════════════════════════════════════════ */
+
+/* ── Tema 1: Bosque nocturno (default oscuro) ───────────────── */
+:root,
+[data-theme="bosque-nocturno"] {
+    --fondo-pagina:   #080c08;
+    --fondo-card:     #0d1a0d;
+    --fondo-nav:      #080c08;
+    --verde-medio:    #1a3320;
+    --verde-claro:    #2d5a3d;
+    --acento:         #e8d44d;
+    --acento-hover:   #f5e76a;
+    --texto-principal:#e8f0e8;
+    --texto-suave:    #8fa88f;
+    --borde-brutal:   3px solid var(--acento);
+    --fuente-titulo:  'Georgia', serif;
+    --fuente-cuerpo:  'Courier New', monospace;
+}
+
+/* ── Tema 2: Índigo profundo (oscuro) ───────────────────────── */
+[data-theme="indigo-profundo"] {
+    --fondo-pagina:   #0a0a1a;
+    --fondo-card:     #12122e;
+    --fondo-nav:      #0a0a1a;
+    --verde-medio:    #1a1a40;
+    --verde-claro:    #2a2860;
+    --acento:         #7c6fff;
+    --acento-hover:   #a99fff;
+    --texto-principal:#c8bfff;
+    --texto-suave:    #6660a8;
+    --borde-brutal:   3px solid var(--acento);
+    --fuente-titulo:  'Georgia', serif;
+    --fuente-cuerpo:  'Courier New', monospace;
+}
+
+/* ── Tema 3: Bosque esmeralda (oscuro) ──────────────────────── */
+[data-theme="bosque-esmeralda"] {
+    --fondo-pagina:   #061410;
+    --fondo-card:     #0a1f18;
+    --fondo-nav:      #061410;
+    --verde-medio:    #0f3d2a;
+    --verde-claro:    #1a5c40;
+    --acento:         #3ecf8e;
+    --acento-hover:   #7de8bb;
+    --texto-principal:#b8f5dc;
+    --texto-suave:    #1e6b4a;
+    --borde-brutal:   3px solid var(--acento);
+    --fuente-titulo:  'Georgia', serif;
+    --fuente-cuerpo:  'Courier New', monospace;
+}
+
+/* ── Tema 4: Crema y dorado (claro) ─────────────────────────── */
+[data-theme="crema-dorado"] {
+    --fondo-pagina:   #f5f0e8;
+    --fondo-card:     #fffdf7;
+    --fondo-nav:      #fffdf7;
+    --verde-medio:    #e8dcc8;
+    --verde-claro:    #d4c49a;
+    --acento:         #b8860b;
+    --acento-hover:   #8a6200;
+    --texto-principal:#5c4400;
+    --texto-suave:    #7a6830;
+    --borde-brutal:   3px solid var(--acento);
+    --fuente-titulo:  'Georgia', serif;
+    --fuente-cuerpo:  'Courier New', monospace;
+}
+
+/* ── Tema 5: Bosque de día (claro) ──────────────────────────── */
+[data-theme="bosque-dia"] {
+    --fondo-pagina:   #f0f7f0;
+    --fondo-card:     #ffffff;
+    --fondo-nav:      #ffffff;
+    --verde-medio:    #d8f3dc;
+    --verde-claro:    #b7e4c7;
+    --acento:         #2d6a4f;
+    --acento-hover:   #1b4332;
+    --texto-principal:#1b4332;
+    --texto-suave:    #52796f;
+    --borde-brutal:   3px solid var(--acento);
+    --fuente-titulo:  'Georgia', serif;
+    --fuente-cuerpo:  'Courier New', monospace;
+}
+
+/* ── Tema 6: Niebla y musgo (claro) ─────────────────────────── */
+[data-theme="niebla-musgo"] {
+    --fondo-pagina:   #eef2ee;
+    --fondo-card:     #f8faf8;
+    --fondo-nav:      #f8faf8;
+    --verde-medio:    #dde5b6;
+    --verde-claro:    #c8d87a;
+    --acento:         #606c38;
+    --acento-hover:   #283618;
+    --texto-principal:#283618;
+    --texto-suave:    #606c38;
+    --borde-brutal:   3px solid var(--acento);
+    --fuente-titulo:  'Georgia', serif;
+    --fuente-cuerpo:  'Courier New', monospace;
+}
+
+/* ── Reset ──────────────────────────────────────────────────── */
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+    font-family: var(--fuente-cuerpo);
+    background-color: var(--fondo-pagina);
+    color: var(--texto-principal);
+    min-height: 100vh;
+    line-height: 1.7;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+/* ── Navbar ─────────────────────────────────────────────────── */
+nav {
+    background-color: var(--fondo-nav);
+    border-bottom: var(--borde-brutal);
+    padding: 0 48px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.nav-logo {
+    font-family: var(--fuente-titulo);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--acento);
+    text-decoration: none;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.nav-logo .glyph { font-size: 1.1rem; margin-right: 8px; }
+
+.nav-links {
+    display: flex;
+    gap: 0;
+    list-style: none;
+    align-items: center;
+}
+
+.nav-links li a {
+    display: block;
+    padding: 0 20px;
+    height: 64px;
+    line-height: 64px;
+    color: var(--texto-suave);
+    text-decoration: none;
+    font-size: 0.85rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    border-left: 1px solid var(--verde-medio);
+    transition: all 0.2s;
+}
+
+.nav-links li a:hover {
+    color: var(--acento);
+    background-color: var(--fondo-card);
+    border-bottom: 3px solid var(--acento);
+}
+
+/* ── Main ───────────────────────────────────────────────────── */
+main {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 48px 32px;
+}
+
+/* ── Tipografía ─────────────────────────────────────────────── */
+h1, h2, h3 {
+    font-family: var(--fuente-titulo);
+    font-weight: 700;
+    letter-spacing: 1px;
+    line-height: 1.2;
+}
+
+h1 {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    color: var(--acento);
+    text-transform: uppercase;
+    border-bottom: var(--borde-brutal);
+    padding-bottom: 16px;
+    margin-bottom: 32px;
+}
+
+h2 {
+    font-size: clamp(1.3rem, 3vw, 2rem);
+    color: var(--texto-principal);
+    margin-bottom: 20px;
+}
+
+h3 {
+    font-size: 1.1rem;
+    color: var(--acento);
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+p {
+    color: var(--texto-suave);
+    margin-bottom: 16px;
+    font-size: 0.95rem;
+}
+
+/* ── Botones ────────────────────────────────────────────────── */
+.btn {
+    display: inline-block;
+    padding: 12px 28px;
+    font-family: var(--fuente-cuerpo);
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-decoration: none;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+}
+
+.btn-primary {
+    background-color: var(--acento);
+    color: var(--fondo-pagina);
+    border: 3px solid var(--acento);
+}
+
+.btn-primary:hover {
+    background-color: transparent;
+    color: var(--acento);
+}
+
+.btn-secondary {
+    background-color: transparent;
+    color: var(--acento);
+    border: 3px solid var(--acento);
+}
+
+.btn-secondary:hover {
+    background-color: var(--acento);
+    color: var(--fondo-pagina);
+}
+
+.btn-danger {
+    background-color: transparent;
+    color: #e05252;
+    border: 3px solid #e05252;
+}
+
+.btn-danger:hover {
+    background-color: #e05252;
+    color: var(--fondo-pagina);
+}
+
+/* ── Cards ──────────────────────────────────────────────────── */
+.card {
+    background-color: var(--fondo-card);
+    border: var(--borde-brutal);
+    padding: 28px;
+    transition: all 0.2s;
+}
+
+.card-titulo {
+    font-family: var(--fuente-titulo);
+    font-size: 1.2rem;
+    color: var(--acento);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 12px;
+    border-bottom: 1px solid var(--verde-claro);
+    padding-bottom: 8px;
+}
+
+.card-dato { font-size: 0.85rem; color: var(--texto-suave); margin-bottom: 6px; }
+.card-dato span { color: var(--texto-principal); }
+
+/* ── Formularios ────────────────────────────────────────────── */
+.form-grupo { margin-bottom: 24px; }
+
+.form-grupo label {
+    display: block;
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--texto-suave);
+    margin-bottom: 8px;
+}
+
+.form-grupo input,
+.form-grupo select,
+.form-grupo textarea {
+    width: 100%;
+    padding: 12px 16px;
+    background-color: var(--fondo-card);
+    border: 2px solid var(--verde-claro);
+    color: var(--texto-principal);
+    font-family: var(--fuente-cuerpo);
+    font-size: 0.95rem;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.form-grupo input:focus,
+.form-grupo select:focus,
+.form-grupo textarea:focus {
+    border-color: var(--acento);
+}
+
+/* ── Alertas ────────────────────────────────────────────────── */
+.error { color: #e05252; font-size: 0.82rem; margin-top: 4px; letter-spacing: 1px; }
+
+.alerta {
+    padding: 14px 20px;
+    border-left: 4px solid var(--acento);
+    background-color: var(--fondo-card);
+    color: var(--texto-principal);
+    margin-bottom: 24px;
+    font-size: 0.9rem;
+}
+
+/* ── Selector de tema ───────────────────────────────────────── */
+.selector-tema {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 8px;
+}
+
+.selector-tema-toggle {
+    background-color: var(--fondo-card);
+    border: var(--borde-brutal);
+    color: var(--acento);
+    padding: 10px 16px;
+    font-family: var(--fuente-cuerpo);
+    font-size: 0.8rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.selector-tema-toggle:hover {
+    background-color: var(--acento);
+    color: var(--fondo-pagina);
+}
+
+.selector-tema-menu {
+    display: none;
+    flex-direction: column;
+    gap: 6px;
+    background-color: var(--fondo-card);
+    border: var(--borde-brutal);
+    padding: 12px;
+    min-width: 200px;
+}
+
+.selector-tema-menu.abierto { display: flex; }
+
+.tema-opcion {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 12px;
+    cursor: pointer;
+    border: 1.5px solid transparent;
+    transition: all 0.15s;
+    font-family: var(--fuente-cuerpo);
+    font-size: 0.78rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--acento);
+    background: none;
+    text-align: left;
+    width: 100%;
+}
+
+.tema-opcion:hover { border-color: var(--acento); color: var(--acento); }
+.tema-opcion.activo { border-color: var(--acento); color: var(--acento); }
+
+.tema-muestra {
+    width: 28px;
+    height: 28px;
+    border-radius: 2px;
+    flex-shrink: 0;
+    border: 1.5px solid var(--verde-claro);
+}
+
+/* ── Footer ─────────────────────────────────────────────────── */
+footer {
+    text-align: center;
+    padding: 32px;
+    color: var(--texto-suave);
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    border-top: var(--borde-brutal);
+    margin-top: 64px;
+    background-color: var(--fondo-nav);
+}
+
+footer .glyph { color: var(--acento); }

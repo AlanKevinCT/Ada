@@ -1,13 +1,15 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth import authenticate
-from django.contrib.auth import login as auth_login
-from django.contrib.auth import logout as auth_logout
+from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 
 from .models import Usuario, Parque, Reservacion
 from .services import AsistReserva, Disponibilidad
 from .mapa import MapaNavegacion
+from .forms import RegistroForm, LoginForm, ReservaForm
+
+from django.core.mail import send_mail
+from django.conf import settings
 
 
 # ─────────────────────────────────────────────────────────────
@@ -18,17 +20,70 @@ def inicio(request):
     """Página de inicio — accesible sin login."""
     return render(request, 'inicio.html')
 
+def enviar_bienvenida(usuario):
+    """Correo de bienvenida al registrarse (además del de reservación)."""
+    send_mail(
+        subject='¡Bienvenido al Festival Internacional de las Luciérnagas 2026!',
+        message=(
+            f'Hola {usuario.nombre},\n\n'
+            f'Tu cuenta ha sido creada exitosamente con el correo: '
+            f'{usuario.correo_electronico}\n\n'
+            f'Ya puedes explorar los parques y realizar tu reservación.\n\n'
+            f'¡Te esperamos en el festival!\n'
+        ),
+        from_email=settings.DEFAULT_FROM_EMAIL,
+        recipient_list=[usuario.correo_electronico],
+        fail_silently=True,
+    )
 
 def registro(request):
-    """Registro de nuevo UsuarioCliente."""
-    # TODO: Gera/Danna — implementar lógica de registro
-    return render(request, 'registro.html')
+    """Registro de nuevo usuario cliente (RF-01)."""
+    form = RegistroForm()
+
+    if request.method == 'POST':
+        form = RegistroForm(data=request.POST)
+        if form.is_valid():
+            usuario = Usuario.objects.create_user(
+                correo_electronico=form.cleaned_data['correo_electronico'],
+                nombre=form.cleaned_data['nombre'],
+                apellido_paterno=form.cleaned_data['apellido_paterno'],
+                apellido_materno=form.cleaned_data['apellido_materno'],
+                password=form.cleaned_data['password'],
+            )
+            enviar_bienvenida(usuario)
+            auth_login(request, usuario)
+            return redirect('panel_cliente')
+
+    return render(request, 'registro.html', {'form': form})
 
 
 def login(request):
-    """Inicio de sesión para cliente y administrador."""
-    # TODO: Gera/Danna — implementar lógica de login
-    return render(request, 'login.html')
+    """Inicio de sesión para cliente y administrador (RF-02)."""
+    form  = LoginForm()
+    error = None
+
+    if request.method == 'POST':
+        form = LoginForm(data=request.POST)
+        if form.is_valid():
+            correo   = form.cleaned_data['correo_electronico']
+            password = form.cleaned_data['password']
+
+            usuario = authenticate(
+                request,
+                username=correo, 
+                password=password,
+            )
+
+            if usuario is not None:
+                auth_login(request, usuario)
+                # Redirige si el usuario es organizador
+                if usuario.is_admin:
+                    return redirect('panel_admin')
+                return redirect('panel_cliente')
+            else:
+                error = 'Correo o contraseña incorrectos.'
+
+    return render(request, 'login.html', {'form': form, 'error': error})
 
 
 def logout(request):
@@ -44,13 +99,19 @@ def logout(request):
 @login_required
 def panel_cliente(request):
     """Panel personal del usuario cliente."""
-    # TODO: Gera/Danna — agregar contexto del usuario
-    return render(request, 'cliente/panel.html')
+    reservaciones_activas = Reservacion.objects.filter(
+        usuario=request.user, estado='activa'
+    ).order_by('fecha_inicio')
+    contexto = {
+        'usuario': request.user,
+        'reservaciones': reservaciones_activas,
+    }
+    return render(request, 'cliente/panel.html', contexto)
 
 
 @login_required
 def mis_reservaciones(request):
-    """Lista de reservaciones del usuario cliente (RF-06)."""
+    """Lista de todas las reservaciones del usuario cliente (RF-06)."""
     reservaciones = Reservacion.objects.filter(
         usuario=request.user
     ).order_by('-fecha_creacion')
@@ -73,6 +134,8 @@ def cancelar_reservacion(request, id):
 #  Mapa interactivo — Ayros
 # ─────────────────────────────────────────────────────────────
 
+import json
+
 def mapa(request):
     """
     Muestra el mapa interactivo con los parques oficiales (RF-07, RF-08).
@@ -81,9 +144,11 @@ def mapa(request):
     mapa_nav = MapaNavegacion()
     parques  = mapa_nav.iniciarMapa()
     geojson  = mapa_nav.parques_como_geojson()
+    # json.dumps convierte True/False de Python a true/false de JavaScript
+    geojson_str = json.dumps(geojson)
     return render(request, 'mapa/mapa.html', {
         'parques': parques,
-        'geojson': geojson,
+        'geojson': geojson_str,
     })
 
 
@@ -109,17 +174,45 @@ def detalle_parque(request, id):
 @login_required
 def formulario_reserva(request):
     """Formulario para realizar una reservación (RF-04, RF-10)."""
-    # TODO: Gera/Danna — implementar formulario y validaciones
     parques = Parque.objects.filter(activo=True)
-    return render(request, 'cliente/formulario_reserva.html',
-                  {'parques': parques})
+    form    = ReservaForm()
+    if request.method == 'POST':
+        form = ReservaForm(data=request.POST)
+        if form.is_valid():
+            try:
+                reservacion = AsistReserva.reservar(
+                    usuario=request.user,
+                    parque=form.cleaned_data['parque'],
+                    fecha_inicio=form.cleaned_data['fecha_inicio'],
+                    fecha_fin=form.cleaned_data['fecha_fin'],
+                    numero_personas=form.cleaned_data['numero_personas'],
+                    tipo_visita=form.cleaned_data['tipo_visita'],
+                )
+                # Guardamos el id para poder mostrarlo en la confirmación
+                request.session['ultima_reservacion_id'] = reservacion.id
+                return redirect('confirmacion')
+            except ValueError as e:
+                form.add_error(None, str(e))
+
+    return render(request, 'cliente/formulario_reserva.html', {
+        'form': form,
+        'parques': parques,
+    })
 
 
 @login_required
 def confirmacion(request):
     """Página de confirmación tras realizar una reservación (RF-11)."""
-    # TODO: Gera/Danna — mostrar datos de la reservación recién creada
-    return render(request, 'cliente/confirmacion.html')
+    reservacion_id = request.session.pop('ultima_reservacion_id', None)
+    reservacion    = None
+
+    if reservacion_id:
+        reservacion = get_object_or_404(
+            Reservacion, id=reservacion_id, usuario=request.user
+        )
+
+    return render(request, 'cliente/confirmacion.html',
+                  {'reservacion': reservacion})
 
 
 # ─────────────────────────────────────────────────────────────
@@ -131,7 +224,14 @@ def panel_admin(request):
     """Panel principal del administrador."""
     if not request.user.is_admin:
         return redirect('inicio')
-    return render(request, 'admin/panel.html')
+    
+    contexto = {
+        'total_parques':      Parque.objects.filter(activo=True).count(),
+        'total_reservaciones': Reservacion.objects.count(),
+        'reservaciones_activas': Reservacion.objects.filter(estado='activa').count(),
+        'total_usuarios':     Usuario.objects.filter(is_admin=False).count(),
+    }
+    return render(request, 'admin/panel.html', contexto)
 
 
 @login_required

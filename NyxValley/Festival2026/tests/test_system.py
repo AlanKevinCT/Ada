@@ -1,0 +1,1 @@
+# Pruebas de sistema para la aplicación Festival2026
