@@ -87,7 +87,7 @@ def login(request):
                 # Redirige si el usuario es organizador
                 if usuario.is_admin:
                     return redirect('panel_admin')
-                return redirect('panel_cliente')
+                return redirect('inicio')
             else:
                 error = 'Correo o contraseña incorrectos.'
 
