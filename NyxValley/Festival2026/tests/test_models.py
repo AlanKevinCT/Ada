@@ -75,6 +75,35 @@ class TestModelosFestival(TestCase):
         self.assertEqual(Usuario.objects.count(), 2) # Ya deben haber dos usuarios en total
         self.assertEqual(nuevo_usuario.nombre, 'Alberto Gabriel')
 
+    def test_error_usuario_sin_correo(self):
+        """Verifica que el manager lance error si no se proporciona un correo electrónico."""
+        with self.assertRaises(ValueError):
+            Usuario.objects.create_user(
+                correo_electronico='',
+                nombre='Test',
+                apellido_paterno='Sin',
+                apellido_materno='Correo',
+                password='password123'
+            )
+
+    def test_creacion_superuser(self):
+        """Verifica la correcta asignación de banderas y permisos a un superusuario."""
+        admin = Usuario.objects.create_superuser(
+            correo_electronico='admin@ciencias.unam.mx',
+            nombre='Gerardo',
+            apellido_paterno='Angel',
+            apellido_materno='Silva',
+            password='adminPassword123'
+        )
+        self.assertTrue(admin.is_admin)
+        self.assertTrue(admin.is_staff)
+        self.assertTrue(admin.is_superuser)
+
+    def test_str_usuario(self):
+        """Prueba el método __str__ del modelo Usuario."""
+        esperado = 'Pablo González <pablo@ciencias.unam.mx>'
+        self.assertEqual(str(self.usuario), esperado)
+
     # ─────────────────────────────────────────────────────────────
     #  Pruebas para el modelo Parque
     # ─────────────────────────────────────────────────────────────
@@ -85,6 +114,10 @@ class TestModelosFestival(TestCase):
         self.assertTrue(self.parque.activo)
         self.assertEqual(self.parque.latitud, 19.5855)
         self.assertEqual(self.parque.longitud, -100.2831)
+
+    def test_str_parque(self):
+        """Prueba el método __str__ del modelo Parque."""
+        self.assertEqual(str(self.parque), 'Parque Bicentenario')
 
     # ─────────────────────────────────────────────────────────────
     #  Pruebas para el modelo Reservacion (RF-10)
