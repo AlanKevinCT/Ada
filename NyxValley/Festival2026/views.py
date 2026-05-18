@@ -61,7 +61,7 @@ def registro(request):
             )
             enviar_bienvenida(usuario)
             auth_login(request, usuario)
-            return redirect('panel_cliente')
+            return redirect('inicio')
      return render(request, 'registro.html', {'form': form})
 
 
