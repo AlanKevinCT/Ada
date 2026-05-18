@@ -288,6 +288,7 @@ def crear_parque(request):
     # TODO: Gera/Danna — implementar formulario de creación
     return render(request, 'admin/crear_parque.html')
 
+
 @login_required
 def editar_parque(request, id):
     """Edita la información de un parque existente (RF-12)."""
@@ -303,10 +304,12 @@ def eliminar_parque(request, id):
     """Elimina un parque y notifica a los clientes afectados (RF-12)."""
     if not request.user.is_admin:
         return redirect('inicio')
+        
     parque = get_object_or_404(Parque, id=id)
+    
     if request.method == 'POST':
         from .signals import SignalModificacion
         SignalModificacion.borrarParque(parque)
         parque.delete()
-        return redirect('panel_admin')
-    return render(request, 'admin/eliminar_parque.html', {'parque': parque})
+
+    return redirect('panel_admin')
