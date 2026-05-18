@@ -86,8 +86,7 @@ class ReservaForm(forms.Form):
         if fecha_inicio and fecha_fin:
             if not Disponibilidad.verificaFechas(fecha_inicio, fecha_fin):
                 raise ValidationError(
-                    'Las fechas no son válidas: deben estar entre junio y agosto '
-                    'y no pueden incluir martes.'
+                    'Las fechas no son válidas'
                 )
 
         if parque and tipo_visita == 'cabana' and not Parque.tiene_cabanas:
