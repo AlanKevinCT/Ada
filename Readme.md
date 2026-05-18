@@ -55,8 +55,15 @@ python manage.py runserver
 Abre tu navegador en **http://127.0.0.1:8000**
 
 ### 7. Ejecutar pruebas
+para ejecutar toda la suit de pruebas:
 ```bash
-python manage.py test Festival2026.tests.test_models
+python manage.py test Festival2026.tests
+```
+En caso que solo quieras ejecutar un conjunto en especifico:
+```bash
+python manage.py test Festival2026.tests.(nombre del archivo de pruebas)
+
+Ejemplo:
 python manage.py test Festival2026.tests.test_services
 ```
 
@@ -85,6 +92,7 @@ Ada/
     │   └── tests/                   ← historial de cambios en la base de datos
     │       └── test_models.py       ← pruebas unitarias para los modelos
     │       └── test_services.py     ← pruebas unitarias para la lógica de negocio
+    │       └── test_signals.py      ← pruebas de integracion para las señales.
     │       └── test_system.py       ← pruebas de sistema
     │       └── test_views.py        ← pruebas de integración
     │   └── migrations/              ← historial de cambios en la base de datos
