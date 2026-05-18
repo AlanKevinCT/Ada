@@ -240,14 +240,21 @@ def confirmacion(request):
 
 @login_required
 def panel_admin(request):
-    """Panel principal del administrador."""
+    """
+    Panel principal del administrador (RF-18).
+    Controla las estadísticas del festival y el listado de santuarios autorizados.
+    """
     if not request.user.is_admin:
         return redirect('inicio')
+    
+    parques_activos = Parque.objects.filter(activo=True)
+
     contexto = {
-        'total_parques':      Parque.objects.filter(activo=True).count(),
-        'total_reservaciones': Reservacion.objects.count(),
-        'reservaciones_activas': Reservacion.objects.filter(estado='activa').count(),
-        'total_usuarios':     Usuario.objects.filter(is_admin=False).count(),
+        'parques': parques_activos,
+        'total_parques':        parques_activos.count(), 
+        'total_reservaciones':  Reservacion.objects.count(),
+        'reservaciones_activas':       Reservacion.objects.filter(estado='activa').count(), #
+        'total_usuarios':       Usuario.objects.filter(is_admin=False).count(),
     }
     return render(request, 'admin/panel.html', contexto)
 
