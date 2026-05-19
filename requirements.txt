@@ -1,2 +1,10 @@
+asgiref
+crispy-bootstrap5==2026.3
+django-crispy-forms==2.6
+django-decouple==2.1
+django-environ==0.13.0
+packaging==26.0
+sqlparse
+typing_extensions
 Django==6.0.5
 python-decouple==3.8

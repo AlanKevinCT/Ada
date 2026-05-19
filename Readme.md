@@ -22,13 +22,18 @@ Sigue estos pasos **en orden** después de clonar el repositorio.
 git clone https://github.com/AlanKevinCT/Ada.git
 cd Ada/NyxValley
 ```
+### 2. Instalar gettext
+```bash
+sudo dnf install gettext
+```
+En este proyecto se utiliza gettext para manejar el sistema multi-idioma.
 
-### 2. Activar el entorno de Conda
+### 3. Activar el entorno de Conda
 ```bash
 conda activate <<Tu entorno>>
 ```
 
-### 3. Verificar que Django está instalado e instalar dependencias
+### 4. Verificar que Django está instalado e instalar dependencias
 ```bash
 django-admin --version
 ```
@@ -42,24 +47,29 @@ Ahora instalamos las dependecias de nuestro proyecto
 pip install -r requirements.txt
 ```
 
-### 4. Aplicar las migraciones (crea tu base de datos local)
+### 5. Aplicar las migraciones (crea tu base de datos local)
 ```bash
 python manage.py migrate
 ```
 
-### 5. Crear tu superusuario local
+### 6. Crear tu superusuario local
 ```bash
 python manage.py createsuperuser
 ```
 Llena los campos que te pida: correo, nombre, apellido paterno, apellido materno y contraseña.
 
-### 6. Levantar el servidor
+### 7. Compilar las traducciones del proyecto
+```bash
+python manage.py compilemessages
+```
+
+### 8. Levantar el servidor
 ```bash
 python manage.py runserver
 ```
 Abre tu navegador en **http://127.0.0.1:8000**
 
-### 7. Ejecutar pruebas
+### 9. Ejecutar pruebas
 para ejecutar toda la suit de pruebas:
 ```bash
 python manage.py test Festival2026.tests
