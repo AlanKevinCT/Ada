@@ -1,5 +1,6 @@
 from pathlib import Path
 from decouple import config
+from django.utils.translation import gettext_lazy as _
 
 # ─── Rutas base ───────────────────────────────────────────────
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -9,6 +10,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config('SECRET_KEY')
 DEBUG       = config('DEBUG', default=False, cast=bool)
 ALLOWED_HOSTS = []
+
 
 # ─── Correo electrónico ───────────────────────────────────────
 EMAIL_BACKEND       = 'django.core.mail.backends.console.EmailBackend'  # cambiar a 'django.core.mail.backends.smtp.EmailBackend' al terminar el proyecto
@@ -29,8 +31,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     #Para los forms
-    'crispy_forms',
-    'crispy_bootstrap5',
+        'crispy_forms',
+        'crispy_bootstrap5',
 
     # Nuestra app
     'Festival2026',
@@ -43,6 +45,7 @@ CRISPY_TEMPLATE_PACK = "bootstrap5"
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -88,11 +91,27 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
+
+# ─── Idiomas disponibles  ─────────────────────────────────────
+
+
+LANGUAGES = [
+    ('es', _('Español')),
+    ('en', _('English')),
+]
+
+
 # ─── Internacionalización ─────────────────────────────────────
 LANGUAGE_CODE = 'es-mx'          # Español de México
 TIME_ZONE     = 'America/Mexico_City'
 USE_I18N      = True
 USE_TZ        = True
+
+# ─── Ruta para guardar los textos traducidos ──────────────────
+import os
+LOCALE_PATHS = [
+    os.path.join(BASE_DIR, 'locale'),
+]
 
 # ─── Archivos estáticos (CSS, JS, imágenes) ───────────────────
 STATIC_URL  = '/static/'

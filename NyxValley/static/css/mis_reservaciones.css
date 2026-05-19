@@ -1,0 +1,123 @@
+/* Heredando del estilo de Nyx Valley */
+.bitacora-container {
+    max-width: 1100px;
+    margin: 40px auto;
+    padding: 0 20px;
+    color: white;
+}
+
+.bitacora-header {
+    margin-bottom: 40px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    padding-bottom: 20px;
+}
+
+.user-name { font-size: 1.5rem; font-weight: bold; color: white; margin: 10px 0 5px 0; }
+.user-email { color: #888; font-size: 0.9rem; margin-bottom: 10px; }
+.oro { color: #facc15; }
+
+.bitacora-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+    gap: 30px;
+}
+
+/* TARJETA ACTIVA */
+.card-bitacora {
+    background: rgba(15, 23, 42, 0.4);
+    border-radius: 25px;
+    padding: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    transition: transform 0.3s ease;
+}
+
+.card-bitacora.proxima {
+    border: 1.5px solid #facc15;
+    box-shadow: 0 0 20px rgba(250, 204, 21, 0.15);
+}
+
+/* TARJETA PASADA O CANCELADA */
+.card-bitacora.pasada {
+    opacity: 0.75; /* No tan claro para que se vea bien */
+    background: rgba(10, 10, 10, 0.6);
+    border: 1px dashed rgba(255, 255, 255, 0.2);
+}
+
+.dot-glow {
+    width: 10px; height: 10px; background: #facc15; border-radius: 50%;
+    box-shadow: 0 0 10px #facc15; display: inline-block;
+}
+
+.dot-off {
+    width: 10px; height: 10px; background: #555; border-radius: 50%; display: inline-block;
+}
+
+.card-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin: 20px 0;
+}
+
+.info-group label { font-size: 0.7rem; color: #666; display: block; margin-bottom: 5px; }
+
+.precio-box {
+    background: rgba(0,0,0,0.4); padding: 10px; border-radius: 10px;
+    color: #facc15; font-weight: bold; text-align: center;
+}
+
+.btn-cancelar {
+    width: 100%; background: rgba(255, 68, 68, 0.1); color: #ff4444;
+    border: 1px solid rgba(255, 68, 68, 0.3); padding: 12px; border-radius: 12px;
+    font-weight: bold; cursor: pointer;
+}
+
+.btn-disabled {
+    width: 100%; background: #222; color: #555; border: none; padding: 12px; border-radius: 12px;
+}
+
+
+/* ── AJUSTE DE BOTONES SWEETALERT ── */
+
+.swal2-actions {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: center !important;
+    gap: 15px !important;
+    width: 100% !important;
+    margin-top: 25px !important;
+}
+
+.btn-swal {
+    min-width: 160px !important; /* Mismo ancho para ambos */
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    height: 45px !important;
+    margin: 0 !important;
+    padding: 0 20px !important;
+}
+
+.swal2-actions .btn-primary {
+    background-color: #d33 !important; 
+    color: white !important;
+    border: none !important;
+}
+
+.swal2-popup {
+    background-color: var(--fondo-pagina) !important;
+    border: var(--borde-brutal) !important;
+    border-radius: var(--radio-card) !important;
+    padding: 3rem 1rem !important;
+}
+
+.swal2-actions .btn-secondary {
+    border: 2px solid var(--acento) !important;
+    color: var(--acento) !important;
+    background: transparent !important;
+}
+
+.swal2-actions .btn-secondary:hover {
+    background: var(--acento) !important;
+    color: var(--texto-boton) !important;
+}
