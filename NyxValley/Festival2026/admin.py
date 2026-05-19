@@ -31,6 +31,25 @@ class ParqueAdmin(admin.ModelAdmin):
     list_display  = ('nombre', 'direccion', 'tiene_cabanas', 'tiene_camping', 'activo')
     search_fields = ('nombre', 'direccion')
     list_filter   = ('tiene_cabanas', 'activo')
+    list_per_page = 10
+    ordering      = ('nombre',)
+    fieldsets = (
+        ("Información general", {
+            'fields': ('nombre', 'direccion', 'horario_apertura', 'horario_cierre','latitud', 'longitud'),   
+        }),
+        ('Servicios', {
+            'fields': ('tiene_danza', 'tiene_musica',
+                       'tiene_teatro', 'tiene_transporte',
+                       'tiene_banos', 'tiene_cafeterias', 'tiene_guias'),
+        }),
+        ('Servicios adicionales', {
+            'fields': ('servicios',),
+        }),
+        ('Hospedaje', {
+            'fields': ('tiene_cabanas', 'tiene_camping'),
+        }),
+    )
+
 
 
 # ─── Admin de Reservacion ─────────────────────────────────────

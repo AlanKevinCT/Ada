@@ -75,13 +75,23 @@ class Parque(models.Model):
 
     nombre    = models.CharField(max_length=200)
     direccion = models.CharField(max_length=300)
-    servicios = models.TextField(help_text='Lista de servicios disponibles')
+    servicios = models.TextField(help_text='Lista de servicios adicionales disponibles')
+
 
     # Para mostrar el horario en la vista de detalle del parque (RF-09)
     horario_apertura = models.TimeField(default=time(0, 0), help_text='Hora de apertura (HH:MM)')
     horario_cierre   = models.TimeField(default=time(0, 0), help_text='Hora de cierre (HH:MM)')
 
     # Todos tienen camping; solo algunos tienen cabañas (RF-18)
+    tiene_danza = models.BooleanField(default=False)
+    tiene_musica = models.BooleanField(default=False)
+    tiene_teatro = models.BooleanField(default=False)
+    tiene_transporte = models.BooleanField(default=False)
+    tiene_banos = models.BooleanField(default=True)
+    tiene_cafeterias = models.BooleanField(default=True)
+    tiene_guias = models.BooleanField(default=False)
+
+    # Hospedaje
     tiene_cabanas = models.BooleanField(default=False)
     tiene_camping = models.BooleanField(default=True)
 
@@ -104,7 +114,6 @@ class Parque(models.Model):
             if self.horario_apertura >= self.horario_cierre:
                 raise ValidationError({
                     'horario_apertura': 'La hora de apertura debe ser anterior a la de cierre.',
-                    'horario_cierre':   'La hora de cierre debe ser posterior a la de apertura.',
                 })
 
 
