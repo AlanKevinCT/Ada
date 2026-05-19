@@ -28,13 +28,18 @@ cd Ada/NyxValley
 conda activate <<Tu entorno>>
 ```
 
-### 3. Verificar que Django está instalado
+### 3. Verificar que Django está instalado e instalar dependencias
 ```bash
 django-admin --version
 ```
 Si no aparece una versión, instálalo con:
 ```bash
 pip install django
+```
+
+Ahora instalamos las dependecias de nuestro proyecto
+```bash
+pip install -r requirements.txt
 ```
 
 ### 4. Aplicar las migraciones (crea tu base de datos local)
