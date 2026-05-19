@@ -27,7 +27,8 @@ class MapaNavegacion:
                 'nombre',
                 'direccion',
                 'servicios',
-                'horario',
+                'horario_apertura',
+                'horario_cierre',
                 'latitud',
                 'longitud',
                 'tiene_cabanas',
@@ -44,16 +45,17 @@ class MapaNavegacion:
         try:
             parque = Parque.objects.get(id=parque_id, activo=True)
             return {
-                'id':            parque.id,
-                'nombre':        parque.nombre,
-                'direccion':     parque.direccion,
-                'servicios':     parque.servicios,
-                'horario':       parque.horario,
-                'latitud':       float(parque.latitud),
-                'longitud':      float(parque.longitud),
-                'tiene_cabanas': parque.tiene_cabanas,
-                'tiene_camping': parque.tiene_camping,
-                'capacidad':     parque.capacidad,
+                'id':               parque.id,
+                'nombre':           parque.nombre,
+                'direccion':        parque.direccion,
+                'servicios':        parque.servicios,
+                'horario_apertura': parque.horario_apertura,
+                'horario_cierre':   parque.horario_cierre,
+                'latitud':          float(parque.latitud),
+                'longitud':         float(parque.longitud),
+                'tiene_cabanas':    parque.tiene_cabanas,
+                'tiene_camping':    parque.tiene_camping,
+                'capacidad':        parque.capacidad,
             }
         except Parque.DoesNotExist:
             return None
@@ -91,9 +93,10 @@ class MapaNavegacion:
                     'nombre':        p['nombre'],
                     'direccion':     p['direccion'],
                     'servicios':     p['servicios'],
-                    'horario':       p['horario'],
+                    'horario_apertura': p['horario_apertura'].strftime('%H:%M'),
+                    'horario_cierre':   p['horario_cierre'].strftime('%H:%M'),
                     'tiene_cabanas': p['tiene_cabanas'],
-                    'tiene_camping': p['tiene_camping'],
+                    'tiene_camping':  p['tiene_camping'],
                 },
             })
 

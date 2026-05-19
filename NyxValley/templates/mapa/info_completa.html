@@ -68,16 +68,17 @@
                 </a>
             </section>
 
-            <section class="caja-info">
-                <p class="etiqueta">{% translate "HORARIO" %}</p>
-                <div class="horario-card">
-                    <span class="icono-horario">⏰</span>
-                    <div class="horario-texto">
-                        <span class="rango">{{ parque.horario }}</span>
-                        <span class="unidad">{% translate "HRS" %}</span>
-                    </div>
+        <section class="caja-info">
+            <p class="etiqueta">{% translate "HORARIO" %}</p>
+            <div class="horario-card">
+                <span class="icono-horario">⏰</span>
+                <div class="horario-texto">
+                    <span class="rango">{{ parque.horario_apertura|time:"H:i" }} - {{ parque.horario_cierre|time:"H:i" }}</span>
+                    <span class="unidad">{% translate "HRS" %}</span>
                 </div>
-            </section>
+            </div>
+        </section>
+
         </div>
 
     </div>

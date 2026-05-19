@@ -12,11 +12,11 @@
             <span class="dato-label">{% translate "Dirección" %}</span>
             <span class="dato-valor">{{ parque.direccion }}</span>
         </div>
-
+    
         <div class="dato-fila">
             <span class="dato-label">{% translate "Horario" %}</span>
-            <span class="dato-valor">{{ parque.horario }}</span>
-        </div>
+            <span class="dato-valor">{{ parque.horario_apertura|time:"H:i" }} - {{ parque.horario_cierre|time:"H:i" }}</span>
+        </div>        </div>
 
         <div class="dato-fila">
             <span class="dato-label">{% translate "Servicios" %}</span>
