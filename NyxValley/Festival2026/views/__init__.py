@@ -4,7 +4,6 @@ from .autenticacion import (
     registro,
     login,
     logout,
-    enviar_bienvenida,
 )
 
 from .mapa_interactivo import (
