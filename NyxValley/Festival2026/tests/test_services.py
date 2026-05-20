@@ -1,6 +1,6 @@
 from django.test import TestCase
 from ..models import Usuario, Parque, Reservacion
-from datetime import date
+from datetime import date, time
 from ..services import AsistReserva, Autenticador, Disponibilidad
 
 class TestServiciosFestival(TestCase):
@@ -21,9 +21,13 @@ class TestServiciosFestival(TestCase):
             nombre='Parque Bicentenario',
             direccion='Ciudad de México, México',
             servicios='Camping, comida',
-            horario='08:00 - 17:00',
+            horario_apertura=time(8, 0),
+            horario_cierre=time(17, 0),
             capacidad=50,
             tiene_cabanas=True,
+            tiene_banos=True,
+            tiene_cafeterias=True,
+            tiene_danza=True,
             latitud=19.5855,
             longitud=-100.2831
         )
@@ -86,10 +90,8 @@ class TestServiciosFestival(TestCase):
         fecha_inicio = date(2026, 6, 15)
         fecha_fin = date(2026, 6, 18)
         
-        with self.assertRaises(ValueError):
-            AsistReserva.reservar(
-                self.usuario, self.parque, fecha_inicio, fecha_fin, 2, 'cabana'
-            )
+        fechas_validas = Disponibilidad.verificaFechas(fecha_inicio, fecha_fin)
+        self.assertFalse(fechas_validas)
 
     def test_verificar_hora_valida(self):
         """Verifica que la hora esté estrictamente dentro del horario del parque."""

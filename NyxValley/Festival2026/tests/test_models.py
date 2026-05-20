@@ -1,7 +1,9 @@
+from django.core.exceptions import ValidationError
+
 from django.db import IntegrityError
 from django.test import TestCase
 from ..models import Usuario, Parque, Reservacion
-from datetime import date
+from datetime import date, time
 
 class TestModelosFestival(TestCase):
 
@@ -21,9 +23,13 @@ class TestModelosFestival(TestCase):
             nombre='Parque Bicentenario',
             direccion='Ciudad de México, México',
             servicios='Camping, comida',
-            horario='08:00 - 17:00',
+            horario_apertura=time(8, 0),
+            horario_cierre=time(17, 0),
             capacidad=50,
             tiene_cabanas=True,
+            tiene_banos=True,
+            tiene_cafeterias=True,
+            tiene_danza=True,
             latitud=19.5855,
             longitud=-100.2831
         )
@@ -110,10 +116,30 @@ class TestModelosFestival(TestCase):
     def test_creacion_parque(self):
         """Verifica los atributos del parque y valores por defecto."""
         self.assertEqual(self.parque.nombre, 'Parque Bicentenario')
+        self.assertEqual(self.parque.horario_apertura, time(8, 0))
+        self.assertEqual(self.parque.horario_cierre, time(17, 0))
+        
+        # Validación de los nuevos servicios del Sprint (RF-18)
         self.assertTrue(self.parque.tiene_camping)
+        self.assertTrue(self.parque.tiene_banos)
+        self.assertTrue(self.parque.tiene_cafeterias)
+        self.assertTrue(self.parque.tiene_danza)
+        self.assertFalse(self.parque.tiene_teatro) # Quedó por defecto en False
+        
         self.assertTrue(self.parque.activo)
-        self.assertEqual(self.parque.latitud, 19.5855)
-        self.assertEqual(self.parque.longitud, -100.2831)
+        self.assertEqual(float(self.parque.latitud), 19.5855)
+        self.assertEqual(float(self.parque.longitud), -100.2831)
+
+    def test_validacion_horario_invalido(self):
+        """Se crea un parque con horario de apertura después del horario de cierre para verificar que se lance un error de validación."""
+        parque_invalido = Parque(
+            nombre='Parque Error',
+            horario_apertura=time(18, 0), # 6:00 PM
+            horario_cierre=time(8, 0)     # 8:00 AM
+        )
+        
+        with self.assertRaises(ValidationError):
+            parque_invalido.clean()
 
     def test_str_parque(self):
         """Prueba el método __str__ del modelo Parque."""
