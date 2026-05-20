@@ -63,7 +63,7 @@ class MapaNavegacion:
                 'tiene_danza':      parque.tiene_danza,
                 'tiene_musica':     parque.tiene_musica,
                 'tiene_teatro':     parque.tiene_teatro,
-                'tiene_banos':      parque.tiene_baños,
+                'tiene_banos':      parque.tiene_banos,
                 'tiene_cafeterias': parque.tiene_cafeterias,
                 'tiene_guias':      parque.tiene_guias,
                 'tiene_transporte': parque.tiene_transporte,
