@@ -84,6 +84,23 @@ class SignalCorreoCliente:
             recipient_list=[cliente.correo_electronico],
             fail_silently=True,
         )
+    
+    @staticmethod
+    def notifyRegistro(cliente):
+        """Correo de bienvenida al registrarse (además del de reservación)."""
+        send_mail(
+            subject='¡Bienvenido al Festival Internacional de las Luciérnagas 2026!',
+            message=(
+                f'Hola {cliente.nombre},\n\n'
+                f'Tu cuenta ha sido creada exitosamente con el correo: '
+                f'{cliente.correo_electronico}\n\n'
+                f'Ya puedes explorar los parques y realizar tu reservación.\n\n'
+                f'¡Te esperamos en el festival!\n'
+            ),
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            recipient_list=[cliente.correo_electronico],
+            fail_silently=True,
+        )
 
 
 # ─────────────────────────────────────────────────────────────

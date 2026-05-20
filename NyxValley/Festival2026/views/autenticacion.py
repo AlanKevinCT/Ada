@@ -7,6 +7,7 @@ from ..models import Usuario, Parque, Reservacion
 from ..services import AsistReserva, Disponibilidad
 from ..mapa import MapaNavegacion
 from ..forms import RegistroForm, LoginForm, ReservaForm
+from ..signals import SignalCorreoCliente
 
 from django.core.mail import send_mail
 from django.conf import settings
@@ -27,21 +28,21 @@ def inicio(request):
     })
 
 
-def enviar_bienvenida(usuario):
-    """Correo de bienvenida al registrarse (además del de reservación)."""
-    send_mail(
-        subject='¡Bienvenido al Festival Internacional de las Luciérnagas 2026!',
-        message=(
-            f'Hola {usuario.nombre},\n\n'
-            f'Tu cuenta ha sido creada exitosamente con el correo: '
-            f'{usuario.correo_electronico}\n\n'
-            f'Ya puedes explorar los parques y realizar tu reservación.\n\n'
-            f'¡Te esperamos en el festival!\n'
-        ),
-        from_email=settings.DEFAULT_FROM_EMAIL,
-        recipient_list=[usuario.correo_electronico],
-        fail_silently=True,
-    )
+# def enviar_bienvenida(usuario):
+#     """Correo de bienvenida al registrarse (además del de reservación)."""
+#     send_mail(
+#         subject='¡Bienvenido al Festival Internacional de las Luciérnagas 2026!',
+#         message=(
+#             f'Hola {usuario.nombre},\n\n'
+#             f'Tu cuenta ha sido creada exitosamente con el correo: '
+#             f'{usuario.correo_electronico}\n\n'
+#             f'Ya puedes explorar los parques y realizar tu reservación.\n\n'
+#             f'¡Te esperamos en el festival!\n'
+#         ),
+#         from_email=settings.DEFAULT_FROM_EMAIL,
+#         recipient_list=[usuario.correo_electronico],
+#         fail_silently=True,
+#     )
 
 def registro(request):
      """Registro de nuevoUsuarioCliente."""
@@ -56,7 +57,7 @@ def registro(request):
                 apellido_materno=form.cleaned_data['apellido_materno'],
                 password=form.cleaned_data['password'],
             )
-            enviar_bienvenida(usuario)
+            SignalCorreoCliente.notifyRegistro(usuario)
             auth_login(request, usuario)
             return redirect('inicio')
      return render(request, 'registro.html', {'form': form})

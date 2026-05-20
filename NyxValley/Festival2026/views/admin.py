@@ -7,6 +7,7 @@ from ..models import Usuario, Parque, Reservacion
 from ..services import AsistReserva, Disponibilidad
 from ..mapa import MapaNavegacion
 from ..forms import RegistroForm, LoginForm, ReservaForm
+from ..signals import SignalModificacion
 
 from django.core.mail import send_mail
 from django.conf import settings
@@ -68,7 +69,7 @@ def eliminar_parque(request, id):
         return redirect('inicio')
     parque = get_object_or_404(Parque, id=id)
     if request.method == 'POST':
-        from .signals import SignalModificacion
+        #from signals import SignalModificacion
         SignalModificacion.borrarParque(parque)
         parque.delete()
         return redirect('panel_admin')
