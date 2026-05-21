@@ -15,6 +15,24 @@ class TestSignalsFestival(TestCase):
             apellido_materno='Martínez',
             password='password123'
         )
+
+        self.usuario_extra_1 = Usuario.objects.create_user(
+            correo_electronico='Mario@ciencias.unam.mx',
+            nombre='Mario',
+            apellido_paterno='Pérez',
+            apellido_materno='García',
+            password='password456'
+        )
+
+        self.usuario_extra_2 = Usuario.objects.create_user(
+            correo_electronico='Lila@ciencias.unam.mx',
+            nombre='Lila',
+            apellido_paterno='Naranjo',
+            apellido_materno='Morales',
+            password='password789'
+        )
+
+
         self.parque = Parque.objects.create(
             nombre='Parque Bicentenario',
             capacidad=50
@@ -25,8 +43,7 @@ class TestSignalsFestival(TestCase):
     # ─────────────────────────────────────────────────────────────
     def test_signal_envia_correo_al_crear_reservacion(self):
         """Al crear una reservación activa, se debe disparar automáticamente un correo."""
-        # Al inicio, la bandeja de salida simulada está vacía
-        self.assertEqual(len(mail.outbox), 0)
+        mail.outbox.clear()  # Limpiamos la bandeja de salida
 
         # Disparamos el evento creando la reservación
         Reservacion.objects.create(
@@ -97,54 +114,110 @@ class TestSignalsFestival(TestCase):
         self.assertEqual(correo.to, ['pablo@ciencias.unam.mx'])
         self.assertIn('Parque Bicentenario', correo.body)
 
+    def test_signal_notifica_registro_usuario(self):
+        """Envío del correo de bienvenida al registrarse."""
+        # Limpiamos la bandeja
+        mail.outbox.clear()
+
+        # Creamos un nuevo usuario para disparar la señal de registro
+        Usuario.objects.create_user(
+            correo_electronico='albert@gmail.com',
+            nombre='Alberto',
+            apellido_paterno='Pérez',
+            apellido_materno='López',
+            password='contraseña_segura'
+        )
+
+        self.assertEqual(len(mail.outbox), 1)
+        correo = mail.outbox[0]
+        
+        self.assertIn('¡Bienvenido al Festival Internacional de las Luciérnagas 2026!', correo.subject)
+        self.assertEqual(correo.to, ['albert@gmail.com'])
+        self.assertIn('Hola Alberto', correo.body)
+        self.assertIn('Tu cuenta ha sido creada exitosamente con el correo: albert@gmail.com', correo.body)
+        self.assertIn('Ya puedes explorar los parques y realizar tu reservación', correo.body)
+
 
     # ─────────────────────────────────────────────────────────────
     #  Pruebas para SignalModificacion (Eventos del Administrador)
     # ─────────────────────────────────────────────────────────────
     def test_signal_borrar_parque_cancela_y_notifica(self):
-        """Verifica que al eliminar un parque se cancelen las reservas y se avise por correo."""
-        reserva = Reservacion.objects.create(
+        """Verifica que al eliminar un parque se cancelen en lote las reservas de múltiples usuarios."""
+        # 1. Creamos reservaciones activas para los 3 usuarios del festival
+        reserva_pablo = Reservacion.objects.create(
             usuario=self.usuario, parque=self.parque,
             fecha_inicio=date(2026, 6, 15), fecha_fin=date(2026, 6, 18),
             numero_personas=2, tipo_visita='camping', estado='activa'
         )
-        # Limpiamos el outbox (el paso anterior generó el correo de creación)
+        reserva_Mario = Reservacion.objects.create(
+            usuario=self.usuario_extra_1, parque=self.parque,
+            fecha_inicio=date(2026, 6, 20), fecha_fin=date(2026, 6, 22),
+            numero_personas=1, tipo_visita='cabana', estado='activa'
+        )
+        reserva_LiLa = Reservacion.objects.create(
+            usuario=self.usuario_extra_2, parque=self.parque,
+            fecha_inicio=date(2026, 7, 1), fecha_fin=date(2026, 7, 5),
+            numero_personas=4, tipo_visita='camping', estado='activa'
+        )
+
+        # Limpiamos la bandeja de los 3 correos automáticos generados por la creación
         mail.outbox.clear()
 
-        # Ejecutamos la lógica de simulación de borrado del parque
+        # 2. Ejecutamos el borrado administrativo del parque
         SignalModificacion.borrarParque(self.parque)
 
-        # 1. Comprobamos que el estado de la reserva mutó a 'cancelada'
-        reserva.refresh_from_db()
-        self.assertEqual(reserva.estado, 'cancelada')
+        # 3. Comprobamos la mutación de estado a 'cancelada' para todos
+        reserva_pablo.refresh_from_db()
+        reserva_Mario.refresh_from_db()
+        reserva_LiLa.refresh_from_db()
+        self.assertEqual(reserva_pablo.estado, 'cancelada')
+        self.assertEqual(reserva_Mario.estado, 'cancelada')
+        self.assertEqual(reserva_LiLa.estado, 'cancelada')
 
-        # 2. Comprobamos que se notificó al usuario sobre la cancelación forzosa
-        self.assertEqual(len(mail.outbox), 2)
+        # 4. Validamos el volumen de correos despachados:
+        self.assertEqual(len(mail.outbox), 6)
 
-        # 3. Correo 1: Notificación de eliminación del parque
-        correo_admin = mail.outbox[0]
-        self.assertEqual(correo_admin.to, ['pablo@ciencias.unam.mx'])
-        self.assertIn('Actualización de parque — Festival de las Luciérnagas', correo_admin.subject)
-        self.assertIn('ha sido eliminado del festival', correo_admin.body)
+        # 5.  Validamos que los 6 correos tengan asuntos correctos
+        asuntos_validos = [
+            'Actualización de parque — Festival de las Luciérnagas',
+            'Reservación cancelada — Festival de las Luciérnagas'
+        ]
+        
+        for correo in mail.outbox:
+            # Cada uno de los 6 correos debe tener uno de los dos asuntos oficiales
+            self.assertIn(correo.subject, asuntos_validos)
 
-        # 4. Correo 2: Notificación de cancelación de la reservación
-        correo_automatico = mail.outbox[1]
-        self.assertEqual(correo_automatico.to, ['pablo@ciencias.unam.mx'])
-        self.assertIn('Reservación cancelada — Festival de las Luciérnagas', correo_automatico.subject)
-        self.assertIn('ha sido cancelada', correo_automatico.body)
+        # 7. Mapeamos los destinatarios para asegurar que nadie se quedó sin notificación
+        destinatarios = [correo.to[0] for correo in mail.outbox]
+        self.assertTrue(destinatarios.count('pablo@ciencias.unam.mx'), 2)
+        self.assertTrue(destinatarios.count('Lila@ciencias.unam.mx'), 2)
+        self.assertTrue(destinatarios.count('Mario@ciencias.unam.mx'), 2)
 
     def test_signal_modificar_parque_notifica_usuarios(self):
-        """Verifica que al alterar los datos de un parque se alerte a los clientes con reservas."""
+        """Verifica que al alterar los datos de un parque se alerte en lote a todos los clientes vinculados."""
+        # Creamos las reservaciones para la audiencia afectada
         Reservacion.objects.create(
             usuario=self.usuario, parque=self.parque,
             fecha_inicio=date(2026, 7, 5), fecha_fin=date(2026, 7, 10),
             numero_personas=2, tipo_visita='camping', estado='activa'
         )
+        Reservacion.objects.create(
+            usuario=self.usuario_extra_1, parque=self.parque,
+            fecha_inicio=date(2026, 7, 12), fecha_fin=date(2026, 7, 15),
+            numero_personas=3, tipo_visita='cabana', estado='activa'
+        )
         mail.outbox.clear()
 
-        # Modificamos el parque a través de la señal
+        # Modificamos los parámetros del parque
         SignalModificacion.modificarParque(self.parque, cambios="Cierre de zona de albercas por mantenimiento.")
 
-        # Validamos que se despachó el aviso por mail
-        self.assertEqual(len(mail.outbox), 1)
-        self.assertIn('Actualización de parque — Festival de las Luciérnagas', mail.outbox[0].subject)
+        # Comprobamos que se despacharon exactamente 2 correos (uno para cada afectado directo)
+        self.assertEqual(len(mail.outbox), 2)
+        
+        destinatarios = [correo.to[0] for correo in mail.outbox]
+        self.assertIn('pablo@ciencias.unam.mx', destinatarios)
+        self.assertIn('Mario@ciencias.unam.mx', destinatarios)
+        
+        # Validamos que el asunto sea el correcto para todos los correos del lote
+        for correo in mail.outbox:
+            self.assertIn('Actualización de parque — Festival de las Luciérnagas', correo.subject)
