@@ -119,12 +119,12 @@ class TestModelosFestival(TestCase):
         self.assertEqual(self.parque.horario_apertura, time(8, 0))
         self.assertEqual(self.parque.horario_cierre, time(17, 0))
         
-        # Validación de los nuevos servicios del Sprint (RF-18)
+        # Validación de los nuevos servicios
         self.assertTrue(self.parque.tiene_camping)
         self.assertTrue(self.parque.tiene_banos)
         self.assertTrue(self.parque.tiene_cafeterias)
         self.assertTrue(self.parque.tiene_danza)
-        self.assertFalse(self.parque.tiene_teatro) # Quedó por defecto en False
+        self.assertFalse(self.parque.tiene_teatro)
         
         self.assertTrue(self.parque.activo)
         self.assertEqual(float(self.parque.latitud), 19.5855)
