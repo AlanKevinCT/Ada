@@ -156,3 +156,78 @@ class TestFormulariosFestival(TestCase):
         self.assertFalse(form.is_valid())
         self.assertIn('correo_electronico', form.errors)
         self.assertIn('Introduzca una dirección de correo válida.', form.errors['correo_electronico'])
+
+    # ─────────────────────────────────────────────────────────────
+    #  3. Pruebas para ReservaForm
+    # ─────────────────────────────────────────────────────────────
+    def test_reserva_form_datos_validos(self):
+        """Verifica que el formulario sea válido con un flujo de datos correcto."""
+        datos = {
+            'parque': self.parque_con_cabanas.id,
+            'fecha_inicio': date(2026, 6, 18),  # Jueves
+            'fecha_fin': date(2026, 6, 20),     # Sabado
+            'numero_personas': 4,
+            'tipo_visita': 'cabana'
+        }
+        form = ReservaForm(data=datos)
+        self.assertTrue(form.is_valid())
+
+    def test_reserva_form_fechas_invalidas_festival(self):
+        """Verifica que clean() atrape rangos prohibidos (Martes intermedio)."""
+        datos = {
+            'parque': self.parque_con_cabanas.id,
+            'fecha_inicio': date(2026, 6, 15),  # Lunes
+            'fecha_fin': date(2026, 6, 18),     # Contiene el martes 16 en medio
+            'numero_personas': 2,
+            'tipo_visita': 'camping'
+        }
+        form = ReservaForm(data=datos)
+        self.assertFalse(form.is_valid())
+        self.assertIn('Las fechas no son válidas', form.non_field_errors())
+
+    def test_reserva_form_bloqueo_cabanas_en_parque_sin_ellas(self):
+        """Verifica que el formulario impida reservar una cabaña si la instancia específica del parque no cuenta con ese servicio."""
+        datos = {
+            'parque': self.parque_sin_cabanas.id,
+            'fecha_inicio': date(2026, 6, 24),
+            'fecha_fin': date(2026, 6, 26),
+            'numero_personas': 2,
+            'tipo_visita': 'cabana'
+        }
+        form = ReservaForm(data=datos)
+        
+        self.assertFalse(form.is_valid(), "El formulario ignoró que el parque no tiene cabañas por el bug de la P mayúscula en linea 99 del archivo forms.py.")
+        
+        if not form.is_valid():
+            self.assertTrue(any('no cuenta con cabañas' in error for error in form.non_field_errors()))
+
+    def test_reserva_form_sin_disponibilidad_cupo(self):
+        """Verifica que clean() rebote la solicitud si el servicio reporta sobrecupo."""
+        # Modificamos temporalmente la capacidad del parque para simular sobrecupo inmediato
+        self.parque_con_cabanas.capacidad = 0
+        self.parque_con_cabanas.save()
+
+        datos = {
+            'parque': self.parque_con_cabanas.id,
+            'fecha_inicio': date(2026, 6, 24),
+            'fecha_fin': date(2026, 6, 26),
+            'numero_personas': 2,
+            'tipo_visita': 'cabana'
+        }
+        form = ReservaForm(data=datos)
+        self.assertFalse(form.is_valid())
+        self.assertIn('No hay disponibilidad en el parque para esas fechas.', form.non_field_errors())
+
+    def test_reserva_form_numero_personas_negativo(self):
+        """Verifica que el validador nativo min_value=1 bloquee registros de 0 o menos personas."""
+        datos = {
+            'parque': self.parque_con_cabanas.id,
+            'fecha_inicio': date(2026, 6, 24),
+            'fecha_fin': date(2026, 6, 26),
+            'numero_personas': 0,
+            'tipo_visita': 'camping'
+        }
+        form = ReservaForm(data=datos)
+        self.assertFalse(form.is_valid())
+        self.assertIn('numero_personas', form.errors)
+        self.assertIn('Asegúrese de que este valor sea mayor o igual a 1.', form.errors['numero_personas'])
