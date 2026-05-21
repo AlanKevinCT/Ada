@@ -95,7 +95,7 @@ class TestFormulariosFestival(TestCase):
     def test_registro_form_formato_correo_invalido(self):
         """Verifica que se rechacen cadenas de texto que no cumplan el formato de email."""
         datos = {
-            'correo_electronico': 'correo_falso_sin_arroba',  # Formato corrupto
+            'correo_electronico': 'correo_falso_sin_arroba',
             'nombre': 'Paco',
             'apellido_paterno': 'Pérez',
             'password': 'contraseña_segura',
@@ -121,3 +121,38 @@ class TestFormulariosFestival(TestCase):
         self.assertFalse(form.is_valid())
         self.assertIn('nombre', form.errors)
         self.assertIn('Este campo es obligatorio.', form.errors['nombre'])
+
+    # ─────────────────────────────────────────────────────────────
+    #  2. Pruebas para LoginForm
+    # ─────────────────────────────────────────────────────────────
+    def test_login_form_datos_validos(self):
+        """Verifica que el formulario de login sea válido con credenciales bien estructuradas."""
+        datos = {
+            'correo_electronico': 'aldo@ciencias.unam.mx',
+            'password': 'password123'
+        }
+        form = LoginForm(data=datos)
+        self.assertTrue(form.is_valid())
+        self.assertEqual(form.cleaned_data['correo_electronico'], 'aldo@ciencias.unam.mx')
+        self.assertEqual(form.cleaned_data['password'], 'password123')
+
+    def test_login_form_campos_obligatorios_vacios(self):
+        """Verifica que el login falle si el usuario no proporciona el correo o la contraseña."""
+        form = LoginForm(data={})
+        self.assertFalse(form.is_valid())
+        
+        # Ambos campos deben exigir datos por defecto
+        self.assertIn('correo_electronico', form.errors)
+        self.assertIn('password', form.errors)
+        self.assertIn('Este campo es obligatorio.', form.errors['password'])
+
+    def test_login_form_correo_invalido(self):
+        """Verifica que el formulario rechace el login si el formato del email está roto."""
+        datos = {
+            'correo_electronico': 'usuario_sin_formato_email',
+            'password': 'password123'
+        }
+        form = LoginForm(data=datos)
+        self.assertFalse(form.is_valid())
+        self.assertIn('correo_electronico', form.errors)
+        self.assertIn('Introduzca una dirección de correo válida.', form.errors['correo_electronico'])
