@@ -109,7 +109,12 @@ Ada/
     │       └── test_services.py     ← pruebas unitarias para la lógica de negocio
     │       └── test_signals.py      ← pruebas de integracion para las señales.
     │       └── test_system.py       ← pruebas de sistema
-    │       └── test_views.py        ← pruebas de integración
+    │       └── test_views           ← pruebas de las vistas
+    │           └── test_admin.py    ← pruebas del 
+    │           └── test_autenticacion.py ← pruebas de la gestion de parques
+    │           └── test_cliente.py       ← pruebas del cliente
+    │           └── test_mapa.py          ← pruebas del mapa interactivo
+    │           └── test_reservaciones.py ← pruebas de las reservaciones 
     │   └── migrations/              ← historial de cambios en la base de datos
     │       └── 0001_initial.py      ← migración inicial con los 3 modelos
     └── NyxValley/
