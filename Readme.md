@@ -58,18 +58,24 @@ python manage.py createsuperuser
 ```
 Llena los campos que te pida: correo, nombre, apellido paterno, apellido materno y contraseña.
 
-### 7. Compilar las traducciones del proyecto
+### 7. Cargar parques de prueba
+```bash
+python manage.py loaddata Festival2026/fixtures/parques_reales.json
+```
+Esto carga los 6 parques oficiales del festival con coordenadas reales para el mapa interactivo.
+
+### 8. Compilar las traducciones del proyecto
 ```bash
 python manage.py compilemessages
 ```
 
-### 8. Levantar el servidor
+### 9. Levantar el servidor
 ```bash
 python manage.py runserver
 ```
 Abre tu navegador en **http://127.0.0.1:8000**
 
-### 9. Ejecutar pruebas
+### 10. Ejecutar pruebas
 para ejecutar toda la suit de pruebas:
 ```bash
 python manage.py test Festival2026.tests
