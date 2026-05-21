@@ -12,9 +12,24 @@ from ..signals import SignalModificacion
 from django.core.mail import send_mail
 from django.conf import settings
 from django.utils import timezone
+from functools import wraps
+from django.shortcuts import redirect
 
+def solo_admin(vista):
+    """
+    Decorador que reemplaza el patrón repetitivo
+    if not request.user.is_admin: return redirect('inicio')
+    Protege vistas de acceso no autorizado de manera limpia.
+    """
+    @wraps(vista)
+    def wrapper(request, *args, **kwargs):
+        if not request.user.is_authenticated or not request.user.is_admin:
+            return redirect('inicio')
+        return vista(request, *args, **kwargs)
+    return wrapper
 
 @login_required
+@solo_admin
 def panel_admin(request):
     """Panel principal del administrador."""
     if not request.user.is_admin:
@@ -23,6 +38,7 @@ def panel_admin(request):
 
 
 @login_required
+@solo_admin
 def gestionar_reservaciones(request):
     """Lista todas las reservaciones para el administrador (RF-13, RF-14)."""
     if not request.user.is_admin:
@@ -33,6 +49,7 @@ def gestionar_reservaciones(request):
 
 
 @login_required
+@solo_admin
 def consultar_reservas(request):
     """Consulta de reservaciones con filtros (RF-13)."""
     if not request.user.is_admin:
@@ -44,6 +61,7 @@ def consultar_reservas(request):
 
 
 @login_required
+@solo_admin
 def crear_parque(request):
     """Crea un nuevo parque oficial (RF-12)."""
     if not request.user.is_admin:
@@ -53,6 +71,7 @@ def crear_parque(request):
 
 
 @login_required
+@solo_admin
 def editar_parque(request, id):
     """Edita la información de un parque existente (RF-12)."""
     if not request.user.is_admin:
@@ -63,6 +82,7 @@ def editar_parque(request, id):
 
 
 @login_required
+@solo_admin
 def eliminar_parque(request, id):
     """Elimina un parque y notifica a los clientes afectados (RF-12)."""
     if not request.user.is_admin:

@@ -133,3 +133,39 @@ SESSION_SAVE_EVERY_REQUEST    = True   # reinicia el contador con cada acción
 AUTH_USER_MODEL = 'Festival2026.Usuario'
 LOGIN_URL          = '/login/'
 LOGIN_REDIRECT_URL = '/'
+
+# ─── Seguridad HTTP — Headers de protección ───────────────────
+# Protege contra clickjacking (alguien que embeba tu página en un iframe)
+X_FRAME_OPTIONS = 'DENY'
+
+# Fuerza que el navegador respete el Content-Type declarado
+# Protege contra ataques de sniffing de contenido
+SECURE_CONTENT_TYPE_NOSNIFF = True
+
+# Activa el filtro XSS del navegador
+SECURE_BROWSER_XSS_FILTER = True
+
+# En producción cambiar a True — redirige HTTP a HTTPS
+SECURE_SSL_REDIRECT = False
+
+# Protege la cookie de sesión — no accesible desde JavaScript
+SESSION_COOKIE_HTTPONLY = True
+SESSION_COOKIE_SAMESITE = 'Lax'  # protege contra CSRF cross-site
+
+# Protege la cookie CSRF
+CSRF_COOKIE_HTTPONLY = False  # debe ser False para que HTMX pueda leerla
+CSRF_COOKIE_SAMESITE = 'Lax'
+
+# ─── Rate limiting — Límite de intentos de login ──────────────
+# Usamos caché en memoria para contar intentos fallidos
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'nyx-valley-cache',
+    }
+}
+
+# Número máximo de intentos fallidos antes de bloquear
+LOGIN_MAX_INTENTOS = 5
+# Tiempo de bloqueo en segundos (15 minutos)
+LOGIN_BLOQUEO_SEGUNDOS = 900
