@@ -119,9 +119,19 @@ class TestSignalsFestival(TestCase):
         self.assertEqual(reserva.estado, 'cancelada')
 
         # 2. Comprobamos que se notificó al usuario sobre la cancelación forzosa
-        self.assertEqual(len(mail.outbox), 1)
-        self.assertIn('Actualización de parque — Festival de las Luciérnagas', mail.outbox[0].subject)
-        self.assertEqual(mail.outbox[0].to, ['pablo@ciencias.unam.mx'])
+        self.assertEqual(len(mail.outbox), 2)
+
+        # 3. Correo 1: Notificación de eliminación del parque
+        correo_admin = mail.outbox[0]
+        self.assertEqual(correo_admin.to, ['pablo@ciencias.unam.mx'])
+        self.assertIn('Actualización de parque — Festival de las Luciérnagas', correo_admin.subject)
+        self.assertIn('ha sido eliminado del festival', correo_admin.body)
+
+        # 4. Correo 2: Notificación de cancelación de la reservación
+        correo_automatico = mail.outbox[1]
+        self.assertEqual(correo_automatico.to, ['pablo@ciencias.unam.mx'])
+        self.assertIn('Reservación cancelada — Festival de las Luciérnagas', correo_automatico.subject)
+        self.assertIn('ha sido cancelada', correo_automatico.body)
 
     def test_signal_modificar_parque_notifica_usuarios(self):
         """Verifica que al alterar los datos de un parque se alerte a los clientes con reservas."""
