@@ -1,0 +1,58 @@
+[
+  {
+    "model": "Festival2026.servicio",
+    "pk": 1,
+    "fields": {
+      "nombre": "Senderismo",
+      "descripcion": "Rutas y senderos señalizados para caminatas en la naturaleza."
+    }
+  },
+  {
+    "model": "Festival2026.servicio",
+    "pk": 2,
+    "fields": {
+      "nombre": "Estacionamiento",
+      "descripcion": "Área de estacionamiento para vehículos particulares."
+    }
+  },
+  {
+    "model": "Festival2026.servicio",
+    "pk": 3,
+    "fields": {
+      "nombre": "Área de picnic",
+      "descripcion": "Mesas y zonas habilitadas para convivencia al aire libre."
+    }
+  },
+  {
+    "model": "Festival2026.servicio",
+    "pk": 4,
+    "fields": {
+      "nombre": "Área de fogatas",
+      "descripcion": "Zonas delimitadas y seguras para encender fogatas."
+    }
+  },
+  {
+    "model": "Festival2026.servicio",
+    "pk": 5,
+    "fields": {
+      "nombre": "Tiendas de artesanías",
+      "descripcion": "Locales con artesanías y productos locales de la región."
+    }
+  },
+  {
+    "model": "Festival2026.servicio",
+    "pk": 6,
+    "fields": {
+      "nombre": "Guías nocturnos",
+      "descripcion": "Personal especializado en recorridos nocturnos para observación de luciérnagas."
+    }
+  },
+  {
+    "model": "Festival2026.servicio",
+    "pk": 7,
+    "fields": {
+      "nombre": "Guías especializados de montaña",
+      "descripcion": "Guías certificados para ascensos y rutas de alta dificultad."
+    }
+  }
+]

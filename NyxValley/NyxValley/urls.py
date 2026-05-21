@@ -37,5 +37,9 @@ urlpatterns = [
     path('admin-panel/parques/crear/',              views.crear_parque,         name='crear_parque'),
     path('admin-panel/parques/editar/<int:id>/',    views.editar_parque,        name='editar_parque'),
     path('admin-panel/parques/eliminar/<int:id>/',  views.eliminar_parque,      name='eliminar_parque'),
+    path('admin-panel/servicios/',              views.listar_servicios,  name='listar_servicios'),
+    path('admin-panel/servicios/nuevo/',        views.crear_servicio,    name='crear_servicio'),
+    path('admin-panel/servicios/<int:id>/editar/',   views.editar_servicio,  name='editar_servicio'),
+    path('admin-panel/servicios/<int:id>/eliminar/', views.eliminar_servicio, name='eliminar_servicio'),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

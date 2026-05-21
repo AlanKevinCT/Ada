@@ -1,146 +1,98 @@
 [
-{
-  "model": "Festival2026.parque",
-  "pk": 1,
-  "fields": {
-    "nombre": "Parque Nacional Nevado de Toluca",
-    "direccion": "Zinacantepec, Estado de M�xico",
-    "servicios": "Senderismo, �rea de camping, estacionamiento, sanitarios",
-    "horario_apertura": "08:00:00",
-    "horario_cierre": "18:00:00",
-    "tiene_danza": false,
-    "tiene_musica": false,
-    "tiene_teatro": false,
-    "tiene_transporte": false,
-    "tiene_banos": true,
-    "tiene_cafeterias": true,
-    "tiene_guias": true,
-    "tiene_cabanas": true,
-    "tiene_camping": true,
-    "latitud": "19.107700",
-    "longitud": "-99.757700",
-    "capacidad": 50,
-    "activo": true
+  {
+    "model": "Festival2026.parque",
+    "pk": 1,
+    "fields": {
+      "nombre": "Parque Nacional Nevado de Toluca",
+      "direccion": "Zinacantepec, Estado de México",
+      "servicios": [1, 2],
+      "horario_apertura": "08:00:00",
+      "horario_cierre": "18:00:00",
+      "tiene_cabanas": true,
+      "latitud": "19.107700",
+      "longitud": "-99.757700",
+      "capacidad": 50,
+      "activo": true
+    }
+  },
+  {
+    "model": "Festival2026.parque",
+    "pk": 2,
+    "fields": {
+      "nombre": "Bosque de Tlalpan",
+      "direccion": "Periférico Sur, Tlalpan, Ciudad de México",
+      "servicios": [1, 2, 3],
+      "horario_apertura": "06:00:00",
+      "horario_cierre": "18:00:00",
+      "tiene_cabanas": false,
+      "latitud": "19.276900",
+      "longitud": "-99.182300",
+      "capacidad": 80,
+      "activo": true
+    }
+  },
+  {
+    "model": "Festival2026.parque",
+    "pk": 3,
+    "fields": {
+      "nombre": "Parque Nacional Izta-Popo",
+      "direccion": "Paso de Cortés, Puebla",
+      "servicios": [1, 7],
+      "horario_apertura": "07:00:00",
+      "horario_cierre": "17:00:00",
+      "tiene_cabanas": true,
+      "latitud": "19.173000",
+      "longitud": "-98.641700",
+      "capacidad": 60,
+      "activo": true
+    }
+  },
+  {
+    "model": "Festival2026.parque",
+    "pk": 4,
+    "fields": {
+      "nombre": "Santuario de la Luciérnaga Nanacamilpa",
+      "direccion": "Nanacamilpa de Mariano Arista, Tlaxcala",
+      "servicios": [2, 5, 6],
+      "horario_apertura": "19:00:00",
+      "horario_cierre": "23:00:00",
+      "tiene_cabanas": true,
+      "latitud": "19.488300",
+      "longitud": "-98.561400",
+      "capacidad": 120,
+      "activo": true
+    }
+  },
+  {
+    "model": "Festival2026.parque",
+    "pk": 5,
+    "fields": {
+      "nombre": "Parque Nacional La Malinche",
+      "direccion": "Tlaxcala / Puebla",
+      "servicios": [1, 4],
+      "horario_apertura": "06:00:00",
+      "horario_cierre": "18:00:00",
+      "tiene_cabanas": false,
+      "latitud": "19.230000",
+      "longitud": "-98.030000",
+      "capacidad": 70,
+      "activo": true
+    }
+  },
+  {
+    "model": "Festival2026.parque",
+    "pk": 6,
+    "fields": {
+      "nombre": "Bosque de San Juan Tetla",
+      "direccion": "San Juan Tetla, Puebla",
+      "servicios": [2, 6],
+      "horario_apertura": "18:00:00",
+      "horario_cierre": "23:00:00",
+      "tiene_cabanas": false,
+      "latitud": "19.310000",
+      "longitud": "-98.420000",
+      "capacidad": 40,
+      "activo": true
+    }
   }
-},
-{
-  "model": "Festival2026.parque",
-  "pk": 2,
-  "fields": {
-    "nombre": "Bosque de Tlalpan",
-    "direccion": "Perif�rico Sur, Tlalpan, Ciudad de M�xico",
-    "servicios": "Senderismo, �rea de picnic, sanitarios, estacionamiento",
-    "horario_apertura": "06:00:00",
-    "horario_cierre": "18:00:00",
-    "tiene_danza": false,
-    "tiene_musica": false,
-    "tiene_teatro": false,
-    "tiene_transporte": true,
-    "tiene_banos": true,
-    "tiene_cafeterias": true,
-    "tiene_guias": false,
-    "tiene_cabanas": false,
-    "tiene_camping": true,
-    "latitud": "19.276900",
-    "longitud": "-99.182300",
-    "capacidad": 80,
-    "activo": true
-  }
-},
-{
-  "model": "Festival2026.parque",
-  "pk": 3,
-  "fields": {
-    "nombre": "Parque Nacional Izta-Popo",
-    "direccion": "Paso de Cort�s, Puebla",
-    "servicios": "Senderismo, gu�as especializados, �rea de camping, sanitarios",
-    "horario_apertura": "07:00:00",
-    "horario_cierre": "17:00:00",
-    "tiene_danza": false,
-    "tiene_musica": false,
-    "tiene_teatro": false,
-    "tiene_transporte": false,
-    "tiene_banos": true,
-    "tiene_cafeterias": false,
-    "tiene_guias": true,
-    "tiene_cabanas": true,
-    "tiene_camping": true,
-    "latitud": "19.173000",
-    "longitud": "-98.641700",
-    "capacidad": 60,
-    "activo": true
-  }
-},
-{
-  "model": "Festival2026.parque",
-  "pk": 4,
-  "fields": {
-    "nombre": "Santuario de la Luci�rnaga Nanacamilpa",
-    "direccion": "Nanacamilpa de Mariano Arista, Tlaxcala",
-    "servicios": "Gu�as nocturnos, �rea de camping, sanitarios, estacionamiento, tiendas de artesan�as",
-    "horario_apertura": "19:00:00",
-    "horario_cierre": "23:00:00",
-    "tiene_danza": true,
-    "tiene_musica": true,
-    "tiene_teatro": true,
-    "tiene_transporte": true,
-    "tiene_banos": true,
-    "tiene_cafeterias": true,
-    "tiene_guias": true,
-    "tiene_cabanas": true,
-    "tiene_camping": true,
-    "latitud": "19.488300",
-    "longitud": "-98.561400",
-    "capacidad": 120,
-    "activo": true
-  }
-},
-{
-  "model": "Festival2026.parque",
-  "pk": 5,
-  "fields": {
-    "nombre": "Parque Nacional La Malinche",
-    "direccion": "Tlaxcala / Puebla",
-    "servicios": "Senderismo, zona de camping, sanitarios, �rea de fogatas",
-    "horario_apertura": "06:00:00",
-    "horario_cierre": "18:00:00",
-    "tiene_danza": false,
-    "tiene_musica": false,
-    "tiene_teatro": false,
-    "tiene_transporte": false,
-    "tiene_banos": true,
-    "tiene_cafeterias": false,
-    "tiene_guias": false,
-    "tiene_cabanas": false,
-    "tiene_camping": true,
-    "latitud": "19.230000",
-    "longitud": "-98.030000",
-    "capacidad": 70,
-    "activo": true
-  }
-},
-{
-  "model": "Festival2026.parque",
-  "pk": 6,
-  "fields": {
-    "nombre": "Bosque de San Juan Tetla",
-    "direccion": "San Juan Tetla, Puebla",
-    "servicios": "Gu�as nocturnos, camping, sanitarios, estacionamiento",
-    "horario_apertura": "18:00:00",
-    "horario_cierre": "23:00:00",
-    "tiene_danza": false,
-    "tiene_musica": true,
-    "tiene_teatro": false,
-    "tiene_transporte": false,
-    "tiene_banos": true,
-    "tiene_cafeterias": false,
-    "tiene_guias": true,
-    "tiene_cabanas": false,
-    "tiene_camping": true,
-    "latitud": "19.310000",
-    "longitud": "-98.420000",
-    "capacidad": 40,
-    "activo": true
-  }
-}
 ]

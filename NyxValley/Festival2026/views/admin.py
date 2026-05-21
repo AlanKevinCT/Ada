@@ -3,15 +3,16 @@ from django.contrib.auth import authenticate, login as auth_login, logout as aut
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 
-from ..models import Usuario, Parque, Reservacion
+from ..models import Usuario, Parque, Reservacion, Servicio
 from ..services import AsistReserva, Disponibilidad
 from ..mapa import MapaNavegacion
-from ..forms import ParqueForm
+from ..forms import ParqueForm, ServicioForm
 from ..signals import SignalModificacion
 
 from django.core.mail import send_mail
 from django.conf import settings
 from django.utils import timezone
+from django.db.models import Count
 
 
 @login_required
@@ -100,3 +101,74 @@ def eliminar_parque(request, id):
         parque.delete()
         return redirect('panel_admin')
     return render(request, 'admin/eliminar_parque.html', {'parque': parque})
+
+@login_required
+def listar_servicios(request):
+    """Lista todos los servicios disponibles con cuántos parques los usan."""
+    if not request.user.is_admin:
+        return redirect('inicio')
+
+    servicios = (
+        Servicio.objects
+        .annotate(num_parques=Count('parques'))
+        .order_by('nombre')
+    )
+    return render(request, 'admin/listar_servicios.html', {'servicios': servicios})
+
+@login_required
+def crear_servicio(request):
+    """Crea una nueva etiqueta de servicio."""
+    if not request.user.is_admin:
+        return redirect('inicio')
+ 
+    form = ServicioForm(request.POST or None)
+    if form.is_valid():
+        form.save()
+        return redirect('listar_servicios')
+ 
+    return render(request, 'admin/crear_servicio.html', {'form': form})
+ 
+ 
+@login_required
+def editar_servicio(request, id):
+    """
+    Edita el nombre o descripción de un servicio existente.
+    """
+    if not request.user.is_admin:
+        return redirect('inicio')
+ 
+    servicio = get_object_or_404(Servicio, id=id)
+    form     = ServicioForm(request.POST or None, instance=servicio)
+ 
+    if form.is_valid():
+        form.save()
+        return redirect('listar_servicios')
+ 
+    #los parques que usan este servicio para mostrarlos como contexto
+    parques_asociados = servicio.parques.order_by('nombre')
+    return render(request, 'admin/editar_servicio.html', {
+        'form':              form,
+        'servicio':          servicio,
+        'parques_asociados': parques_asociados,
+    })
+ 
+ 
+@login_required
+def eliminar_servicio(request, id):
+    """
+    Elimina una etiqueta de servicio.
+    """
+    if not request.user.is_admin:
+        return redirect('inicio')
+ 
+    servicio          = get_object_or_404(Servicio, id=id)
+    parques_asociados = servicio.parques.order_by('nombre')
+ 
+    if request.method == 'POST':
+        servicio.delete()
+        return redirect('listar_servicios')
+ 
+    return render(request, 'admin/eliminar_servicio.html', {
+        'servicio':          servicio,
+        'parques_asociados': parques_asociados,
+    })

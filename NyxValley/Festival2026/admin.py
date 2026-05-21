@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import Usuario, Parque, Reservacion
+from .models import Usuario, Parque, Reservacion, Servicio
 
 
 # ─── Admin de Usuario ─────────────────────────────────────────
@@ -24,6 +24,12 @@ class UsuarioAdmin(UserAdmin):
         }),
     )
 
+# ─── Admin de Servicio ────────────────────────────────────────
+@admin.register(Servicio)
+class ServicioAdmin(admin.ModelAdmin):
+    list_display  = ('nombre', 'descripcion')
+    search_fields = ('nombre',)
+    ordering      = ('nombre',)
 
 # ─── Admin de Parque ──────────────────────────────────────────
 @admin.register(Parque)
@@ -38,11 +44,6 @@ class ParqueAdmin(admin.ModelAdmin):
             'fields': ('nombre', 'direccion', 'horario_apertura', 'horario_cierre','latitud', 'longitud'),   
         }),
         ('Servicios', {
-            'fields': ('tiene_danza', 'tiene_musica',
-                       'tiene_teatro', 'tiene_transporte',
-                       'tiene_banos', 'tiene_cafeterias', 'tiene_guias'),
-        }),
-        ('Servicios adicionales', {
             'fields': ('servicios',),
         }),
         ('Hospedaje', {

@@ -17,31 +17,28 @@ class MapaNavegacion:
         Carga todos los parques activos con coordenadas
         para mostrarlos en el mapa interactivo.
         """
-        self._parques = list(
-            Parque.objects.filter(
-                activo=True,
-                latitud__isnull=False,
-                longitud__isnull=False,
-            ).values(
-                'id',
-                'nombre',
-                'direccion',
-                'servicios',
-                'horario_apertura',
-                'horario_cierre',
-                'latitud',
-                'longitud',
-                'tiene_cabanas',
-                'tiene_camping',
-                'tiene_danza',
-                'tiene_musica',
-                'tiene_teatro',
-                'tiene_transporte',
-                'tiene_banos',
-                'tiene_cafeterias',
-                'tiene_guias',
-            )
+        qs = (
+            Parque.objects
+            .filter(activo=True, latitud__isnull=False, longitud__isnull=False)
+            .prefetch_related('servicios')
         )
+ 
+        self._parques = []
+        for p in qs:
+            self._parques.append({
+                'id':               p.id,
+                'nombre':           p.nombre,
+                'direccion':        p.direccion,
+                'horario_apertura': p.horario_apertura,
+                'horario_cierre':   p.horario_cierre,
+                'latitud':          p.latitud,
+                'longitud':         p.longitud,
+                'tiene_cabanas':    p.tiene_cabanas,
+                'tiene_camping':    p.tiene_camping,
+                # Lista de nombres de servicios personalizables
+                'servicios':  [s.nombre for s in p.servicios.all()],
+            })
+ 
         return self._parques
 
     def verParque(self, parque_id: int) -> dict | None:
@@ -50,26 +47,23 @@ class MapaNavegacion:
         al hacer clic en su marcador (pin) en el mapa.
         """
         try:
-            parque = Parque.objects.get(id=parque_id, activo=True)
+            parque = (
+                Parque.objects
+                .prefetch_related('servicios')
+                .get(id=parque_id, activo=True)
+            )
             return {
                 'id':               parque.id,
                 'nombre':           parque.nombre,
                 'direccion':        parque.direccion,
-                'servicios':        parque.servicios,
                 'horario_apertura': parque.horario_apertura,
                 'horario_cierre':   parque.horario_cierre,
                 'latitud':          float(parque.latitud),
                 'longitud':         float(parque.longitud),
-                'tiene_danza':      parque.tiene_danza,
-                'tiene_musica':     parque.tiene_musica,
-                'tiene_teatro':     parque.tiene_teatro,
-                'tiene_banos':      parque.tiene_banos,
-                'tiene_cafeterias': parque.tiene_cafeterias,
-                'tiene_guias':      parque.tiene_guias,
-                'tiene_transporte': parque.tiene_transporte,
                 'tiene_cabanas':    parque.tiene_cabanas,
                 'tiene_camping':    parque.tiene_camping,
-                'capacidad':        parque.capacidad,
+                # Lista de nombres de servicios personalizables
+                'servicios':  [s.nombre for s in parque.servicios.all()],
             }
         except Parque.DoesNotExist:
             return None
@@ -109,13 +103,6 @@ class MapaNavegacion:
                     'servicios':     p['servicios'],
                     'horario_apertura': p['horario_apertura'].strftime('%H:%M'),
                     'horario_cierre':   p['horario_cierre'].strftime('%H:%M'),
-                    'tiene_danza':    p['tiene_danza'],
-                    'tiene_musica':   p['tiene_musica'],
-                    'tiene_teatro':   p['tiene_teatro'],
-                    'tiene_banos':    p['tiene_banos'],
-                    'tiene_cafeterias': p['tiene_cafeterias'],
-                    'tiene_guias':    p['tiene_guias'],
-                    'tiene_transporte': p['tiene_transporte'],
                     'tiene_cabanas': p['tiene_cabanas'],
                     'tiene_camping':  p['tiene_camping'],
                 },

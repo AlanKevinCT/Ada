@@ -20,7 +20,7 @@
 
         <div class="dato-fila">
             <span class="dato-label">{% translate "Servicios" %}</span>
-            <span class="dato-valor">{{ parque.servicios }}</span>
+             {% for servicio in parque.servicios %} ✦ {{ servicio }} {% empty %} {% endfor %}
         </div>
 
         <div class="dato-fila">

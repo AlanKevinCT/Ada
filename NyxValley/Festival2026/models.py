@@ -66,6 +66,24 @@ class Usuario(AbstractBaseUser, PermissionsMixin):
 
     def nombre_completo(self):
         return f'{self.nombre} {self.apellido_paterno} {self.apellido_materno}'
+    
+# ─────────────────────────────────────────────────────────────
+#  Servicio  (etiqueta personalizable por el administrador)
+#  Cada instancia representa un servicio que puede existir
+#  en uno o varios parques (ManyToMany).
+# ─────────────────────────────────────────────────────────────
+class Servicio(models.Model):
+ 
+    nombre      = models.CharField(max_length=100, unique=True)
+    descripcion = models.TextField(blank=True,)
+ 
+    class Meta:
+        verbose_name        = 'Servicio'
+        verbose_name_plural = 'Servicios'
+        ordering            = ['nombre']
+ 
+    def __str__(self):
+        return self.nombre
 
 
 # ─────────────────────────────────────────────────────────────
@@ -75,21 +93,16 @@ class Parque(models.Model):
 
     nombre    = models.CharField(max_length=200)
     direccion = models.CharField(max_length=300)
-    servicios = models.TextField(help_text='Lista de servicios adicionales disponibles')
-
+    servicios = models.ManyToManyField(
+        Servicio,
+        blank=True,
+        related_name='parques',
+        verbose_name='Servicios adicionales',
+    )
 
     # Para mostrar el horario en la vista de detalle del parque (RF-09)
     horario_apertura = models.TimeField(default=time(0, 0), help_text='Hora de apertura (HH:MM)')
     horario_cierre   = models.TimeField(default=time(0, 0), help_text='Hora de cierre (HH:MM)')
-
-    # Todos tienen camping; solo algunos tienen cabañas (RF-18)
-    tiene_danza = models.BooleanField(default=False)
-    tiene_musica = models.BooleanField(default=False)
-    tiene_teatro = models.BooleanField(default=False)
-    tiene_transporte = models.BooleanField(default=False)
-    tiene_banos = models.BooleanField(default=True)
-    tiene_cafeterias = models.BooleanField(default=True)
-    tiene_guias = models.BooleanField(default=False)
 
     # Hospedaje
     tiene_cabanas = models.BooleanField(default=False)

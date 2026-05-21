@@ -30,4 +30,8 @@ from .admin import (
     crear_parque,
     editar_parque,
     eliminar_parque,
+    listar_servicios,
+    crear_servicio,
+    editar_servicio,
+    eliminar_servicio,
 )
