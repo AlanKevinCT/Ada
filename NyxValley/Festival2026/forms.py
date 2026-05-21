@@ -110,3 +110,84 @@ class ReservaForm(forms.Form):
                 )
 
         return cleaned_data
+
+class ParqueForm(forms.ModelForm):
+ 
+    class Meta:
+        model  = Parque
+        fields = [
+            'nombre',
+            'direccion',
+            'horario_apertura',
+            'horario_cierre',
+            'latitud',
+            'longitud',
+            'capacidad',
+            'activo',
+            # Servicios (creo que vamos a tener que modificar esto :()
+            'tiene_danza',
+            'tiene_musica',
+            'tiene_teatro',
+            'tiene_transporte',
+            'tiene_banos',
+            'tiene_cafeterias',
+            'tiene_guias',
+            'tiene_cabanas',
+            'tiene_camping',
+            # Servicios (texto)
+            'servicios',
+        ]
+        labels = {
+            'nombre':            _('Nombre del parque'),
+            'direccion':         _('Dirección'),
+            'horario_apertura':  _('Hora de apertura'),
+            'horario_cierre':    _('Hora de cierre'),
+            'latitud':           _('Latitud'),
+            'longitud':          _('Longitud'),
+            'capacidad':         _('Capacidad máxima de personas'),
+            'activo':            _('Visible en el mapa'),
+            'tiene_danza':       _('Danza'),
+            'tiene_musica':      _('Música'),
+            'tiene_teatro':      _('Teatro'),
+            'tiene_transporte':  _('Transporte'),
+            'tiene_banos':       _('Baños'),
+            'tiene_cafeterias':  _('Cafeterías'),
+            'tiene_guias':       _('Guías'),
+            'tiene_cabanas':     _('Cabañas'),
+            'tiene_camping':     _('Zona de camping'),
+            'servicios':         _('Otros servicios'),
+        }
+        widgets = {
+            'nombre':           forms.TextInput(attrs={'placeholder': _('Nombre del parque')}),
+            'direccion':        forms.TextInput(attrs={'placeholder': _('Dirección completa')}),
+            'horario_apertura': forms.TimeInput(attrs={'type': 'time'}),
+            'horario_cierre':   forms.TimeInput(attrs={'type': 'time'}),
+            'latitud':          forms.NumberInput(attrs={'placeholder': '19.432608', 'step': 'any'}),
+            'longitud':         forms.NumberInput(attrs={'placeholder': '-99.133209', 'step': 'any'}),
+            'capacidad':        forms.NumberInput(attrs={'min': 0}),
+            'servicios':        forms.Textarea(attrs={
+                'rows': 3,
+                'placeholder': _('Describe servicios adicionales disponibles en el parque'),
+            }),
+        }
+ 
+    def clean(self):
+        cleaned_data     = super().clean()
+        horario_apertura = cleaned_data.get('horario_apertura')
+        horario_cierre   = cleaned_data.get('horario_cierre')
+ 
+        if horario_apertura and horario_cierre:
+            if horario_apertura >= horario_cierre:
+                raise ValidationError({
+                    'horario_apertura': _('La hora de apertura debe ser anterior a la de cierre'),
+                })
+ 
+        tiene_cabanas = cleaned_data.get('tiene_cabanas')
+        tiene_camping = cleaned_data.get('tiene_camping')
+        if not tiene_cabanas and not tiene_camping:
+            raise ValidationError(
+                _('El parque debe ofrecer al menos zona de camping')
+            )
+ 
+        return cleaned_data
+ 
