@@ -4,7 +4,6 @@ from .models import Parque
 # ─────────────────────────────────────────────────────────────
 #  MapaNavegacion  (del diagrama — conecta con «external» MapaAPI)
 #  Lógica del mapa interactivo (RF-07, RF-08, RF-09)
-#  Ayros se encarga de la implementación completa de esta clase
 # ─────────────────────────────────────────────────────────────
 
 class MapaNavegacion:
