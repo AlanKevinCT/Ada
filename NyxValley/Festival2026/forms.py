@@ -96,7 +96,7 @@ class ReservaForm(forms.Form):
                     _('Las fechas no son válidas')
                 )
 
-        if parque and tipo_visita == 'cabana' and not Parque.tiene_cabanas:
+        if parque and tipo_visita == 'cabana' and not parque.tiene_cabanas:
             raise ValidationError(
                 _('El parque {nombre} no cuenta con cabañas. Elige zona de camping u otro parque.').format(nombre=parque.nombre)
             )

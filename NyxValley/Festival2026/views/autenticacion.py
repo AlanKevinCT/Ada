@@ -28,21 +28,6 @@ def inicio(request):
     })
 
 
-# def enviar_bienvenida(usuario):
-#     """Correo de bienvenida al registrarse (además del de reservación)."""
-#     send_mail(
-#         subject='¡Bienvenido al Festival Internacional de las Luciérnagas 2026!',
-#         message=(
-#             f'Hola {usuario.nombre},\n\n'
-#             f'Tu cuenta ha sido creada exitosamente con el correo: '
-#             f'{usuario.correo_electronico}\n\n'
-#             f'Ya puedes explorar los parques y realizar tu reservación.\n\n'
-#             f'¡Te esperamos en el festival!\n'
-#         ),
-#         from_email=settings.DEFAULT_FROM_EMAIL,
-#         recipient_list=[usuario.correo_electronico],
-#         fail_silently=True,
-#     )
 
 def registro(request):
      """Registro de nuevoUsuarioCliente."""

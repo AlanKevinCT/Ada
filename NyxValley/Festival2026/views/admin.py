@@ -69,7 +69,6 @@ def eliminar_parque(request, id):
         return redirect('inicio')
     parque = get_object_or_404(Parque, id=id)
     if request.method == 'POST':
-        #from signals import SignalModificacion
         SignalModificacion.borrarParque(parque)
         parque.delete()
         return redirect('panel_admin')
