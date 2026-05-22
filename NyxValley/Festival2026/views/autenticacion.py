@@ -13,6 +13,7 @@ from django.core.mail import send_mail
 from django.conf import settings
 from django.utils import timezone
 import json
+from django.core.cache import cache # Importar para el rate limiting
 
 def inicio(request):
     """
@@ -74,19 +75,26 @@ def login(request):
             correo   = form.cleaned_data['correo_electronico']
             password = form.cleaned_data['password']
 
-            usuario = authenticate(
-                request,
-                username=correo, 
-                password=password,
-            )
+            # 1. Definir una llave única para el usuario en la caché
+            llave_cache = f"login_fallido_{correo}"
+            intentos = cache.get(llave_cache, 0)
+
+            # 2. Verificar si el usuario está bloqueado
+            if intentos >= settings.LOGIN_MAX_INTENTOS:
+                error = f"Demasiados intentos fallidos. Intenta de nuevo en 15 minutos."
+                return render(request, 'login.html', {'form': form, 'error': error})
+
+            usuario = authenticate(request, username=correo, password=password)
 
             if usuario is not None:
                 auth_login(request, usuario)
-                # Redirige si el usuario es organizador
+                cache.delete(llave_cache) # 3. Limpiar intentos al entrar con éxito
                 if usuario.is_admin:
                     return redirect('panel_admin')
                 return redirect('inicio')
             else:
+                # 4. Incrementar contador de fallos
+                cache.set(llave_cache, intentos + 1, settings.LOGIN_BLOQUEO_SEGUNDOS)
                 error = 'Correo o contraseña incorrectos.'
 
     return render(request, 'login.html', {'form': form, 'error': error})
