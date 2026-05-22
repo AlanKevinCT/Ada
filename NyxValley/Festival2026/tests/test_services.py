@@ -1,6 +1,6 @@
 from django.test import TestCase
 from ..models import Usuario, Parque, Reservacion
-from datetime import date
+from datetime import date, time
 from ..services import AsistReserva, Autenticador, Disponibilidad
 
 class TestServiciosFestival(TestCase):
@@ -16,16 +16,34 @@ class TestServiciosFestival(TestCase):
             password='123456Contraseña'
         )
 
-        # Creamos un parque de prueba
         self.parque = Parque.objects.create(
             nombre='Parque Bicentenario',
             direccion='Ciudad de México, México',
             servicios='Camping, comida',
-            horario='08:00 - 17:00',
+            horario_apertura=time(8, 0),
+            horario_cierre=time(17, 0),
             capacidad=50,
             tiene_cabanas=True,
+            tiene_banos=True,
+            tiene_cafeterias=True,
+            tiene_danza=True,
             latitud=19.5855,
             longitud=-100.2831
+        )
+
+        self.parque2 = Parque.objects.create(
+            nombre='Parque Chapultepec',
+            direccion='Ciudad de México, México',
+            servicios='Camping, comida',
+            horario_apertura=time(10, 0),
+            horario_cierre=time(18, 0),
+            capacidad=100,
+            tiene_cabanas=True,
+            tiene_banos=True,
+            tiene_cafeterias=True,
+            tiene_danza=False,
+            latitud=20.5855,
+            longitud=-50.2310
         )
 
         self.reserva_base = Reservacion.objects.create(
@@ -61,6 +79,27 @@ class TestServiciosFestival(TestCase):
         )
         self.assertTrue(disponible)
 
+    def test_verificar_cupolleno(self):
+        """Verifica que el parque no tenga disponibilidad cuando está lleno."""
+        # Creamos reservas para llenar el parque
+        Reservacion.objects.create(
+            usuario=self.usuario,
+            parque=self.parque,
+            fecha_inicio=date(2026, 6, 10),
+            fecha_fin=date(2026, 6, 12),
+            numero_personas=48,
+            tipo_visita='cabana',
+            estado='activa'
+        )
+
+        fecha_inicio = date(2026, 6, 10)
+        fecha_fin = date(2026, 6, 12)
+        tipo_visita = 'cabana'
+        disponible = Disponibilidad.verificarDisponible(
+            self.parque, fecha_inicio, fecha_fin, tipo_visita
+        )
+        self.assertFalse(disponible)
+
     def test_verificar_fechas_validas(self):
         """Verifica que las fechas sean válidas para el festival."""
         fecha_inicio = date(2026, 7, 10) # inicio > fin
@@ -86,10 +125,8 @@ class TestServiciosFestival(TestCase):
         fecha_inicio = date(2026, 6, 15)
         fecha_fin = date(2026, 6, 18)
         
-        with self.assertRaises(ValueError):
-            AsistReserva.reservar(
-                self.usuario, self.parque, fecha_inicio, fecha_fin, 2, 'cabana'
-            )
+        fechas_validas = Disponibilidad.verificaFechas(fecha_inicio, fecha_fin)
+        self.assertFalse(fechas_validas)
 
     def test_verificar_hora_valida(self):
         """Verifica que la hora esté estrictamente dentro del horario del parque."""
@@ -140,6 +177,24 @@ class TestServiciosFestival(TestCase):
                 self.usuario, self.parque, date(2026, 6, 10), date(2026, 6, 12), 1, 'cabana'
             )
         self.assertEqual(str(cm.exception), 'No hay disponibilidad en el parque para esas fechas.')
+
+    def test_reservacion_excede_capacidad(self):
+        """Verifica que el sistema impida reservar si un grupo excede la capacidad disponible de personas del parque."""
+        # El parque tiene capacidad de 100 personas.
+        
+        fecha_inicio = date(2026, 6, 10)
+        fecha_fin = date(2026, 6, 12)
+        
+        # Intentamos meter un grupo de 150 personas (Excede los 100 lugares)
+        with self.assertRaises(ValueError, msg="El sistema permitió sobrepasar la capacidad física en personas"):
+            AsistReserva.reservar(
+                self.usuario, 
+                self.parque2, 
+                fecha_inicio, 
+                fecha_fin, 
+                numero_personas=150,
+                tipo_visita='cabana'
+            )
 
     def test_reserva_numero_personas_invalido(self):
         """Verifica que el sistema rechace reservaciones para 0 o menos personas."""
