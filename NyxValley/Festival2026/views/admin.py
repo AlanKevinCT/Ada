@@ -6,7 +6,7 @@ from django.http import JsonResponse
 from ..models import Usuario, Parque, Reservacion
 from ..services import AsistReserva, Disponibilidad
 from ..mapa import MapaNavegacion
-from ..forms import RegistroForm, LoginForm, ReservaForm
+from ..forms import ParqueForm
 from ..signals import SignalModificacion
 
 from django.core.mail import send_mail
@@ -66,8 +66,16 @@ def crear_parque(request):
     """Crea un nuevo parque oficial (RF-12)."""
     if not request.user.is_admin:
         return redirect('inicio')
-    # TODO: Gera/Danna — implementar formulario de creación
-    return render(request, 'admin/crear_parque.html')
+
+    form = ParqueForm()
+    if request.method == 'POST':
+        form = ParqueForm(data=request.POST)
+        if form.is_valid():
+            parque = form.save()
+            SignalModificacion.agregarParque(parque)
+            return redirect('panel_admin')
+
+    return render(request, 'admin/crear_parque.html', {'form': form})
 
 
 @login_required
@@ -77,8 +85,27 @@ def editar_parque(request, id):
     if not request.user.is_admin:
         return redirect('inicio')
     parque = get_object_or_404(Parque, id=id)
-    # TODO: Gera/Danna — implementar formulario de edición
-    return render(request, 'admin/editar_parque.html', {'parque': parque})
+    form   = ParqueForm(instance=parque)
+
+    if request.method == 'POST':
+        form = ParqueForm(data=request.POST, instance=parque)
+        if form.is_valid():
+            campos_modificados = []
+            for campo in form.changed_data:
+                label = form.fields[campo].label or campo
+                campos_modificados.append(str(label))
+
+            form.save()
+            if campos_modificados:
+                cambios = ', '.join(campos_modificados)
+                SignalModificacion.modificarParque(parque, cambios)
+
+            return redirect('panel_admin')
+
+    return render(request, 'admin/editar_parque.html', {
+        'form': form,
+        'parque': parque,
+    })
 
 
 @login_required
@@ -89,7 +116,6 @@ def eliminar_parque(request, id):
         return redirect('inicio')
     parque = get_object_or_404(Parque, id=id)
     if request.method == 'POST':
-        #from signals import SignalModificacion
         SignalModificacion.borrarParque(parque)
         parque.delete()
         return redirect('panel_admin')
