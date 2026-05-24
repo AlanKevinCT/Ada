@@ -55,8 +55,8 @@ class TestVistasAutenticacionReal(TestCase):
             'nombre': 'Alberto',
             'apellido_paterno': 'Nolgos',
             'apellido_materno': 'Cervantes',
-            'password': 'password456',
-            'confirmar_password': 'password456'
+            'password': 'AlbertoNolgos2026!', 
+            'confirmar_password': 'AlbertoNolgos2026!'
         }
         respuesta = self.client.post(self.url_registro, data=datos_post)
         

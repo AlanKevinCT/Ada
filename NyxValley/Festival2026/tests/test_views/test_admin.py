@@ -190,13 +190,18 @@ class TestVistasAdministracionReal(TestCase):
             'nombre': 'Parque Tlalpan',
             'direccion': 'Tlalpan, CDMX',
             'servicios': 'Caminatas, Bosque',
-            'horario_apertura': '06:00',
-            'horario_cierre': '16:00',
+            'horario_apertura': time(6, 0),
+            'horario_cierre': time(16, 0),
             'capacidad': 80,
             'tiene_cabanas': False,
+            'tiene_camping': True,
             'tiene_banos': True,
             'tiene_cafeterias': False,
+            'tiene_guias': False,
             'tiene_danza': False,
+            'tiene_musica': False,
+            'tiene_teatro': False,
+            'tiene_transporte': False,
             'latitud': 19.2844,
             'longitud': -99.1921
         }
@@ -204,6 +209,7 @@ class TestVistasAdministracionReal(TestCase):
         respuesta = self.client.post(self.url_crear, data=datos_formulario)
 
         self.assertEqual(respuesta.status_code, 302)
+        self.assertEqual(respuesta.url, self.url_panel)
         
         self.assertEqual(Parque.objects.count(), conteo_inicial + 1)
         self.assertTrue(Parque.objects.filter(nombre='Parque Tlalpan').exists())
