@@ -21,7 +21,7 @@ urlpatterns = [
     path('mis-reservaciones/',              views.mis_reservaciones,  name='mis_reservaciones'),
     path('mis-reservaciones/cancelar/<int:id>/', views.cancelar_reservacion, name='cancelar_reservacion'),
 
-    # ─── Mapa interactivo (Ayros) ────────────────────────────
+    # ─── Mapa interactivo ────────────────────────────
     path('mapa/',                   views.mapa,          name='mapa'),
     path('mapa/parque/<int:id>/',   views.detalle_parque, name='detalle_parque'),
     path('parque/<int:id>/detalle-completo/', views.info_completa_parque, name='info_completa_parque'),
