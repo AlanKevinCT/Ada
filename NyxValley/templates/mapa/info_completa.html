@@ -9,12 +9,12 @@
 {% block contenido %}
 <main class="landing-visual fade-in">
     
-    <header class="seccion-titulo">
-        <div class="titulo-wrapper">
-            <span class="glifo" aria-hidden="true">✦</span>
-            <h1>{{ parque.nombre|upper }}</h1>
+    <header class="seccion-titulo" style="margin-bottom: 3rem;">
+        <div class="titulo-wrapper" style="display: flex; align-items: center; gap: 15px;">
+            <span class="glifo" style="color: var(--acento); font-size: 2rem;">✦</span>
+            <h1 style="margin: 0; border: none; padding: 0;">{{ parque.nombre|upper }}</h1>
         </div>
-        <p class="direccion" aria-label="{% translate 'Ubicación física del parque' %}">📍 {{ parque.direccion|default:"Dirección por confirmar" }}</p>
+        <p class="direccion" style="padding: 0; margin-top: 10px; font-size: 1rem;">📍 {{ parque.direccion }}</p>
     </header>
 
     <div class="main-grid">
@@ -40,6 +40,7 @@
                         <span class="icono-extra-grande" aria-hidden="true">⛺</span>
                         <div class="detalles">
                             <strong class="servicio-nombre">{% translate "ZONA CAMPING" %}</strong>
+                            <br>
                             <span class="servicio-capacidad">
                                 {% translate "Capacidad máxima:" %} {{ parque.capacidad }} {% translate "personas" %}
                             </span>

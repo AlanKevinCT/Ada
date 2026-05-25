@@ -10,24 +10,21 @@
     --fondo-pagina:   #020408; 
     --fondo-card:     rgba(15, 22, 35, 0.6);
     --fondo-nav:      #020408;
-
     --verde-medio:    #ffcc33;
     --verde-claro:    #ffcc33;
-    
     --acento:         #ffcc33;
     --acento-hover:   #ffd65c;
     --texto-principal:#ffffff;
     --texto-suave:    #94a3b8;
     --texto-boton:    #000000;
-    --borde-brutal:   1px solid rgba(245, 158, 11, 0.3);
+    --borde-brutal:   3px solid var(--acento);
     --sombra-glow:          0 0 15px 5px rgba(250, 204, 21, 0.3);
     --sombra-glow-intensa:  0 0 20px 8px rgba(250, 204, 21, 0.5);
     --radio-curva: 50px;
     --radio-card:  24px;
     --glow-linea: 0 0 8px rgba(250, 204, 21, 0.4);
-
     --fuente-titulo:  'Georgia', serif;
-    --fuente-cuerpo:  'Inter', -apple-system, sans-serif;
+    --fuente-cuerpo:  'Courier New', monospace;
 }
 
 /* ── Tema 2: Índigo profundo (oscuro) ───────────────────────── */
@@ -42,10 +39,13 @@
     --texto-principal:#c8bfff;
     --texto-suave:    #6660a8;
     --borde-brutal:   3px solid var(--acento);
+    --sombra-glow:          0 0 15px 5px rgba(124, 112, 255, 0.3);
+    --sombra-glow-intensa:  0 0 20px 8px rgba(124, 112, 255, 0.5);
     --fuente-titulo:  'Georgia', serif;
     --fuente-cuerpo:  'Courier New', monospace;
     --radio-curva: 50px;
     --radio-card:  24px;
+    --glow-linea: 0 0 8px rgba(124, 112, 255, 0.4);
 }
 
 /* ── Tema 3: Bosque esmeralda (oscuro) ──────────────────────── */
@@ -54,16 +54,19 @@
     --fondo-card:     #0a1f18;
     --fondo-nav:      #061410;
     --verde-medio:    #0f3d2a;
-    --verde-claro:    #1a5c40;
+    --verde-claro:    #1a5b40;
     --acento:         #3ecf8e;
     --acento-hover:   #7de8bb;
     --texto-principal:#b8f5dc;
     --texto-suave:    #1e6b4a;
     --borde-brutal:   3px solid var(--acento);
+    --sombra-glow:          0 0 15px 5px rgba(70, 198, 145, 0.3);
+    --sombra-glow-intensa:  0 0 20px 8px rgba(70, 198, 145, 0.5);
     --fuente-titulo:  'Georgia', serif;
     --fuente-cuerpo:  'Courier New', monospace;
     --radio-curva: 50px;
     --radio-card:  24px;
+    --glow-linea: 0 0 8px rgba(70, 198, 145, 0.4);
 }
 
 /* ── Tema 4: Crema y dorado (claro) ─────────────────────────── */
@@ -78,10 +81,13 @@
     --texto-principal:#5c4400;
     --texto-suave:    #7a6830;
     --borde-brutal:   3px solid var(--acento);
+    --sombra-glow:          0 0 15px 5px rgba(217, 159, 24, 0.3);
+    --sombra-glow-intensa:  0 0 20px 8px rgba(217, 159, 24, 0.5);
     --fuente-titulo:  'Georgia', serif;
     --fuente-cuerpo:  'Courier New', monospace;
     --radio-curva: 50px;
     --radio-card:  24px;
+    --glow-linea: 0 0 8px rgba(217, 159, 24, 0.4);
 }
 
 /* ── Tema 5: Bosque de día (claro) ──────────────────────────── */
@@ -96,10 +102,13 @@
     --texto-principal:#1b4332;
     --texto-suave:    #52796f;
     --borde-brutal:   3px solid var(--acento);
+    --sombra-glow:          0 0 15px 5px rgba(12, 218, 84, 0.3);
+    --sombra-glow-intensa:  0 0 20px 8px rgba(12, 218, 84, 0.5);
     --fuente-titulo:  'Georgia', serif;
     --fuente-cuerpo:  'Courier New', monospace;
     --radio-curva: 50px;
     --radio-card:  24px;
+    --glow-linea: 0 0 8px rgba(12, 218, 84, 0.4);
 }
 
 /* ── Tema 6: Niebla y musgo (claro) ─────────────────────────── */
@@ -114,10 +123,13 @@
     --texto-principal:#283618;
     --texto-suave:    #606c38;
     --borde-brutal:   3px solid var(--acento);
+    --sombra-glow:          0 0 15px 5px rgba(191, 226, 14, 0.3);
+    --sombra-glow-intensa:  0 0 20px 8px rgba(139, 154, 62, 0.5);
     --fuente-titulo:  'Georgia', serif;
     --fuente-cuerpo:  'Courier New', monospace;
     --radio-curva: 50px;
     --radio-card:  24px;
+    --glow-linea: 0 0 8px rgb(40, 54, 24, 0.4);
 }
 
 /* ── Reset ──────────────────────────────────────────────────── */
@@ -127,7 +139,8 @@
     box-sizing: border-box;
 }
 
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth;
+font-size: clamp(14px, 1vw + 10px, 18px); } /*Responsivo?*/
 
 body {
     font-family: var(--fuente-cuerpo);
@@ -139,11 +152,17 @@ body {
     transition: background-color 0.3s, color 0.3s;
 }
 
+/* Ajuste para imágenes y elementos que puedan desbordar */
+img, video, canvas {
+    max-width: 100%;
+    height: auto;
+}
+
 /* ── Navbar ─────────────────────────────────────────────────── */
 nav {
     background-color: var(--fondo-nav);
     border-bottom: var(--borde-brutal);
-    padding: 0 8%;
+    padding: 0 2%;
     height: 75px;
     display: flex;
     align-items: center;
@@ -151,9 +170,9 @@ nav {
     position: sticky;
     top: 0;
     z-index: 1000;
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    box-shadow: 0 4px 15px -2px rgba(250, 204, 21, 0.3);
+    /*backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);*/
+    box-shadow: var(--sombra-glow-intensa);
 }
 
 .nav-logo {
@@ -164,7 +183,7 @@ nav {
     text-decoration: none;
     letter-spacing: -1px;
     text-transform: uppercase;
-    filter: drop-shadow(0 0 5px rgba(250, 204, 21, 0.8));
+    filter: drop-shadow(0 0 5px var(--acento-hover));
 }
 
 .nav-logo .glyph { font-size: 1.1rem; margin-right: 8px; }
@@ -198,10 +217,11 @@ nav {
 }
 
 /* ── Main ───────────────────────────────────────────────────── */
-main {
-    max-width: 1280px;
+main { /*Responsivo?*/
+    width: 95%; /* Ocupa el 95% en pantallas pequeñas */
+    max-width: 1280px; /* Pero no se estira infinito en monitores 4K */
     margin: 0 auto;
-    padding: 48px 32px;
+    padding: clamp(1rem, 5vw, 3rem); /* Padding fluido */
 }
 
 /* ── Tipografía ─────────────────────────────────────────────── */
@@ -218,6 +238,8 @@ h1 {
     text-transform: uppercase;
     border-bottom: var(--borde-brutal);
     padding-bottom: 16px;
+    padding-top: 16px;
+    padding-left: 25px;
     margin-bottom: 32px;
 }
 
@@ -238,7 +260,8 @@ h3 {
 p {
     color: var(--texto-suave);
     margin-bottom: 16px;
-    font-size: 0.95rem;
+    padding: 25px;
+    font-size: 1.2rem;
 }
 
 /* ── Botones ────────────────────────────────────────────────── */
@@ -323,6 +346,29 @@ p {
 .card-dato { font-size: 0.9rem; color: var(--texto-suave); margin-bottom: 8px; }
 .card-dato span { color: var(--texto-principal); font-weight: 600;}
 
+/* --- Control del icono del calendario nativo --- */
+
+/* Por defecto (Temas Oscuros como Bosque Nocturno, Indigo, Esmeralda) */
+input[type="date"]::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    /* Filtro para convertir el icono negro en blanco */
+    filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%);
+}
+
+/* Ajuste para Temas Claros (Crema y Dorado, Bosque de Día, Niebla y Musgo) */
+[data-theme="crema-dorado"] input[type="date"]::-webkit-calendar-picker-indicator,
+[data-theme="bosque-dia"] input[type="date"]::-webkit-calendar-picker-indicator,
+[data-theme="niebla-musgo"] input[type="date"]::-webkit-calendar-picker-indicator {
+    /* Filtro invertido o volver al original para que sea oscuro */
+    filter: invert(0%);
+}
+
+/* Opcional: Que el icono brille con el color de acento del tema al pasar el mouse */
+input[type="date"]::-webkit-calendar-picker-indicator:hover {
+    filter: invert(100%) drop-shadow(0 0 2px var(--acento));
+}
+
+
 /* ── Formularios ────────────────────────────────────────────── */
 .form-grupo { margin-bottom: 24px; }
 
@@ -341,7 +387,7 @@ p {
     width: 100%;
     padding: 12px 16px;
     background-color: var(--fondo-card);
-    border: 2px solid var(--verde-claro);
+    border: 2px solid var(--acento-hover);
     color: var(--texto-principal);
     font-family: var(--fuente-cuerpo);
     font-size: 0.95rem;

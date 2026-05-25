@@ -6,9 +6,11 @@
 /* ── Layout principal ───────────────────────────────────────── */
 .mapa-layout {
     display: grid;
-    grid-template-columns: 1fr 360px;
+    grid-template-columns: 1fr 390px;
+    padding-left: 45px;
+    padding-right: 45px;
     gap: 24px;
-    height: 75vh;
+    height: 85vh;
     margin-top: 32px;
     width: 100%;
 }
@@ -42,7 +44,7 @@
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    padding: 10px;
+    /*padding: 10px;*/
 }
 
 .panel-parque:hover {
@@ -72,9 +74,10 @@
 /* ── Detalle del parque ─────────────────────────────────────── */
 .detalle-parque {
     padding: 15px;
-    display: flex;
+    display: grid;
     flex-direction: column;
     gap: 24px;
+    align-content: start;
     height: 100%;
 }
 
@@ -83,17 +86,16 @@
     align-items: center;
     gap: 12px;
     border-bottom: 1px solid rgba(250, 204, 21, 0.1);
-    padding-bottom: 16px;
 }
 
 .detalle-header .glyph {
     color: var(--amarillo);
-    font-size: 1.2rem;
+    font-size: 1.5rem;
 }
 
 .detalle-header h2 {
     font-family: var(--fuente-titulo);
-    font-size: 1.4rem;
+    font-size: 1.5rem;
     color: var(--acento);
     text-transform: uppercase;
     letter-spacing: 0.5px;
@@ -115,7 +117,7 @@
 }
 
 .dato-label {
-    font-size: 0.72rem;
+    font-size: 0.95rem;
     font-weight: 600;
     letter-spacing: 1px;
     text-transform: uppercase;
@@ -124,7 +126,7 @@
 }
 
 .dato-valor {
-    font-size: 0.92rem;
+    font-size: 1rem;
     color: var(--texto-principal);
     line-height: 1.5;
 }
