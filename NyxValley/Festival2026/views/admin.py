@@ -54,28 +54,34 @@ def panel_admin(request):
 
  
 
-
-@login_required
-@solo_admin
-def gestionar_reservaciones(request):
-    """Lista todas las reservaciones para el administrador (RF-13, RF-14)."""
-    if not request.user.is_admin:
-        return redirect('inicio')
-    reservaciones = Reservacion.objects.all().order_by('-fecha_creacion')
-    return render(request, 'admin/gestionar_reservaciones.html',
-                  {'reservaciones': reservaciones})
-
-
 @login_required
 @solo_admin
 def consultar_reservas(request):
     """Consulta de reservaciones con filtros (RF-13)."""
     if not request.user.is_admin:
         return redirect('inicio')
-    # TODO: Alan — agregar filtros por parque, fecha y tipo de estancia
-    reservaciones = Reservacion.objects.all()
-    return render(request, 'admin/consultar_reservas.html',
-                  {'reservaciones': reservaciones})
+    reservaciones = Reservacion.objects.all().order_by('-fecha_creacion') 
+    parques = Parque.objects.all()
+
+    parque_id = request.GET.get('parque')
+    if parque_id:
+        reservaciones = reservaciones.filter(parque_id=parque_id)
+
+    fecha_filtro = request.GET.get('fecha')
+    if fecha_filtro:
+        reservaciones = reservaciones.filter(fecha_inicio=fecha_filtro)
+
+    tipo_estancia = request.GET.get('tipo_estancia')
+    if tipo_estancia in ['cabana', 'camping']:
+        reservaciones = reservaciones.filter(tipo_visita=tipo_estancia)
+
+    return render(request, 'admin/consultar_reservas.html', {
+        'reservaciones': reservaciones,
+        'parques': parques,
+        'parque_seleccionado': parque_id,
+        'fecha_seleccionada': fecha_filtro,
+        'tipo_seleccionado': tipo_estancia,
+    })
 
 
 @login_required

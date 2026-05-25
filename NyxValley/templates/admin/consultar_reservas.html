@@ -1,0 +1,129 @@
+{% extends "base/base.html" %}
+{% load static %}
+{% load i18n %}
+
+{% block estilos_extra %}
+<link rel="stylesheet" href="{% static 'css/admin_panel.css' %}">
+{% endblock %}
+
+{% block contenido %}
+<div style="margin-bottom: 25px; padding: 0 10px;">
+    <a href="{% url 'panel_admin' %}" style="color: #facc15; text-decoration: none; font-size: 0.85rem; letter-spacing: 1px; font-weight: bold;">
+        ← {% translate "VOLVER AL PANEL DE CONTROL" %}
+    </a>
+</div>
+
+<h1 style="text-align: center; color: #facc15; margin-bottom: 40px; letter-spacing: 2px; font-weight: bold; text-shadow: 0 0 10px rgba(250, 204, 21, 0.3);">
+    {% translate "CONSULTA DE RESERVACIONES (RF-13)" %}
+</h1>
+
+<div style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; padding: 25px; margin-bottom: 35px; box-shadow: 0 4px 20px rgba(0,0,0,0.3);">
+    <form method="GET" action="{% url 'consultar_reservas' %}" style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-end;">
+        
+        <div style="flex: 1; min-width: 220px;">
+            <label style="display: block; color: #facc15; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; font-weight: 600;">{% translate "Parque / Santuario" %}</label>
+            <select name="parque" style="width: 100%; background: #121212; border: 1px solid rgba(255,255,255,0.15); color: #fff; padding: 10px; border-radius: 6px; font-size: 0.9rem; outline: none;">
+                <option value="">-- {% translate "Todos los parques" %} --</option>
+                {% for pa in parques %}
+                    <option value="{{ pa.id }}" {% if parque_seleccionado == pa.id|slugify %}selected{% endif %}>{{ pa.nombre }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div style="flex: 1; min-width: 200px;">
+            <label style="display: block; color: #facc15; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; font-weight: 600;">{% translate "Fecha de Llegada" %}</label>
+            <input type="date" name="fecha" value="{{ fecha_seleccionada }}" style="width: 100%; background: #121212; border: 1px solid rgba(255,255,255,0.15); color: #fff; padding: 9px; border-radius: 6px; font-size: 0.9rem; outline: none;">
+        </div>
+
+        <div style="flex: 1; min-width: 200px;">
+            <label style="display: block; color: #facc15; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; font-weight: 600;">{% translate "Tipo de Estancia" %}</label>
+            <select name="tipo_estancia" style="width: 100%; background: #121212; border: 1px solid rgba(255,255,255,0.15); color: #fff; padding: 10px; border-radius: 6px; font-size: 0.9rem; outline: none;">
+                <option value="">-- {% translate "Cualquiera" %} --</option>
+                <option value="cabana" {% if tipo_seleccionado == 'cabana' %}selected{% endif %}>{% translate "Cabañas" %}</option>
+                <option value="camping" {% if tipo_seleccionado == 'camping' %}selected{% endif %}>{% translate "Camping" %}</option>
+            </select>
+        </div>
+
+        <div style="display: flex; gap: 12px; min-width: 200px;">
+            <button type="submit" class="btn btn-primary" style="background: #facc15; color: #000; font-weight: bold; border: none; padding: 11px 24px; border-radius: 6px; cursor: pointer; letter-spacing: 1px; font-size: 0.85rem; text-transform: uppercase;">
+                🔍 {% translate "FILTRAR" %}
+            </button>
+            <a href="{% url 'consultar_reservas' %}" style="background: rgba(255,255,255,0.08); color: #fff; border: 1px solid rgba(255,255,255,0.2); padding: 11px 18px; border-radius: 6px; text-decoration: none; font-size: 0.85rem; font-weight: bold; display: inline-flex; align-items: center; letter-spacing: 1px;">
+                ✕ {% translate "LIMPIAR" %}
+            </a>
+        </div>
+    </form>
+</div>
+
+<div style="background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 14px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+    <div style="overflow-x: auto;">
+        <table style="width: 100%; border-collapse: separate; border-spacing: 0 12px;">
+            <thead>
+                <tr style="color: #facc15; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1.5px;">
+                    <th style="padding: 12px; text-align: left; font-weight: 600;">{% translate "Cliente" %}</th>
+                    <th style="padding: 12px; text-align: left; font-weight: 600;">{% translate "Parque" %}</th>
+                    <th style="padding: 12px; text-align: center; font-weight: 600;">{% translate "Periodo de Estancia" %}</th>
+                    <th style="padding: 12px; text-align: center; font-weight: 600;">{% translate "Personas" %}</th>
+                    <th style="padding: 12px; text-align: center; font-weight: 600;">{% translate "Duración" %}</th>
+                    <th style="padding: 12px; text-align: center; font-weight: 600;">{% translate "Estado" %}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for r in reservaciones %}
+                <tr style="background: rgba(255, 255, 255, 0.03);">
+                    <td style="padding: 18px 12px; border-radius: 8px 0 0 8px; border-left: 3px solid #facc15;">
+                        <strong style="color: #ffffff; font-size: 0.95rem;">
+                            {{ r.usuario.nombre_completo|upper }}
+                        </strong>
+                        <div style="color: #888; font-size: 0.75rem; margin-top: 4px;">{{ r.usuario.correo_electronico }}</div>
+                    </td>
+
+                    <td style="padding: 18px 12px;">
+                        <span style="color: #ffffff; font-weight: 600; font-size: 0.95rem;">{{ r.parque.nombre }}</span>
+                        <div style="font-size: 0.75rem; color: #888; margin-top: 4px;">
+                            {% if r.tipo_visita == 'cabana' %}🏡 {% translate "Cabaña" %}{% else %}⛺ {% translate "Zona de Camping" %}{% endif %}
+                        </div>
+                    </td>
+
+                    <td style="padding: 18px 12px; text-align: center; white-space: nowrap;">
+                        <span style="color: #ffffff; font-family: monospace; font-size: 0.9rem;">
+                            {{ r.fecha_inicio|date:"d M Y" }} → {{ r.fecha_fin|date:"d M Y" }}
+                        </span>
+                    </td>
+
+                    <td style="padding: 18px 12px; text-align: center;">
+                        <span style="color: #ffffff; font-weight: bold; font-size: 0.95rem;">
+                            {{ r.numero_personas }} {% translate "Pax" %}
+                        </span>
+                    </td>
+
+                    <td style="padding: 18px 12px; text-align: center;">
+                        <span style="color: #facc15; font-family: monospace; font-weight: bold;">
+                            {{ r.duracion_dias }} {% translate "días" %}
+                        </span>
+                    </td>
+
+                    <td style="padding: 18px 12px; text-align: center; border-radius: 0 8px 8px 0;">
+                        {% if r.estado == 'activa' %}
+                            <span style="background: rgba(16, 185, 129, 0.15); color: #10b981; border: 1px solid #10b981; padding: 5px 11px; border-radius: 4px; font-size: 0.7rem; font-weight: bold; letter-spacing: 0.5px; display: inline-block;">
+                                {% translate "ACTIVA" %}
+                            </span>
+                        {% else %}
+                            <span style="background: rgba(239, 68, 68, 0.15); color: #ef4444; border: 1px solid #ef4444; padding: 5px 11px; border-radius: 4px; font-size: 0.7rem; font-weight: bold; letter-spacing: 0.5px; display: inline-block;">
+                                {% translate "CANCELADA" %}
+                            </span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6" style="text-align: center; padding: 50px; color: #888; font-size: 0.9rem;">
+                        {% translate "No se encontraron reservaciones con los criterios seleccionados." %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
