@@ -39,9 +39,32 @@
 
 /* TARJETA PASADA O CANCELADA */
 .card-bitacora.pasada {
-    opacity: 0.75; /* No tan claro para que se vea bien */
+    opacity: 0.55; 
+    filter: grayscale(100%);
     background: rgba(10, 10, 10, 0.6);
     border: 1px dashed rgba(255, 255, 255, 0.2);
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.header-left h2 {
+    font-size: 1.1rem;
+    margin: 0;
+}
+
+.fecha-log {
+    font-size: 0.85rem;
+    color: #888;
 }
 
 .dot-glow {
@@ -53,32 +76,58 @@
     width: 10px; height: 10px; background: #555; border-radius: 50%; display: inline-block;
 }
 
+/* Cuerpo de Tarjetas */
 .card-body {
     display: grid;
     grid-template-columns: 1fr 1fr;
     margin: 20px 0;
+    gap: 15px;
+}
+
+.card-body-simple {
+    margin-top: 15px;
+}
+
+.card-body-simple h3 {
+    margin: 0 0 5px 0;
+}
+
+/* Información del Parque Integrada */
+.direccion-parque-mini {
+    font-size: 0.85rem;
+    color: #b3b3b3;
+    margin: 4px 0;
+}
+
+.horario-parque-mini {
+    font-size: 0.8rem;
+    color: #888;
+    margin: 4px 0;
 }
 
 .info-group label { font-size: 0.7rem; color: #666; display: block; margin-bottom: 5px; }
+.info-group h3 { margin: 0; font-size: 1.2rem; }
 
-.precio-box {
-    background: rgba(0,0,0,0.4); padding: 10px; border-radius: 10px;
-    color: #facc15; font-weight: bold; text-align: center;
+.status-text {
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+    color: #ff8585;
+    margin-top: 10px;
 }
 
+/* Botonera de Cancelaciones */
 .btn-cancelar {
     width: 100%; background: rgba(255, 68, 68, 0.1); color: #ff4444;
     border: 1px solid rgba(255, 68, 68, 0.3); padding: 12px; border-radius: 12px;
     font-weight: bold; cursor: pointer;
+    transition: background 0.2s;
 }
 
-.btn-disabled {
-    width: 100%; background: #222; color: #555; border: none; padding: 12px; border-radius: 12px;
+.btn-cancelar:hover {
+    background: rgba(255, 68, 68, 0.2);
 }
-
 
 /* ── AJUSTE DE BOTONES SWEETALERT ── */
-
 .swal2-actions {
     display: flex !important;
     flex-direction: row !important;
@@ -89,13 +138,16 @@
 }
 
 .btn-swal {
-    min-width: 160px !important; /* Mismo ancho para ambos */
+    min-width: 160px !important;
     display: flex !important;
     align-items: center;
     justify-content: center;
     height: 45px !important;
     margin: 0 !important;
     padding: 0 20px !important;
+    cursor: pointer;
+    font-weight: bold;
+    border-radius: 6px;
 }
 
 .swal2-actions .btn-primary {
@@ -120,4 +172,10 @@
 .swal2-actions .btn-secondary:hover {
     background: var(--acento) !important;
     color: var(--texto-boton) !important;
+}
+
+/* Responsivo para Tablets y Celulares */
+@media (max-width: 768px) {
+    .bitacora-grid { grid-template-columns: 1fr; }
+    .card-body { grid-template-columns: 1fr; gap: 20px; }
 }
