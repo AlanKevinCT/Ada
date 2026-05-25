@@ -29,9 +29,13 @@ def formulario_reserva(request):
                     numero_personas=form.cleaned_data['numero_personas'],
                     tipo_visita=form.cleaned_data['tipo_visita'],
                 )
-                # Guardamos el id para poder mostrarlo en la confirmación
-                request.session['ultima_reservacion_id'] = reservacion.id
-                return redirect('confirmacion')
+                return render(request, 'cliente/formulario_reserva.html', {
+                    'form': ReservaForm(), 
+                    'parques': parques,
+                    'success': True 
+                })
+                # ──────────────────────────────────────────────────────────────────
+                
             except ValueError as e:
                 form.add_error(None, str(e))
 
@@ -39,7 +43,6 @@ def formulario_reserva(request):
         'form': form,
         'parques': parques,
     })
-
 
 
 @login_required
