@@ -7,80 +7,83 @@
 {% endblock %}
 
 {% block contenido %}
-<div class="landing-visual fade-in">
+<main class="landing-visual fade-in">
     
     <header class="seccion-titulo">
         <div class="titulo-wrapper">
-            <span class="glifo">✦</span>
+            <span class="glifo" aria-hidden="true">✦</span>
             <h1>{{ parque.nombre|upper }}</h1>
         </div>
-        <p class="direccion">📍 {{ parque.direccion|default:"Dirección por confirmar" }}</p>
+        <p class="direccion" aria-label="{% translate 'Ubicación física del parque' %}">📍 {{ parque.direccion|default:"Dirección por confirmar" }}</p>
     </header>
 
     <div class="main-grid">
         
         <div class="col-left">
-            <section class="caja-info">
-                <p class="etiqueta">{% translate "BIENVENIDOS AL SANTUARIO" %}</p>
+            <section class="caja-info" aria-labelledby="titulo-bienvenida">
+                <p id="titulo-bienvenida" class="etiqueta">{% translate "BIENVENIDOS AL SANTUARIO" %}</p>
                 <div class="descripcion-box">
-                    <p class="texto-magico">
+                    <blockquote class="texto-magico" lang="es">
                         {% translate '"En el corazón de Nyx Valley, el tiempo se detiene. Somos un refugio donde la naturaleza susurra secretos y las luciérnagas pintan el aire con destellos de esperanza. Nuestro parque no es solo un destino, es una experiencia mística diseñada para reconectar tu alma con el bosque."' %}
-                    </p>
-                    <hr class="divisor">
-                    <p>{{ parque.descripcion }}</p>
+                    </blockquote>
+                    <div class="divisor"></div>
+                    <p class="parque-descripcion-texto">{{ parque.descripcion }}</p>
                 </div>
             </section>
 
-            <section class="caja-info">
-                <p class="etiqueta-separada">{% translate "SERVICIOS" %}</p>
+            <section class="caja-info" aria-labelledby="titulo-servicios">
+                <h2 id="titulo-servicios" class="etiqueta-separada">{% translate "SERVICIOS" %}</h2>
                 <div class="servicios-grid">
+                    
                     {% if parque.tiene_camping %}
-                    <div class="servicio-card-grande">
-                        <span class="icono-extra-grande">⛺</span>
-                        <div class="detalles" style="display: flex; flex-direction: column; justify-content: center;">
-                            <strong style="display: block; margin-bottom: 4px;">{% translate "ZONA CAMPING" %}</strong>
-                            <span style="display: block; font-size: 0.85rem; color: var(--texto-suave);">
+                    <article class="servicio-card-grande">
+                        <span class="icono-extra-grande" aria-hidden="true">⛺</span>
+                        <div class="detalles">
+                            <strong class="servicio-nombre">{% translate "ZONA CAMPING" %}</strong>
+                            <span class="servicio-capacidad">
                                 {% translate "Capacidad máxima:" %} {{ parque.capacidad }} {% translate "personas" %}
                             </span>
                         </div>
-                    </div>
+                    </article>
                     {% endif %}
 
                     {% if parque.tiene_cabanas %}
-                    <div class="servicio-card-grande">
-                        <span class="icono-grande">🏠</span>
-                        <div class="detalles" style="display: flex; flex-direction: column; justify-content: center;">
-                            <strong style="display: block; margin-bottom: 4px;">{% translate "CABAÑA" %}</strong>
-                            <span style="display: block; font-size: 0.85rem; color: var(--texto-suave);">
+                    <article class="servicio-card-grande">
+                        <span class="icono-grande" aria-hidden="true">🏠</span>
+                        <div class="detalles">
+                            <strong class="servicio-nombre">{% translate "CABAÑA" %}</strong>
+                            <span class="servicio-capacidad">
                                 {% translate "Capacidad máxima:" %} {{ parque.capacidad }} {% translate "personas" %}
                             </span>
                         </div>
-                    </div>
+                    </article>
                     {% endif %}
                 </div>
             </section>
         </div>
 
         <div class="col-right">
-            <section class="caja-reserva">
+            <section class="caja-reserva" aria-label="{% translate 'Área de reservaciones' %}">
                 <a href="/reservar/?parque={{ parque.id }}" class="btn-reserva-boceto">
                     {% translate "RESERVAR" %}
                 </a>
             </section>
 
-        <section class="caja-info">
-            <p class="etiqueta">{% translate "HORARIO" %}</p>
-            <div class="horario-card">
-                <span class="icono-horario">⏰</span>
-                <div class="horario-texto">
-                    <span class="rango">{{ parque.horario_apertura|time:"H:i" }} - {{ parque.horario_cierre|time:"H:i" }}</span>
-                    <span class="unidad">{% translate "HRS" %}</span>
-                </div>
-            </div>
-        </section>
-
+            <section class="caja-info" aria-labelledby="titulo-horario">
+                <p id="titulo-horario" class="etiqueta">{% translate "HORARIO" %}</p>
+                <article class="horario-card">
+                    <span class="icono-horario" aria-hidden="true">⏰</span>
+                    <div class="horario-texto">
+                        <span class="rango">
+                            <time datetime="{{ parque.horario_apertura|time:'H:i' }}">{{ parque.horario_apertura|time:"H:i" }}</time> - 
+                            <time datetime="{{ parque.horario_cierre|time:'H:i' }}">{{ parque.horario_cierre|time:"H:i" }}</time>
+                        </span>
+                        <span class="unidad">{% translate "HRS" %}</span>
+                    </div>
+                </article>
+            </section>
         </div>
 
     </div>
-</div>
+</main>
 {% endblock %}

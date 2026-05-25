@@ -31,10 +31,26 @@ def solo_admin(vista):
 @login_required
 @solo_admin
 def panel_admin(request):
-    """Panel principal del administrador."""
-    if not request.user.is_admin:
+     """
+    Panel principal del administrador (RF-18).
+    Controla las estadísticas del festival y el listado de santuarios autorizados.
+    """
+     if not request.user.is_admin:
         return redirect('inicio')
-    return render(request, 'admin/panel.html')
+        
+     parques_activos = Parque.objects.filter(activo=True)
+
+     contexto = {
+    'parques': parques_activos,
+        'total_parques':        parques_activos.count(), 
+        'total_reservaciones':  Reservacion.objects.count(),
+        'reservaciones_activas':       Reservacion.objects.filter(estado='activa').count(), #
+        'total_usuarios':       Usuario.objects.filter(is_admin=False).count(),
+    }
+     
+     return render(request, 'admin/panel.html', contexto)
+
+ 
 
 
 @login_required
@@ -101,6 +117,8 @@ def editar_parque(request, id):
                 SignalModificacion.modificarParque(parque, cambios)
 
             return redirect('panel_admin')
+        else :
+            print("ERRORES DEL FORMULARIO:", form.errors)
 
     return render(request, 'admin/editar_parque.html', {
         'form': form,

@@ -15,48 +15,61 @@
             </p>
         </div>
 
+        {% if form.errors %}
+            <div style="background: rgba(239, 68, 68, 0.1); border: 1px solid rgb(239, 68, 68); color: #ef4444; padding: 10px; border-radius: var(--radio-card); margin-bottom: 20px; font-size: 0.9rem;">
+                <strong>{% translate "Por favor corrige los siguientes errores:" %}</strong>
+                {{ form.non_field_errors }}
+            </div>
+        {% endif %}
+
         <form method="POST" action="{% url 'editar_parque' parque.id %}">
             {% csrf_token %}
 
             <div class="form-grupo">
                 <label>{% translate "NOMBRE DEL PARQUE" %}</label>
-                <input type="text" name="nombre" class="form-control" value="{{ parque.nombre }}" required>
+                {{ form.nombre }}
+                {% if form.nombre.errors %}<span style="color: #ef4444; font-size: 0.8rem;">{{ form.nombre.errors }}</span>{% endif %}
             </div>
 
             <div class="form-grupo">
                 <label>{% translate "DIRECCIÓN FÍSICA" %}</label>
-                <input type="text" name="direccion" class="form-control" value="{{ parque.direccion }}" required>
+                {{ form.direccion }}
+                {% if form.direccion.errors %}<span style="color: #ef4444; font-size: 0.8rem;">{{ form.direccion.errors }}</span>{% endif %}
             </div>
 
             <div class="form-grupo">
                 <label>{% translate "CAPACIDAD MÁXIMA (PERSONAS)" %}</label>
-                <input type="number" name="capacidad" class="form-control" value="{{ parque.capacidad }}" min="1" required>
+                {{ form.capacidad }}
+                {% if form.capacidad.errors %}<span style="color: #ef4444; font-size: 0.8rem;">{{ form.capacidad.errors }}</span>{% endif %}
             </div>
 
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
                 <div class="form-grupo">
                     <label>{% translate "LATITUD" %}</label>
-                    <input type="number" step="any" name="latitud" class="form-control" value="{% if parque.latitud %}{{ parque.latitud }}{% endif %}" placeholder="0.000000">
+                    {{ form.latitud }}
+                    {% if form.latitud.errors %}<span style="color: #ef4444; font-size: 0.8rem;">{{ form.latitud.errors }}</span>{% endif %}
                 </div>
 
                 <div class="form-grupo">
                     <label>{% translate "LONGITUD" %}</label>
-                    <input type="number" step="any" name="longitud" class="form-control" value="{% if parque.longitud %}{{ parque.longitud }}{% endif %}" placeholder="0.000000">
+                    {{ form.longitud }}
+                    {% if form.longitud.errors %}<span style="color: #ef4444; font-size: 0.8rem;">{{ form.longitud.errors }}</span>{% endif %}
                 </div>
             </div>
 
             <div class="form-grupo">
                 <label>{% translate "SERVICIOS DISPONIBLES" %}</label>
-                <textarea name="servicios" class="form-control" rows="3">{% if parque.servicios %}{{ parque.servicios }}{% endif %}</textarea>
+                {{ form.servicios }}
+                {% if form.servicios.errors %}<span style="color: #ef4444; font-size: 0.8rem;">{{ form.servicios.errors }}</span>{% endif %}
             </div>
 
             <div class="form-grupo" style="display: flex; gap: 30px; margin: 24px 0; background: rgba(255, 255, 255, 0.02); padding: 15px; border-radius: var(--radio-card); border: 1px solid rgba(255, 255, 255, 0.05);">
                 <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; color: var(--texto-suave); font-size: 0.85rem; letter-spacing: 1px;">
-                    <input type="checkbox" name="tiene_cabanas" style="width: 18px; height: 18px; accent-color: var(--acento);" {% if parque.tiene_cabanas %}checked{% endif %}> 
+                    {{ form.tiene_cabanas }}
                     🏠 {% translate "¿TIENE CABAÑAS?" %}
                 </label>
                 <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; color: var(--texto-suave); font-size: 0.85rem; letter-spacing: 1px;">
-                    <input type="checkbox" name="tiene_camping" style="width: 18px; height: 18px; accent-color: var(--acento);" {% if parque.tiene_camping %}checked{% endif %}> 
+                    {{ form.tiene_camping }}
                     ⛺ {% translate "¿TIENE CAMPING?" %}
                 </label>
             </div>

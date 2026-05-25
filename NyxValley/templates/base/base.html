@@ -6,17 +6,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block titulo %}Nyx Valley{% endblock %}</title>
+    
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
-    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    
+    <script src="https://unpkg.com/htmx.org@1.9.10" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11" defer></script>
     {% block estilos_extra %}{% endblock %}
 </head>
 <body>
 
-    <nav>
+    <nav role="navigation" aria-label="{% translate 'Navegación principal' %}">
         <a class="nav-logo" href="/">
-            <span class="glyph">✦</span> Nyx Valley
+            <span class="glyph" aria-hidden="true">✦</span> Nyx Valley
         </a>
         <ul class="nav-links">
             <li><a href="/">{% translate "Inicio" %}</a></li>
@@ -28,9 +30,7 @@
                     <li><a href="/panel/">{% translate "Mi cuenta" %}</a></li>
                     <li><a href="/mis-reservaciones/">{% translate "Mis reservaciones" %}</a></li>
                 {% endif %}
-
                 <li><a href="/logout/">{% translate "Cerrar sesión" %}</a></li>
-
             {% else %}
                 <li><a href="/login/">{% translate "Iniciar sesión" %}</a></li>
                 <li><a href="/registro/">{% translate "Registrarse" %}</a></li>
@@ -40,7 +40,8 @@
                 <form action="{% url 'set_language' %}" method="post" style="display: inline; margin-left: 10px;">
                     {% csrf_token %}
                     <input name="next" type="hidden" value="{{ request.get_full_path }}">
-                    <select name="language" onchange="this.form.submit()" class="selector-tema-toggle" style="background: var(--fondo-card); color: var(--acento); border: var(--borde-brutal); padding: 5px 10px; border-radius: var(--radio-curva); cursor: pointer; font-size: 0.75rem;">
+                    <label for="selector-idioma" class="sr-only" style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); border: 0;">{% translate "Seleccionar idioma" %}</label>
+                    <select id="selector-idioma" name="language" onchange="this.form.submit()" class="selector-tema-toggle" style="background: var(--fondo-card); color: var(--acento); border: var(--borde-brutal); padding: 5px 10px; border-radius: var(--radio-curva); cursor: pointer; font-size: 0.75rem;">
                         {% get_current_language as LANGUAGE_CODE %}
                         {% get_available_languages as LANGUAGES %}
                         {% for lang in LANGUAGES %}
@@ -54,55 +55,51 @@
         </ul>
     </nav>
 
-    <main>
-        {% block contenido %}{% endblock %}
-    </main>
+    {% block contenido %}{% endblock %}
 
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     {% block scripts_extra %}{% endblock %}
 
     <div class="selector-tema">
-        <div class="selector-tema-menu" id="menu-temas">
-
-            <button class="tema-opcion activo" onclick="cambiarTema('bosque-nocturno', this)">
-                <div class="tema-muestra" style="background:#0d1a0d; border-color:#e8d44d;"></div>
+        <div class="selector-tema-menu" id="menu-temas" role="menu" aria-hidden="true">
+            <button class="tema-opcion activo" role="menuitem" onclick="cambiarTema('bosque-nocturno', this)">
+                <div class="tema-muestra" style="background:#0d1a0d; border-color:#e8d44d;" aria-hidden="true"></div>
                 {% translate "Bosque nocturno" %}
             </button>
-
-            <button class="tema-opcion" onclick="cambiarTema('indigo-profundo', this)">
-                <div class="tema-muestra" style="background:#12122e; border-color:#7c6fff;"></div>
+            <button class="tema-opcion" role="menuitem" onclick="cambiarTema('indigo-profundo', this)">
+                <div class="tema-muestra" style="background:#12122e; border-color:#7c6fff;" aria-hidden="true"></div>
                 {% translate "Índigo profundo" %}
             </button>
-
-            <button class="tema-opcion" onclick="cambiarTema('bosque-esmeralda', this)">
-                <div class="tema-muestra" style="background:#0a1f18; border-color:#3ecf8e;"></div>
+            <button class="tema-opcion" role="menuitem" onclick="cambiarTema('bosque-esmeralda', this)">
+                <div class="tema-muestra" style="background:#0a1f18; border-color:#3ecf8e;" aria-hidden="true"></div>
                 {% translate "Bosque esmeralda" %}
             </button>
-
-            <button class="tema-opcion" onclick="cambiarTema('crema-dorado', this)">
-                <div class="tema-muestra" style="background:#fffdf7; border-color:#b8860b;"></div>
+            <button class="tema-opcion" role="menuitem" onclick="cambiarTema('crema-dorado', this)">
+                <div class="tema-muestra" style="background:#fffdf7; border-color:#b8860b;" aria-hidden="true"></div>
                 {% translate "Crema y dorado" %}
             </button>
-
-            <button class="tema-opcion" onclick="cambiarTema('bosque-dia', this)">
-                <div class="tema-muestra" style="background:#ffffff; border-color:#2d6a4f;"></div>
+            <button class="tema-opcion" role="menuitem" onclick="cambiarTema('bosque-dia', this)">
+                <div class="tema-muestra" style="background:#ffffff; border-color:#2d6a4f;" aria-hidden="true"></div>
                 {% translate "Bosque de día" %}
             </button>
-
-            <button class="tema-opcion" onclick="cambiarTema('niebla-musgo', this)">
-                <div class="tema-muestra" style="background:#f8faf8; border-color:#606c38;"></div>
+            <button class="tema-opcion" role="menuitem" onclick="cambiarTema('niebla-musgo', this)">
+                <div class="tema-muestra" style="background:#f8faf8; border-color:#606c38;" aria-hidden="true"></div>
                 {% translate "Niebla y musgo" %}
             </button>
-
         </div>
-        <button class="selector-tema-toggle" onclick="toggleMenu()">✦ {% translate "Tema" %}</button>
+        <button class="selector-tema-toggle" 
+                id="btn-temas"
+                aria-haspopup="true" 
+                aria-expanded="false" 
+                onclick="toggleMenu()">
+            <span aria-hidden="true">✦</span> {% translate "Tema" %}
+        </button>
     </div>
 
-    <footer>
-        <span class="glyph">✦</span>
+    <footer role="contentinfo">
+        <span class="glyph" aria-hidden="true">✦</span>
         {% translate "Festival Internacional de las Luciérnagas 2026 — Nyx Valley" %}
-        <span class="glyph">✦</span>
+        <span class="glyph" aria-hidden="true">✦</span>
     </footer>
 
     <script>
@@ -125,16 +122,25 @@
         }
 
         function toggleMenu() {
-            document.getElementById('menu-temas').classList.toggle('abierto');
+            const menu = document.getElementById('menu-temas');
+            const btn = document.getElementById('btn-temas');
+            const estaAbierto = menu.classList.toggle('abierto');
+            
+            // Actualización dinámica de estados WCAG (.md 5.4.3)
+            btn.setAttribute('aria-expanded', estaAbierto);
+            menu.setAttribute('aria-hidden', !estaAbierto);
         }
 
         document.addEventListener('click', function(e) {
             const selector = document.querySelector('.selector-tema');
             if (!selector.contains(e.target)) {
-                document.getElementById('menu-temas').classList.remove('abierto');
+                const menu = document.getElementById('menu-temas');
+                const btn = document.getElementById('btn-temas');
+                menu.classList.remove('abierto');
+                btn.setAttribute('aria-expanded', 'false');
+                menu.setAttribute('aria-hidden', 'true');
             }
         });
     </script>
-
 </body>
 </html>

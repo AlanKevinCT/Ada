@@ -1,4 +1,8 @@
-:root {
+/* ==========================================================================
+   Nyx Valley — Estilos de la Vista de Información del Parque 
+   ========================================================================== */
+
+   :root {
     --acento-oro: #b8860b;
     --fondo-caja: rgba(255, 255, 255, 0.03);
     --borde-suave: rgba(255, 255, 255, 0.1);
@@ -9,17 +13,38 @@
     margin: 40px auto;
 }
 
-/* Espaciado de la palabra SERVICIOS */
-.etiqueta-separada {
+/* Encabezados y etiquetas de sección */
+.etiqueta {
     font-size: 0.75rem;
-    letter-spacing: 4px; /* Más espacio entre letras */
-    color: var(--acento-oro);
+    letter-spacing: 2px;
+    color: var(--acento);
     font-weight: 800;
-    margin: 40px 0 20px 0; /* Más margen arriba y abajo */
+    margin-bottom: 15px;
     display: block;
 }
 
-/* Cajitas de Servicios y Horario (Mismo Diseño) */
+.etiqueta-separada {
+    font-size: 0.75rem;
+    letter-spacing: 4px;
+    color: var(--acento-oro);
+    font-weight: 800;
+    margin: 40px 0 20px 0;
+    display: block;
+    text-transform: uppercase;
+}
+
+/* Divisor de texto místico */
+.descripcion-box .divisor {
+    border-top: 1px solid var(--borde-suave); 
+    margin: 20px 0;
+}
+
+.parque-descripcion-texto {
+    color: var(--texto-principal);
+    font-size: 0.95rem;
+}
+
+/* Estructura de las Tarjetas (Servicios y Horario) */
 .servicio-card-grande, .horario-card {
     display: flex;
     align-items: center;
@@ -31,9 +56,29 @@
     margin-bottom: 15px;
 }
 
-/* Icono de camping más grande como pediste */
+/* Contenedor de detalles internos (Sustituye el display inline que causaba desorden) */
+.servicio-card-grande .detalles {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.servicio-nombre {
+    display: block; 
+    margin-bottom: 4px;
+    font-family: var(--fuente-titulo);
+    color: var(--texto-principal);
+}
+
+.servicio-capacidad {
+    display: block; 
+    font-size: 0.85rem; 
+    color: var(--texto-suave);
+}
+
+/* Dimensiones de los Iconos */
 .icono-extra-grande {
-    font-size: 3rem; /* Tamaño aumentado */
+    font-size: 3rem;
     filter: drop-shadow(0 0 10px rgba(255,255,255,0.1));
 }
 
@@ -41,7 +86,7 @@
     font-size: 2.2rem;
 }
 
-/* Diseño del Horario */
+/* Elementos de la tarjeta de Horario */
 .horario-texto {
     display: flex;
     flex-direction: column;
@@ -51,6 +96,7 @@
     font-size: 2.5rem;
     font-weight: 900;
     line-height: 1;
+    color: var(--texto-principal);
 }
 
 .horario-texto .unidad {
@@ -59,7 +105,7 @@
     letter-spacing: 2px;
 }
 
-/* Botón Reserva */
+/* Maquetación del Botón de Reserva (.md 5.3.2 enfocado a accesibilidad por teclado) */
 .btn-reserva-boceto {
     display: block;
     width: 100%;
@@ -72,23 +118,36 @@
     font-size: 1.3rem;
     border-radius: 4px;
     margin-bottom: 30px;
+    transition: all 0.2s ease-in-out;
 }
 
-
-.btn-reserva-boceto:hover {
-    background: #eab308; /* Se aclara un poquito el fondo */
-    transform: translateY(-3px); /* Sube un poquito */
-    
+.btn-reserva-boceto:hover,
+.btn-reserva-boceto:focus {
+    background: #eab308;
+    transform: translateY(-3px);
     box-shadow: 0 0 20px rgba(184, 134, 11, 0.6), 
                 0 0 40px rgba(184, 134, 11, 0.4);
-    
     filter: brightness(1.1);
+    outline: none;
 }
 
-
-/* Ajuste de Columnas */
+/* Distribución de la Rejilla en dos columnas */
 .main-grid {
     display: grid;
     grid-template-columns: 1.2fr 0.8fr;
     gap: 60px;
+}
+
+/* Diseño Adaptable / Responsive para móviles (.md 12) */
+@media (max-width: 768px) {
+    .main-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+    
+    .horario-card, .servicio-card-grande {
+        flex-direction: column;
+        text-align: center;
+        gap: 15px;
+    }
 }
