@@ -32,7 +32,6 @@ urlpatterns = [
 
     # ─── Panel de administrador ──────────────────────────────
     path('admin-panel/',                            views.panel_admin,          name='panel_admin'),
-    path('admin-panel/reservaciones/',              views.gestionar_reservaciones, name='gestionar_reservaciones'),
     path('admin-panel/reservaciones/consultar/',    views.consultar_reservas,   name='consultar_reservas'),
     path('admin-panel/parques/crear/',              views.crear_parque,         name='crear_parque'),
     path('admin-panel/parques/editar/<int:id>/',    views.editar_parque,        name='editar_parque'),

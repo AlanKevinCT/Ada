@@ -14,6 +14,8 @@ from django.conf import settings
 from django.utils import timezone
 from functools import wraps
 from django.shortcuts import redirect
+from django.contrib import messages
+from datetime import datetime
 
 def solo_admin(vista):
     """
@@ -31,22 +33,26 @@ def solo_admin(vista):
 @login_required
 @solo_admin
 def panel_admin(request):
-    """Panel principal del administrador."""
-    if not request.user.is_admin:
+     """
+    Panel principal del administrador (RF-18).
+    Controla las estadísticas del festival y el listado de santuarios autorizados.
+    """
+     if not request.user.is_admin:
         return redirect('inicio')
-    return render(request, 'admin/panel.html')
+        
+     parques_activos = Parque.objects.filter(activo=True)
 
+     contexto = {
+    'parques': parques_activos,
+        'total_parques':        parques_activos.count(), 
+        'total_reservaciones':  Reservacion.objects.count(),
+        'reservaciones_activas':       Reservacion.objects.filter(estado='activa').count(), #
+        'total_usuarios':       Usuario.objects.filter(is_admin=False).count(),
+    }
+     
+     return render(request, 'admin/panel.html', contexto)
 
-@login_required
-@solo_admin
-def gestionar_reservaciones(request):
-    """Lista todas las reservaciones para el administrador (RF-13, RF-14)."""
-    if not request.user.is_admin:
-        return redirect('inicio')
-    reservaciones = Reservacion.objects.all().order_by('-fecha_creacion')
-    return render(request, 'admin/gestionar_reservaciones.html',
-                  {'reservaciones': reservaciones})
-
+ 
 
 @login_required
 @solo_admin
@@ -54,10 +60,28 @@ def consultar_reservas(request):
     """Consulta de reservaciones con filtros (RF-13)."""
     if not request.user.is_admin:
         return redirect('inicio')
-    # TODO: Alan — agregar filtros por parque, fecha y tipo de estancia
-    reservaciones = Reservacion.objects.all()
-    return render(request, 'admin/consultar_reservas.html',
-                  {'reservaciones': reservaciones})
+    reservaciones = Reservacion.objects.all().order_by('-fecha_creacion') 
+    parques = Parque.objects.all()
+
+    parque_id = request.GET.get('parque')
+    if parque_id:
+        reservaciones = reservaciones.filter(parque_id=parque_id)
+
+    fecha_filtro = request.GET.get('fecha')
+    if fecha_filtro:
+        reservaciones = reservaciones.filter(fecha_inicio=fecha_filtro)
+
+    tipo_estancia = request.GET.get('tipo_estancia')
+    if tipo_estancia in ['cabana', 'camping']:
+        reservaciones = reservaciones.filter(tipo_visita=tipo_estancia)
+
+    return render(request, 'admin/consultar_reservas.html', {
+        'reservaciones': reservaciones,
+        'parques': parques,
+        'parque_seleccionado': parque_id,
+        'fecha_seleccionada': fecha_filtro,
+        'tipo_seleccionado': tipo_estancia,
+    })
 
 
 @login_required
@@ -101,6 +125,8 @@ def editar_parque(request, id):
                 SignalModificacion.modificarParque(parque, cambios)
 
             return redirect('panel_admin')
+        else :
+            print("ERRORES DEL FORMULARIO:", form.errors)
 
     return render(request, 'admin/editar_parque.html', {
         'form': form,

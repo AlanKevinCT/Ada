@@ -18,7 +18,7 @@
     <div class="card">
         <h3 class="card-dato">{% translate "RESERVACIONES ACTIVAS" %}</h3>
         <p style="font-size: 3.5rem; color: var(--acento); margin: 0; line-height: 1;">{{ reservaciones_activas }}</p>
-        <a href="{% url 'gestionar_reservaciones' %}" class="link-reservas">{% translate "ADMINISTRAR RESERVACIONES →" %}</a>
+        <a href="{% url 'consultar_reservas' %}" class="link-reservas">{% translate "ADMINISTRAR RESERVACIONES →" %}</a>
     </div>
 </div>
 
@@ -32,42 +32,81 @@
         <table class="nyx-table">
             <thead>
                 <tr>
-                    <th>{% translate "Nombre del Parque" %}</th>
-                    <th>{% translate "Dirección / Ubicación" %}</th>
+                    <th>{% translate "Santuario / Ubicación" %}</th>
+                    <th style="text-align: center;">{% translate "Horario" %}</th>
                     <th style="text-align: center;">{% translate "Capacidad" %}</th>
-                    <th style="text-align: center;">{% translate "Servicios" %}</th>
+                    <th>{% translate "Servicios y Amenidades" %}</th>
                     <th style="text-align: center;">{% translate "Acciones" %}</th>
                 </tr>
             </thead>
             <tbody>
                 {% for p in parques %}
                 <tr>
-                    <td><strong style="color: var(--texto-principal);">{{ p.nombre|upper }}</strong></td>
-                    <td style="max-width: 250px; color: var(--texto-suave); font-size: 0.8rem;">{{ p.direccion }}</td>
+                    <td>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <strong style="color: var(--texto-principal); font-size: 1.4rem;">{{ p.nombre|upper }}</strong>
+                            {% if not p.activo %}
+                                <span style="font-size: 0.7rem; background: rgba(239, 68, 68, 0.2); color: #ef4444; padding: 2px 6px; border-radius: 4px; font-weight: bold;">{% translate "OCULTO" %}</span>
+                            {% endif %}
+                        </div>
+                        <div class="direccion-texto" style="max-width: 280px; color: var(--texto-suave); margin-top: 6px; line-height: 1.4;">
+                            {{ p.direccion }}
+                        </div>
+                    </td>
+
+                    <td style="text-align: center; white-space: nowrap;">
+                        <span style="color: var(--texto-principal); font-size: 1.3rem; font-family: monospace; font-weight: bold;">
+                            {{ p.horario_apertura|time:"H:i" }} - {{ p.horario_cierre|time:"H:i" }}
+                        </span>
+                        <div style="font-size: 1rem; color: var(--texto-suave); letter-spacing: 1px;">{% translate "HRS" %}</div>
+                    </td>
+
                     <td style="text-align: center;">
                         <span class="capacidad-num">{{ p.capacidad }}</span>
-                        <div style="font-size: 0.6rem; color: var(--texto-suave);">{% translate "PERSONAS" %}</div>
+                        <div style="font-size: 0.8rem; color: var(--texto-suave);">{% translate "MÁX. PERSONAS" %}</div>
                     </td>
-                    <td style="text-align: center;">
-                        <div class="servicios-icon-group">
+
+                    <td>
+                        <div class="servicios-grid-clean">
                             <div class="servicio-item {% if p.tiene_cabanas %}disponible{% else %}no-disponible{% endif %}">
-                                <span>🏠</span> <span class="servicio-label">{% translate "Cabañas" %}</span>
+                                🏠 <span class="servicio-texto">{% translate "Cabañas" %}</span>
                             </div>
                             <div class="servicio-item {% if p.tiene_camping %}disponible{% else %}no-disponible{% endif %}">
-                                <span>⛺</span> <span class="servicio-label">{% translate "Camping" %}</span>
+                                ⛺ <span class="servicio-texto">{% translate "Camping" %}</span>
+                            </div>
+                            <div class="servicio-item {% if p.tiene_danza %}disponible{% else %}no-disponible{% endif %}">
+                                💃 <span class="servicio-texto">{% translate "Danza" %}</span>
+                            </div>
+                            <div class="servicio-item {% if p.tiene_musica %}disponible{% else %}no-disponible{% endif %}">
+                                🎵 <span class="servicio-texto">{% translate "Música" %}</span>
+                            </div>
+                            <div class="servicio-item {% if p.tiene_teatro %}disponible{% else %}no-disponible{% endif %}">
+                                🎭 <span class="servicio-texto">{% translate "Teatro" %}</span>
+                            </div>
+                            <div class="servicio-item {% if p.tiene_transporte %}disponible{% else %}no-disponible{% endif %}">
+                                🚌 <span class="servicio-texto">{% translate "Transp." %}</span>
+                            </div>
+                            <div class="servicio-item {% if p.tiene_banos %}disponible{% else %}no-disponible{% endif %}">
+                                🚻 <span class="servicio-texto">{% translate "Baños" %}</span>
+                            </div>
+                            <div class="servicio-item {% if p.tiene_cafeterias %}disponible{% else %}no-disponible{% endif %}">
+                                ☕ <span class="servicio-texto">{% translate "Cafetería" %}</span>
+                            </div>
+                            <div class="servicio-item {% if p.tiene_guias %}disponible{% else %}no-disponible{% endif %}">
+                                🦺 <span class="servicio-texto">{% translate "Guías" %}</span>
                             </div>
                         </div>
                     </td>
 
                     <td style="text-align: center;">
                         <div style="display: flex; gap: 8px; justify-content: center; align-items: center;">
-                            <a href="{% url 'editar_parque' p.id %}" class="btn-secondary" style="text-decoration: none; padding: 5px 12px; font-size: 0.65rem;">{% translate "EDITAR" %}</a>
+                            <a href="{% url 'editar_parque' p.id %}" class="btn-secondary" style="text-decoration: none; padding: 8px 14px; font-size: 0.7rem; font-weight: bold;">{% translate "EDITAR" %}</a>
                             
                             <form id="form-eliminar-parque-{{ p.id }}" action="{% url 'eliminar_parque' p.id %}" method="POST" style="display: none;">
                                 {% csrf_token %}
                             </form>
                     
-                            <a href="#" class="btn-danger" style="text-decoration: none; padding: 5px 12px; font-size: 0.65rem;"
+                            <a href="#" class="btn-danger" style="text-decoration: none; padding: 8px 14px; font-size: 0.7rem; font-weight: bold;"
                                onclick="confirmarEliminacionParque('{{ p.id }}', '{{ p.nombre }}'); return false;">
                                 {% translate "BORRAR" %}
                             </a>
@@ -75,7 +114,7 @@
                     </td>
                 </tr>
                 {% empty %}
-                <tr><td colspan="5" style="text-align: center; padding: 40px;">{% translate "No hay parques registrados." %}</td></tr>
+                <tr><td colspan="5" style="text-align: center; padding: 40px; color: var(--texto-suave);">{% translate "No hay parques registrados." %}</td></tr>
                 {% endfor %}
             </tbody>
         </table>
@@ -84,7 +123,6 @@
 
 <script>
     function confirmarEliminacionParque(parqueId, parqueNombre) {
-        // Obtenemos los textos traducidos para usarlos en SweetAlert
         const titulo = "{% translate 'Confirmar Eliminación' %}";
         const texto = "{% translate '¿Estás seguro de que deseas eliminar el parque {nombre}? Esta acción notificará a los clientes afectados.' %}".replace('{nombre}', parqueNombre);
         const botonConfirmar = "{% translate 'SÍ, ELIMINAR' %}";
@@ -101,7 +139,6 @@
             confirmButtonText: botonConfirmar,
             cancelButtonText: botonCancelar,            
             confirmButtonColor: '#e05252', 
-            
             customClass: {
                 confirmButton: 'btn btn-primary btn-swal',
                 cancelButton: 'btn btn-secondary btn-swal'

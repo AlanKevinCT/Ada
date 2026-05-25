@@ -25,7 +25,6 @@ from .cliente import (
 
 from .admin import (
     panel_admin,
-    gestionar_reservaciones,
     consultar_reservas,
     crear_parque,
     editar_parque,

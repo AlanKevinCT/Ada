@@ -14,16 +14,16 @@
     --verde-medio:    #ffcc33;
     --verde-claro:    #ffcc33;
     
-    --acento:         #ffcc33; /* El amarillo de la foto */
+    --acento:         #ffcc33;
     --acento-hover:   #ffd65c;
     --texto-principal:#ffffff;
     --texto-suave:    #94a3b8;
-    --texto-boton:    #000000; /* Para que el texto sea negro sobre el amarillo */
+    --texto-boton:    #000000;
     --borde-brutal:   1px solid rgba(245, 158, 11, 0.3);
     --sombra-glow:          0 0 15px 5px rgba(250, 204, 21, 0.3);
     --sombra-glow-intensa:  0 0 20px 8px rgba(250, 204, 21, 0.5);
-    --radio-curva: 50px; /* Estilo redondeado */
-    --radio-card:  24px;  /* Para las cajas de contenido */
+    --radio-curva: 50px;
+    --radio-card:  24px;
     --glow-linea: 0 0 8px rgba(250, 204, 21, 0.4);
 
     --fuente-titulo:  'Georgia', serif;
@@ -44,9 +44,8 @@
     --borde-brutal:   3px solid var(--acento);
     --fuente-titulo:  'Georgia', serif;
     --fuente-cuerpo:  'Courier New', monospace;
-
-    --radio-curva: 50px; /* Estilo redondeado */
-    --radio-card:  24px;  /* Para las cajas de contenido */
+    --radio-curva: 50px;
+    --radio-card:  24px;
 }
 
 /* ── Tema 3: Bosque esmeralda (oscuro) ──────────────────────── */
@@ -63,9 +62,8 @@
     --borde-brutal:   3px solid var(--acento);
     --fuente-titulo:  'Georgia', serif;
     --fuente-cuerpo:  'Courier New', monospace;
-
-    --radio-curva: 50px; /* Estilo redondeado */
-    --radio-card:  24px;  /* Para las cajas de contenido */
+    --radio-curva: 50px;
+    --radio-card:  24px;
 }
 
 /* ── Tema 4: Crema y dorado (claro) ─────────────────────────── */
@@ -82,9 +80,8 @@
     --borde-brutal:   3px solid var(--acento);
     --fuente-titulo:  'Georgia', serif;
     --fuente-cuerpo:  'Courier New', monospace;
-
-    --radio-curva: 50px; /* Estilo redondeado */
-    --radio-card:  24px;  /* Para las cajas de contenido */
+    --radio-curva: 50px;
+    --radio-card:  24px;
 }
 
 /* ── Tema 5: Bosque de día (claro) ──────────────────────────── */
@@ -101,9 +98,8 @@
     --borde-brutal:   3px solid var(--acento);
     --fuente-titulo:  'Georgia', serif;
     --fuente-cuerpo:  'Courier New', monospace;
-
-    --radio-curva: 50px; /* Estilo redondeado */
-    --radio-card:  24px;  /* Para las cajas de contenido */
+    --radio-curva: 50px;
+    --radio-card:  24px;
 }
 
 /* ── Tema 6: Niebla y musgo (claro) ─────────────────────────── */
@@ -120,9 +116,8 @@
     --borde-brutal:   3px solid var(--acento);
     --fuente-titulo:  'Georgia', serif;
     --fuente-cuerpo:  'Courier New', monospace;
-
-    --radio-curva: 50px; /* Estilo redondeado */
-    --radio-card:  24px;  /* Para las cajas de contenido */
+    --radio-curva: 50px;
+    --radio-card:  24px;
 }
 
 /* ── Reset ──────────────────────────────────────────────────── */
@@ -142,7 +137,6 @@ body {
     min-height: 100vh;
     line-height: 1.7;
     transition: background-color 0.3s, color 0.3s;
-            
 }
 
 /* ── Navbar ─────────────────────────────────────────────────── */
@@ -157,11 +151,9 @@ nav {
     position: sticky;
     top: 0;
     z-index: 1000;
-    
-    backdrop-filter: blur(12px); /* Desenfoque */
+    backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     box-shadow: 0 4px 15px -2px rgba(250, 204, 21, 0.3);
-    
 }
 
 .nav-logo {
@@ -172,7 +164,6 @@ nav {
     text-decoration: none;
     letter-spacing: -1px;
     text-transform: uppercase;
-
     filter: drop-shadow(0 0 5px rgba(250, 204, 21, 0.8));
 }
 
@@ -191,8 +182,6 @@ nav {
     font-size: 0.85rem;
     letter-spacing: 1.5px;
     text-transform: uppercase;
-
-    border-left: none; /* Adiós línea vertical */
     border-radius: var(--radio-curva);
     color: var(--texto-suave);
     height: 40px;
@@ -205,8 +194,7 @@ nav {
 .nav-links li a:hover {
     color: var(--texto-boton);
     background-color: var(--acento);
-    border-bottom: none;
-    box-shadow: var(--sombra-glow); /* brillo */
+    box-shadow: var(--sombra-glow);
 }
 
 /* ── Main ───────────────────────────────────────────────────── */
@@ -335,7 +323,6 @@ p {
 .card-dato { font-size: 0.9rem; color: var(--texto-suave); margin-bottom: 8px; }
 .card-dato span { color: var(--texto-principal); font-weight: 600;}
 
-
 /* ── Formularios ────────────────────────────────────────────── */
 .form-grupo { margin-bottom: 24px; }
 
@@ -368,7 +355,7 @@ p {
     border-color: var(--acento);
 }
 
-/* ── Alertas ────────────────────────────────────────────────── */
+/* ── Alertas y Errores ──────────────────────────────────────── */
 .error { color: #e05252; font-size: 0.82rem; margin-top: 4px; letter-spacing: 1px; }
 
 .alerta {
@@ -465,3 +452,72 @@ footer {
 }
 
 footer .glyph { color: var(--acento); }
+
+
+
+/* .md 5.1.2: Envoltura semántica para las vistas que contengan formularios centrados */
+.contenedor-formulario-centrado {
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    min-height: calc(100vh - 120px); 
+    padding: 20px;
+}
+
+/* Encabezado e introducciones dentro de las tarjetas (.md 5.5.1) */
+.encabezado-formulario {
+    text-align: center; 
+    margin-bottom: 30px;
+}
+
+.texto-subtitulo-formulario {
+    font-size: 0.85rem; 
+    color: var(--texto-suave); 
+    letter-spacing: 1px; 
+    text-transform: uppercase;
+}
+
+/* Contenedor unificado para Checkboxes estilo brutalista (.md 5.3.2) */
+.form-grupo-checkbox-contenedor {
+    display: flex; 
+    gap: 30px; 
+    margin: 24px 0; 
+    background: rgba(255, 255, 255, 0.02); 
+    padding: 15px; 
+    border-radius: var(--radio-card); 
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.label-checkbox-accesible {
+    display: flex; 
+    align-items: center; 
+    gap: 10px; 
+    cursor: pointer; 
+    color: var(--texto-suave); 
+    font-size: 0.85rem; 
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+/* .md 5.4.3: Contenedor accesible en rojo para los errores globales que mande Django */
+.alerta-error-global {
+    background: rgba(239, 68, 68, 0.1); 
+    border: 1px solid rgb(239, 68, 68); 
+    color: #ef4444; 
+    padding: 12px; 
+    border-radius: var(--radio-card); 
+    margin-bottom: 20px; 
+    font-size: 0.9rem;
+}
+
+/* .md 5.3.2: Clase oculta obligatoria para que los lectores de pantalla lean etiquetas invisibles */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+}
