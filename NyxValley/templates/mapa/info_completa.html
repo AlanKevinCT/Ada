@@ -53,6 +53,7 @@
                         <span class="icono-grande" aria-hidden="true">🏠</span>
                         <div class="detalles">
                             <strong class="servicio-nombre">{% translate "CABAÑA" %}</strong>
+                            <br>
                             <span class="servicio-capacidad">
                                 {% translate "Capacidad máxima:" %} {{ parque.capacidad }} {% translate "personas" %}
                             </span>
@@ -72,7 +73,7 @@
 
             <section class="caja-info" aria-labelledby="titulo-horario">
                 <p id="titulo-horario" class="etiqueta">{% translate "HORARIO" %}</p>
-                <article class="horario-card">
+                <article class="horario-card" style="justify-content: center;">
                     <span class="icono-horario" aria-hidden="true">⏰</span>
                     <div class="horario-texto">
                         <span class="rango">

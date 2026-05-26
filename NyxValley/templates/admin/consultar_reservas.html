@@ -9,13 +9,13 @@
 
 {% block contenido %}
 <div class="reservas-container">
-    <div style="margin-bottom: 25px;">
-        <a href="{% url 'panel_admin' %}" class="link-reservas" style="font-weight: bold;">
-            ← {% translate "VOLVER AL PANEL DE CONTROL" %}
+    <div class="panel-seccion" style="margin-bottom: 30px;">
+        <a href="{% url 'panel_admin' %}" class="btn-regresar-custom">
+            <span class="flecha">←</span> {% translate "VOLVER AL PANEL DE CONTROL" %}
         </a>
     </div>
 
-    <h1>{% translate "CONSULTA DE RESERVACIONES" %}</h1>
+    <h1 style="text-align: center; margin-bottom: 40px;">{% translate "CONSULTA DE RESERVACIONES" %}</h1>
 
     <div class="nyx-filtros-bar" role="search">
         <form method="GET" action="{% url 'consultar_reservas' %}" class="nyx-form-grid">
@@ -45,27 +45,27 @@
             </div>
 
             <div style="display: flex; gap: 12px;">
-                <button type="submit" class="btn btn-primary">
+                <button type="submit" class="btn btn-primary" style="color: var(--fondo-pagina);">
                     🔍 {% translate "FILTRAR" %}
                 </button>
-                <a href="{% url 'consultar_reservas' %}" class="btn btn-secondary" style="display: inline-flex; align-items: center; border-width: 1px;">
+                <a href="{% url 'consultar_reservas' %}" class="btn btn-secondary btn-limpiar">
                     ✕ {% translate "LIMPIAR" %}
                 </a>
             </div>
         </form>
     </div>
 
-    <div class="card" style="padding: 1rem;">
-        <div style="overflow-x: auto;">
+    <div class="card" style="padding: 1.5rem;">
+        <div style="overflow-x: auto; width: 100%;">
             <table class="nyx-table">
                 <thead>
                     <tr>
-                        <th>{% translate "Cliente" %}</th>
-                        <th>{% translate "Parque" %}</th>
-                        <th style="text-align: center;">{% translate "Periodo" %}</th>
-                        <th style="text-align: center;">{% translate "Pax" %}</th>
-                        <th style="text-align: center;">{% translate "Duración" %}</th>
-                        <th style="text-align: center;">{% translate "Estado" %}</th>
+                        <th scope="col">{% translate "Cliente" %}</th>
+                        <th scope="col">{% translate "Parque" %}</th>
+                        <th scope="col" style="text-align: center;">{% translate "Periodo" %}</th>
+                        <th scope="col" style="text-align: center;">{% translate "Pax" %}</th>
+                        <th scope="col" style="text-align: center;">{% translate "Duración" %}</th>
+                        <th scope="col" style="text-align: center;">{% translate "Estado" %}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -83,7 +83,7 @@
                             </div>
                         </td>
 
-                        <td style="text-align: center; font-family: var(--fuente-cuerpo);">
+                        <td style="text-align: center; font-family: var(--fuente-cuerpo); font-size: 0.9rem;">
                             {{ r.fecha_inicio|date:"d M" }} → {{ r.fecha_fin|date:"d M Y" }}
                         </td>
 
@@ -91,20 +91,20 @@
                             {{ r.numero_personas }}
                         </td>
 
-                        <td style="text-align: center; color: var(--acento); font-weight: bold;">
-                            {{ r.duracion_dias }} d
+                        <td style="text-align: center; color: var(--acento); font-weight: bold; font-family: var(--fuente-cuerpo);">
+                            {{ r.duracion_dias }}d
                         </td>
 
                         <td style="text-align: center;">
                             <span class="badge-estado {% if r.estado == 'activa' %}estado-activa{% else %}estado-cancelada{% endif %}">
-                                {{ r.get_estado_display }}
+                                {{ r.get_estado_display|upper }}
                             </span>
                         </td>
                     </tr>
                     {% empty %}
                     <tr>
-                        <td colspan="6" style="text-align: center; padding: 50px; color: var(--texto-suave);">
-                            {% translate "No se encontraron reservaciones." %}
+                        <td colspan="6" style="text-align: center; padding: 60px; color: var(--texto-suave);">
+                            {% translate "No se encontraron reservaciones con estos criterios." %}
                         </td>
                     </tr>
                     {% endfor %}

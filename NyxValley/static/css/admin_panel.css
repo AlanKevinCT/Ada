@@ -7,6 +7,10 @@
     width: 100%;
 }
 
+p{
+    padding: 0px;
+}
+
 /* Actualizamos .stats-container para que use la misma lógica */
 .stats-container {
     display: flex;
@@ -18,7 +22,7 @@
     flex: 1 1 280px; /* Crece y se encoge, mínimo 280px */
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     padding: 2rem;
     text-align: center;
@@ -154,4 +158,56 @@
         border-radius: 0 0 var(--radio-card) var(--radio-card);
         border-bottom: 2px solid var(--acento);
     }
+}
+
+/* ── TARJETA DE ESTADÍSTICAS MEJORADA ── */
+.stats-numero {
+    font-size: clamp(2.5rem, 5vw, 3.5rem); 
+    color: var(--acento); 
+    margin: 10px 0; 
+    line-height: 1;
+    font-weight: 800;
+    filter: drop-shadow(0 0 10px rgba(var(--acento-rgb), 0.3));
+}
+
+.btn-link-gestion {
+    margin-top: 15px;
+    text-decoration: none;
+    color: var(--acento-hover);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.flecha-animada {
+    font-size: 1rem;
+    transition: transform 0.3s ease;
+    display: inline-block;
+}
+
+/* Efecto de interacción */
+.btn-link-gestion:hover {
+    color: var(--acento);
+    background: rgba(128, 128, 128, 0.05);
+    border-color: rgba(var(--acento-rgb), 0.2);
+}
+
+.btn-link-gestion:hover .flecha-animada {
+    transform: translateX(5px); /* Se mueve a la derecha indicando avance */
+    filter: drop-shadow(0 0 5px var(--acento));
+}
+
+/* Opcional: Hacer que toda la card brille un poco más al hacer hover en el link */
+.card-stats-interactiva:hover {
+    border-color: var(--acento);
+    box-shadow: var(--sombra-glow-intensa);
+    transform: translateY(-3px);
 }

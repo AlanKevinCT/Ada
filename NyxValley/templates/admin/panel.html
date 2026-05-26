@@ -11,15 +11,17 @@
 
 <div class="panel-seccion">
     <div class="stats-container">
-        <div class="card">
+        <div class="card card-stats-interactiva">
             <h3 class="card-dato">{% translate "PARQUES AUTORIZADOS" %}</h3>
-            <p style="font-size: 3.5rem; color: var(--acento); margin: 0; line-height: 1;">{{ total_parques }}</p>
-        </div>
+            <p class="stats-numero" style="padding-top: 25px;">{{ total_parques }}</p>
+            <div style="height: 38px;"></div> </div>
         
-        <div class="card">
+        <div class="card card-stats-interactiva">
             <h3 class="card-dato">{% translate "RESERVACIONES ACTIVAS" %}</h3>
-            <p style="font-size: 3.5rem; color: var(--acento); margin: 0; line-height: 1;">{{ reservaciones_activas }}</p>
-            <a href="{% url 'consultar_reservas' %}" class="link-reservas">{% translate "ADMINISTRAR RESERVACIONES →" %}</a>
+            <p class="stats-numero">{{ reservaciones_activas }}</p>
+            <a href="{% url 'consultar_reservas' %}" class="btn-link-gestion" style="box-shadow: var(--sombra-glow);">
+                {% translate "ADMINISTRAR RESERVACIONES" %} <span class="flecha-animada">→</span>
+            </a>
         </div>
     </div>
 </div>
