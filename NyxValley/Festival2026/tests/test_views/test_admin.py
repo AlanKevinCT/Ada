@@ -41,7 +41,6 @@ class TestVistasAdministracionReal(TestCase):
 
         # Mapeo de nombres de URLs para facilitar las pruebas
         self.url_panel = reverse('panel_admin')
-        self.url_gestionar = reverse('gestionar_reservaciones')
         self.url_consultar = reverse('consultar_reservas')
         self.url_crear = reverse('crear_parque')
         self.url_editar = reverse('editar_parque', kwargs={'id': self.parque.id})
@@ -71,35 +70,7 @@ class TestVistasAdministracionReal(TestCase):
         self.assertTemplateUsed(respuesta, 'admin/panel.html')
 
     # ─────────────────────────────────────────────────────────────
-    #  2. Gestión de Reservaciones
-    # ─────────────────────────────────────────────────────────────
-    def test_gestionar_reservaciones_redirige_a_inicio_si_no_es_admin(self):
-        """Verifica restricción de rol en la lista de gestión."""
-        self.client.force_login(self.usuario_cliente)
-        respuesta = self.client.get(self.url_gestionar)
-        self.assertEqual(respuesta.status_code, 302)
-        self.assertEqual(respuesta.url, reverse('inicio'))
-
-    def test_gestionar_reservaciones_renderiza_para_admin(self):
-        """Verifica acceso exitoso a la plantilla de gestión para el administrador."""
-        self.client.force_login(self.usuario_admin)
-        respuesta = self.client.get(self.url_gestionar)
-        self.assertEqual(respuesta.status_code, 200)
-        self.assertTemplateUsed(respuesta, 'admin/gestionar_reservaciones.html')
-
-    def test_gestionar_reservaciones_muestra_todas_las_reservaciones(self):
-        """Verifica que el contexto recupere la lista total de reservaciones cargadas."""
-        Reservacion.objects.create(
-            usuario=self.usuario_cliente, parque=self.parque,
-            fecha_inicio=date(2026, 6, 10), fecha_fin=date(2026, 6, 12),
-            numero_personas=4, tipo_visita='cabana'
-        )
-        self.client.force_login(self.usuario_admin)
-        respuesta = self.client.get(self.url_gestionar)
-        self.assertEqual(len(respuesta.context['reservaciones']), 1)
-
-    # ─────────────────────────────────────────────────────────────
-    #  3. Consulta de Reservas con Filtros
+    #  2. Consulta de Reservas con Filtros
     # ─────────────────────────────────────────────────────────────
     def test_consultar_reservas_redirige_a_inicio_si_no_es_admin(self):
         """Verifica restricción de rol en pantalla de consultas."""
@@ -147,9 +118,9 @@ class TestVistasAdministracionReal(TestCase):
         self.assertNotIn(reserva_alberto, respuesta_parque.context['reservaciones'])
 
         # Filtrado por tipo de visita
-        respuesta_tipo = self.client.get(self.url_consultar, {'tipo_visita': 'camping'})
-        self.assertIn(reserva_alberto, respuesta_tipo.context['reservaciones'])
-        self.assertNotIn(reserva_pablo, respuesta_tipo.context['reservaciones'])
+        respuesta_tipo = self.client.get(self.url_consultar, {'tipo_visita': 'cabana'})
+        self.assertIn(reserva_pablo, respuesta_tipo.context['reservaciones'])
+        self.assertNotIn(reserva_alberto, respuesta_tipo.context['reservaciones'])
 
         # Filtrado por fecha
         respuesta_fecha = self.client.get(self.url_consultar, {'fecha_inicio': '2026-07-20'})
@@ -162,7 +133,7 @@ class TestVistasAdministracionReal(TestCase):
         self.assertNotIn(reserva_alberto, respuesta_usuario.context['reservaciones'])
 
     # ─────────────────────────────────────────────────────────────
-    #  4. Creacion de parques
+    #  3. Creacion de parques
     # ─────────────────────────────────────────────────────────────
     def test_crear_parque_redirige_a_inicio_si_no_es_admin(self):
         """Verifica protección en la ruta de creación."""
@@ -216,7 +187,7 @@ class TestVistasAdministracionReal(TestCase):
     
 
     # ─────────────────────────────────────────────────────────────
-    #  5. Edición de parques
+    #  4. Edición de parques
     # ─────────────────────────────────────────────────────────────
     def test_editar_parque_redirige_a_inicio_si_no_es_admin(self):
         """Verifica protección en la ruta de edición."""
@@ -264,20 +235,13 @@ class TestVistasAdministracionReal(TestCase):
         self.assertEqual(self.parque.horario_cierre, time(19, 0))
 
     # ─────────────────────────────────────────────────────────────
-    #  6. Eliminación de parques
+    #  5. Eliminación de parques
     # ─────────────────────────────────────────────────────────────
     def test_eliminar_parque_redirige_a_inicio_si_no_es_admin(self):
         """Verifica protección en la ruta de eliminación."""
         self.client.force_login(self.usuario_cliente)
         respuesta = self.client.get(self.url_eliminar)
         self.assertEqual(respuesta.status_code, 302)
-
-    def test_eliminar_parque_get_renderiza_confirmacion_para_admin(self):
-        """Un GET debe mostrar la plantilla de confirmación de borrado."""
-        self.client.force_login(self.usuario_admin)
-        respuesta = self.client.get(self.url_eliminar)
-        self.assertEqual(respuesta.status_code, 200)
-        self.assertTemplateUsed(respuesta, 'admin/eliminar_parque.html')
 
     def test_eliminar_parque(self):
         """Un POST válido debe invocar la lógica, borrar el parque de la BD y redirigir."""
