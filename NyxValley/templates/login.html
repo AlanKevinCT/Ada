@@ -25,7 +25,7 @@
             {% csrf_token %}
 
             <div class="form-grupo" style="display: flex; flex-direction: column; margin-bottom: 20px;">
-                <label for="{{ form.correo_electronico.id_for_label }}" style="font-size: 0.8rem; color: var(--texto-principal); margin-bottom: 6px; font-weight: bold; letter-spacing: 1px;">{% translate "CORREO ELECTRÓNICO" %}</label>
+                <label for="{{ form.correo_electronico.id_for_label }}" style="font-size: 0.8rem; color: var(--texto-principal); margin-bottom: 6px;  letter-spacing: 1px;">{% translate "CORREO ELECTRÓNICO" %}</label>
                 {{ form.correo_electronico }}
                 {% if form.correo_electronico.errors %}
                     <span role="status" style="color: #e05252; font-size: 0.8rem; margin-top: 5px; display: block;">{{ form.correo_electronico.errors.0 }}</span>
@@ -33,7 +33,7 @@
             </div>
 
             <div class="form-grupo" style="display: flex; flex-direction: column; margin-bottom: 12px;">
-                <label for="{{ form.password.id_for_label }}" style="font-size: 0.8rem; color: var(--texto-principal); margin-bottom: 6px; font-weight: bold; letter-spacing: 1px;">{% translate "CONTRASEÑA" %}</label>
+                <label for="{{ form.password.id_for_label }}" style="font-size: 0.8rem; color: var(--texto-principal); margin-bottom: 6px;  letter-spacing: 1px;">{% translate "CONTRASEÑA" %}</label>
                 {{ form.password }}
                 {% if form.password.errors %}
                     <span role="status" style="color: #e05252; font-size: 0.8rem; margin-top: 5px; display: block;">{{ form.password.errors.0 }}</span>

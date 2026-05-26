@@ -1,47 +1,46 @@
 /* ==========================================================================
-   Nyx Valley — Estilos de la Vista de Información del Parque 
+   Nyx Valley — Vista de Información (Adaptable y Tematizada)
    ========================================================================== */
 
-   :root {
-    --acento-oro: #b8860b;
-    --fondo-caja: rgba(255, 255, 255, 0.03);
-    --borde-suave: rgba(255, 255, 255, 0.1);
-}
-
 .landing-visual {
-    max-width: 1100px;
-    margin: 40px auto;
+    width: 100%;
+    max-width: 2500px;
+    margin: 0em;
 }
 
 /* Encabezados y etiquetas de sección */
 .etiqueta {
-    font-size: 0.75rem;
+    font-size:1.5em;
     letter-spacing: 2px;
-    color: var(--acento);
+    color: var(--acento); /* Usa el color del tema */
     font-weight: 800;
     margin-bottom: 15px;
     display: block;
+    text-transform: uppercase;
 }
 
 .etiqueta-separada {
-    font-size: 0.75rem;
+    font-size: 1.5rem;
     letter-spacing: 4px;
-    color: var(--acento-oro);
+    color: var(--acento); /* Consistencia con base.css */
     font-weight: 800;
     margin: 40px 0 20px 0;
     display: block;
     text-transform: uppercase;
 }
 
-/* Divisor de texto místico */
-.descripcion-box .divisor {
-    border-top: 1px solid var(--borde-suave); 
-    margin: 20px 0;
+/* Texto místico y descripción */
+.texto-magico {
+    color: var(--texto-suave);
+    line-height: 1.8;
+    font-weight: 600;
+    font-size: clamp(1rem, 2vw, 1rem);
 }
 
-.parque-descripcion-texto {
-    color: var(--texto-principal);
-    font-size: 0.95rem;
+.divisor {
+    border-top: var(--borde-brutal); 
+    margin: 2rem 0;
+    opacity: 0.5;
 }
 
 /* Estructura de las Tarjetas (Servicios y Horario) */
@@ -49,105 +48,83 @@
     display: flex;
     align-items: center;
     gap: 25px;
-    padding: 25px;
-    background: var(--fondo-caja);
-    border-radius: 12px;
-    border: 1px solid var(--borde-suave);
-    margin-bottom: 15px;
+    padding: clamp(1rem, 3vw, 2rem);
+    background: var(--fondo-card); /* Adaptable al tema */
+    border-radius: var(--radio-card);
+    border: var(--borde-brutal);
+    margin-bottom: 1.5rem;
+    backdrop-filter: blur(8px);
+    transition: transform 0.3s ease;
 }
 
-/* Contenedor de detalles internos (Sustituye el display inline que causaba desorden) */
-.servicio-card-grande .detalles {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+.servicio-card-grande:hover {
+    transform: scale(1.02);
+    align-items: center;
 }
 
 .servicio-nombre {
-    display: block; 
-    margin-bottom: 4px;
     font-family: var(--fuente-titulo);
     color: var(--texto-principal);
+    font-size: 1.2rem;
+    font-weight: bold;
 }
 
-.servicio-capacidad {
-    display: block; 
-    font-size: 0.85rem; 
-    color: var(--texto-suave);
-}
-
-/* Dimensiones de los Iconos */
-.icono-extra-grande {
-    font-size: 3rem;
-    filter: drop-shadow(0 0 10px rgba(255,255,255,0.1));
-}
-
-.icono-grande, .icono-horario {
-    font-size: 2.2rem;
-}
-
-/* Elementos de la tarjeta de Horario */
-.horario-texto {
-    display: flex;
-    flex-direction: column;
-}
-
+/* Tipografía de Horario Fluida */
 .horario-texto .rango {
-    font-size: 2.5rem;
+    font-size: clamp(1.8rem, 4vw, 1.9rem); /* Se encoge en móvil */
     font-weight: 900;
     line-height: 1;
     color: var(--texto-principal);
+    font-family: var(--fuente-cuerpo);
 }
 
 .horario-texto .unidad {
     font-size: 0.8rem;
-    color: var(--acento-oro);
+    color: var(--acento);
     letter-spacing: 2px;
+    margin-top: 5px;
 }
 
-/* Maquetación del Botón de Reserva (.md 5.3.2 enfocado a accesibilidad por teclado) */
+/* Botón de Reserva Brutalista */
 .btn-reserva-boceto {
     display: block;
     width: 100%;
-    background: var(--acento-oro);
-    color: #000;
+    background: var(--acento);
+    color: var(--texto-boton);
     text-align: center;
-    padding: 22px;
+    padding: 1.5rem;
     font-weight: 900;
     text-decoration: none;
     font-size: 1.3rem;
-    border-radius: 4px;
-    margin-bottom: 30px;
-    transition: all 0.2s ease-in-out;
+    border-radius: var(--radio-card);
+    margin-bottom: 2rem;
+    transition: all 0.3s ease;
+    box-shadow: var(--sombra-glow);
+    text-transform: uppercase;
+    letter-spacing: 2px;
 }
 
-.btn-reserva-boceto:hover,
-.btn-reserva-boceto:focus {
-    background: #eab308;
+.btn-reserva-boceto:hover {
+    background: var(--acento-hover);
+    box-shadow: var(--sombra-glow-intensa);
     transform: translateY(-3px);
-    box-shadow: 0 0 20px rgba(184, 134, 11, 0.6), 
-                0 0 40px rgba(184, 134, 11, 0.4);
-    filter: brightness(1.1);
-    outline: none;
 }
 
-/* Distribución de la Rejilla en dos columnas */
+/* Grid Principal Proporcional */
 .main-grid {
     display: grid;
-    grid-template-columns: 1.2fr 0.8fr;
-    gap: 60px;
+    /* 1.2fr para contenido y 0.8fr para sidebar */
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 400px), 1fr));
+    gap: clamp(1.5rem, 5vw, 4rem);
 }
 
-/* Diseño Adaptable / Responsive para móviles (.md 12) */
+/* Diseño Adaptable para móviles */
 @media (max-width: 768px) {
-    .main-grid {
-        grid-template-columns: 1fr;
-        gap: 30px;
-    }
+    .seccion-titulo { text-align: center; }
+    .titulo-wrapper { justify-content: center; }
     
     .horario-card, .servicio-card-grande {
         flex-direction: column;
         text-align: center;
-        gap: 15px;
     }
 }

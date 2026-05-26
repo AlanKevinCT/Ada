@@ -9,115 +9,133 @@
 {% block contenido %}
 <h1 style="text-align: center; color: var(--acento); margin-bottom: 40px; letter-spacing: 2px;">{% translate "GESTIÓN DEL FESTIVAL 2026" %}</h1>
 
-<div class="stats-container">
-    <div class="card">
-        <h3 class="card-dato">{% translate "PARQUES AUTORIZADOS" %}</h3>
-        <p style="font-size: 3.5rem; color: var(--acento); margin: 0; line-height: 1;">{{ total_parques }}</p>
-    </div>
-    
-    <div class="card">
-        <h3 class="card-dato">{% translate "RESERVACIONES ACTIVAS" %}</h3>
-        <p style="font-size: 3.5rem; color: var(--acento); margin: 0; line-height: 1;">{{ reservaciones_activas }}</p>
-        <a href="{% url 'consultar_reservas' %}" class="link-reservas">{% translate "ADMINISTRAR RESERVACIONES →" %}</a>
+<div class="panel-seccion">
+    <div class="stats-container">
+        <div class="card card-stats-interactiva">
+            <h3 class="card-dato">{% translate "PARQUES AUTORIZADOS" %}</h3>
+            <p class="stats-numero" style="padding-top: 25px;">{{ total_parques }}</p>
+            <div style="height: 38px;"></div> </div>
+        
+        <div class="card card-stats-interactiva">
+            <h3 class="card-dato">{% translate "RESERVACIONES ACTIVAS" %}</h3>
+            <p class="stats-numero">{{ reservaciones_activas }}</p>
+            <a href="{% url 'consultar_reservas' %}" class="btn-link-gestion" style="box-shadow: var(--sombra-glow);">
+                {% translate "ADMINISTRAR RESERVACIONES" %} <span class="flecha-animada">→</span>
+            </a>
+        </div>
     </div>
 </div>
 
-<div class="card">
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
-        <h2 class="card-titulo" style="border:none; margin:0;">{% translate "REGISTRO DE PARQUES" %}</h2>
-        <a href="{% url 'crear_parque' %}" class="btn btn-primary" style="padding: 10px 20px;">+ {% translate "CREAR NUEVO PARQUE" %}</a>
-    </div>
+<div class="panel-seccion">
+    <div class="card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; flex-wrap: wrap; gap: 15px;">
+            <h2 class="card-titulo" style="border:none; margin:0;">{% translate "REGISTRO DE PARQUES" %}</h2>
+            <a href="{% url 'crear_parque' %}" class="btn btn-primary" style="padding: 10px 20px;">
+                + {% translate "CREAR NUEVO PARQUE" %}
+            </a>
+        </div>
 
-    <div style="overflow-x: auto;">
-        <table class="nyx-table">
-            <thead>
-                <tr>
-                    <th>{% translate "Santuario / Ubicación" %}</th>
-                    <th style="text-align: center;">{% translate "Horario" %}</th>
-                    <th style="text-align: center;">{% translate "Capacidad" %}</th>
-                    <th>{% translate "Servicios y Amenidades" %}</th>
-                    <th style="text-align: center;">{% translate "Acciones" %}</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for p in parques %}
-                <tr>
-                    <td>
-                        <div style="display: flex; align-items: center; gap: 8px;">
-                            <strong style="color: var(--texto-principal); font-size: 1.4rem;">{{ p.nombre|upper }}</strong>
-                            {% if not p.activo %}
-                                <span style="font-size: 0.7rem; background: rgba(239, 68, 68, 0.2); color: #ef4444; padding: 2px 6px; border-radius: 4px; font-weight: bold;">{% translate "OCULTO" %}</span>
-                            {% endif %}
-                        </div>
-                        <div class="direccion-texto" style="max-width: 280px; color: var(--texto-suave); margin-top: 6px; line-height: 1.4;">
-                            {{ p.direccion }}
-                        </div>
-                    </td>
+        <div style="overflow-x: auto; width: 100%;">
+            <table class="nyx-table">
+                <thead>
+                    <tr>
+                        <th>{% translate "Santuario / Ubicación" %}</th>
+                        <th style="text-align: center;">{% translate "Horario" %}</th>
+                        <th style="text-align: center;">{% translate "Capacidad" %}</th>
+                        <th>{% translate "Servicios y Amenidades" %}</th>
+                        <th style="text-align: center;">{% translate "Acciones" %}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for p in parques %}
+                    <tr>
+                        <td>
+                            <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                                <strong style="color: var(--texto-principal); font-size: clamp(1rem, 2vw, 1.4rem);">
+                                    {{ p.nombre|upper }}
+                                </strong>
+                                {% if not p.activo %}
+                                    <span style="font-size: 0.7rem; background: rgba(239, 68, 68, 0.2); color: #ef4444; padding: 2px 6px; border-radius: 4px; font-weight: bold; text-transform: uppercase;">
+                                        {% translate "OCULTO" %}
+                                    </span>
+                                {% endif %}
+                            </div>
+                            <div class="direccion-texto" style="max-width: 280px; margin-top: 6px;">
+                                {{ p.direccion }}
+                            </div>
+                        </td>
 
-                    <td style="text-align: center; white-space: nowrap;">
-                        <span style="color: var(--texto-principal); font-size: 1.3rem; font-family: monospace; font-weight: bold;">
-                            {{ p.horario_apertura|time:"H:i" }} - {{ p.horario_cierre|time:"H:i" }}
-                        </span>
-                        <div style="font-size: 1rem; color: var(--texto-suave); letter-spacing: 1px;">{% translate "HRS" %}</div>
-                    </td>
+                        <td style="text-align: center; white-space: nowrap;">
+                            <span style="color: var(--texto-principal); font-size: 1.3rem; font-family: var(--fuente-cuerpo); font-weight: bold;">
+                                {{ p.horario_apertura|time:"H:i" }} - {{ p.horario_cierre|time:"H:i" }}
+                            </span>
+                            <div style="font-size: 0.8rem; color: var(--texto-suave); letter-spacing: 1px;">{% translate "HRS" %}</div>
+                        </td>
 
-                    <td style="text-align: center;">
-                        <span class="capacidad-num">{{ p.capacidad }}</span>
-                        <div style="font-size: 0.8rem; color: var(--texto-suave);">{% translate "MÁX. PERSONAS" %}</div>
-                    </td>
+                        <td style="text-align: center;">
+                            <span class="capacidad-num">{{ p.capacidad }}</span>
+                            <div style="font-size: 0.75rem; color: var(--texto-suave);">{% translate "MÁX. PERSONAS" %}</div>
+                        </td>
 
-                    <td>
-                        <div class="servicios-grid-clean">
-                            <div class="servicio-item {% if p.tiene_cabanas %}disponible{% else %}no-disponible{% endif %}">
-                                🏠 <span class="servicio-texto">{% translate "Cabañas" %}</span>
+                        <td>
+                            <div class="servicios-grid-clean">
+                                <div class="servicio-item {% if p.tiene_cabanas %}disponible{% else %}no-disponible{% endif %}" title="{% translate 'Cabañas' %}">
+                                    <span aria-hidden="true">🏠</span> <span class="servicio-texto">{% translate "Cabañas" %}</span>
+                                </div>
+                                <div class="servicio-item {% if p.tiene_camping %}disponible{% else %}no-disponible{% endif %}" title="{% translate 'Camping' %}">
+                                    <span aria-hidden="true">⛺</span> <span class="servicio-texto">{% translate "Camping" %}</span>
+                                </div>
+                                <div class="servicio-item {% if p.tiene_danza %}disponible{% else %}no-disponible{% endif %}" title="{% translate 'Danza' %}">
+                                    <span aria-hidden="true">💃</span> <span class="servicio-texto">{% translate "Danza" %}</span>
+                                </div>
+                                <div class="servicio-item {% if p.tiene_musica %}disponible{% else %}no-disponible{% endif %}" title="{% translate 'Música' %}">
+                                    <span aria-hidden="true">🎵</span> <span class="servicio-texto">{% translate "Música" %}</span>
+                                </div>
+                                <div class="servicio-item {% if p.tiene_teatro %}disponible{% else %}no-disponible{% endif %}" title="{% translate 'Teatro' %}">
+                                    <span aria-hidden="true">🎭</span> <span class="servicio-texto">{% translate "Teatro" %}</span>
+                                </div>
+                                <div class="servicio-item {% if p.tiene_transporte %}disponible{% else %}no-disponible{% endif %}" title="{% translate 'Transporte' %}">
+                                    <span aria-hidden="true">🚌</span> <span class="servicio-texto">{% translate "Transp." %}</span>
+                                </div>
+                                <div class="servicio-item {% if p.tiene_banos %}disponible{% else %}no-disponible{% endif %}" title="{% translate 'Baños' %}">
+                                    <span aria-hidden="true">🚻</span> <span class="servicio-texto">{% translate "Baños" %}</span>
+                                </div>
+                                <div class="servicio-item {% if p.tiene_cafeterias %}disponible{% else %}no-disponible{% endif %}" title="{% translate 'Cafetería' %}">
+                                    <span aria-hidden="true">☕</span> <span class="servicio-texto">{% translate "Cafetería" %}</span>
+                                </div>
+                                <div class="servicio-item {% if p.tiene_guias %}disponible{% else %}no-disponible{% endif %}" title="{% translate 'Guías' %}">
+                                    <span aria-hidden="true">🦺</span> <span class="servicio-texto">{% translate "Guías" %}</span>
+                                </div>
                             </div>
-                            <div class="servicio-item {% if p.tiene_camping %}disponible{% else %}no-disponible{% endif %}">
-                                ⛺ <span class="servicio-texto">{% translate "Camping" %}</span>
-                            </div>
-                            <div class="servicio-item {% if p.tiene_danza %}disponible{% else %}no-disponible{% endif %}">
-                                💃 <span class="servicio-texto">{% translate "Danza" %}</span>
-                            </div>
-                            <div class="servicio-item {% if p.tiene_musica %}disponible{% else %}no-disponible{% endif %}">
-                                🎵 <span class="servicio-texto">{% translate "Música" %}</span>
-                            </div>
-                            <div class="servicio-item {% if p.tiene_teatro %}disponible{% else %}no-disponible{% endif %}">
-                                🎭 <span class="servicio-texto">{% translate "Teatro" %}</span>
-                            </div>
-                            <div class="servicio-item {% if p.tiene_transporte %}disponible{% else %}no-disponible{% endif %}">
-                                🚌 <span class="servicio-texto">{% translate "Transp." %}</span>
-                            </div>
-                            <div class="servicio-item {% if p.tiene_banos %}disponible{% else %}no-disponible{% endif %}">
-                                🚻 <span class="servicio-texto">{% translate "Baños" %}</span>
-                            </div>
-                            <div class="servicio-item {% if p.tiene_cafeterias %}disponible{% else %}no-disponible{% endif %}">
-                                ☕ <span class="servicio-texto">{% translate "Cafetería" %}</span>
-                            </div>
-                            <div class="servicio-item {% if p.tiene_guias %}disponible{% else %}no-disponible{% endif %}">
-                                🦺 <span class="servicio-texto">{% translate "Guías" %}</span>
-                            </div>
-                        </div>
-                    </td>
+                        </td>
 
-                    <td style="text-align: center;">
-                        <div style="display: flex; gap: 8px; justify-content: center; align-items: center;">
-                            <a href="{% url 'editar_parque' p.id %}" class="btn-secondary" style="text-decoration: none; padding: 8px 14px; font-size: 0.7rem; font-weight: bold;">{% translate "EDITAR" %}</a>
-                            
-                            <form id="form-eliminar-parque-{{ p.id }}" action="{% url 'eliminar_parque' p.id %}" method="POST" style="display: none;">
-                                {% csrf_token %}
-                            </form>
-                    
-                            <a href="#" class="btn-danger" style="text-decoration: none; padding: 8px 14px; font-size: 0.7rem; font-weight: bold;"
-                               onclick="confirmarEliminacionParque('{{ p.id }}', '{{ p.nombre }}'); return false;">
-                                {% translate "BORRAR" %}
-                            </a>
-                        </div>
-                    </td>
-                </tr>
-                {% empty %}
-                <tr><td colspan="5" style="text-align: center; padding: 40px; color: var(--texto-suave);">{% translate "No hay parques registrados." %}</td></tr>
-                {% endfor %}
-            </tbody>
-        </table>
+                        <td style="text-align: center;">
+                            <div style="display: flex; gap: 8px; justify-content: center; align-items: center; flex-wrap: wrap;">
+                                <a href="{% url 'editar_parque' p.id %}" class="btn-secondary" style="text-decoration: none; padding: 8px 14px; font-size: 0.7rem;">
+                                    {% translate "EDITAR" %}
+                                </a>
+                                
+                                <form id="form-eliminar-parque-{{ p.id }}" action="{% url 'eliminar_parque' p.id %}" method="POST" style="display: none;">
+                                    {% csrf_token %}
+                                </form>
+                        
+                                <a href="#" class="btn-danger" style="text-decoration: none; padding: 8px 14px; font-size: 0.7rem;"
+                                   onclick="confirmarEliminacionParque('{{ p.id }}', '{{ p.nombre }}'); return false;">
+                                    {% translate "BORRAR" %}
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" style="text-align: center; padding: 40px; color: var(--texto-suave);">
+                            {% translate "No hay parques registrados." %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 
@@ -127,23 +145,28 @@
         const texto = "{% translate '¿Estás seguro de que deseas eliminar el parque {nombre}? Esta acción notificará a los clientes afectados.' %}".replace('{nombre}', parqueNombre);
         const botonConfirmar = "{% translate 'SÍ, ELIMINAR' %}";
         const botonCancelar = "{% translate 'CANCELAR' %}";
+        const style = getComputedStyle(document.documentElement);
+        const colors = {
+            fondo: style.getPropertyValue('--fondo-pagina').trim(),
+            acento: style.getPropertyValue('--acento').trim(),
+            texto: style.getPropertyValue('--texto-principal').trim()
+        };
 
         Swal.fire({
             title: titulo,
             text: texto,
             icon: 'warning',
-            iconColor: '#e05252',
-            background: getComputedStyle(document.documentElement).getPropertyValue('--fondo-card') || '#121212',
-            color: '#ffffff',
+            iconColor: '#e05252', // Color de peligro constante
+            background: colors.fondo,
+            color: colors.texto,
             showCancelButton: true,
             confirmButtonText: botonConfirmar,
-            cancelButtonText: botonCancelar,            
-            confirmButtonColor: '#e05252', 
+            cancelButtonText: botonCancelar,
             customClass: {
-                confirmButton: 'btn btn-primary btn-swal',
-                cancelButton: 'btn btn-secondary btn-swal'
+                confirmButton: 'btn btn-danger', // Clase de base.css
+                cancelButton: 'btn btn-secondary'
             },
-            buttonsStyling: true 
+            buttonsStyling: false // Para usar tus clases de base.css
         }).then((result) => {
             if (result.isConfirmed) {
                 document.getElementById(`form-eliminar-parque-${parqueId}`).submit();

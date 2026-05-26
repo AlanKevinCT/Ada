@@ -1,181 +1,204 @@
-/* Heredando del estilo de Nyx Valley */
+/* Heredando del estilo de Nyx Valley — Adaptabilidad Total */
 .bitacora-container {
-    max-width: 1100px;
-    margin: 40px auto;
-    padding: 0 20px;
-    color: white;
+    width: 95%; 
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0;
+}
+
+p{
+    padding: 10px;
+    font-size: 1em;
 }
 
 .bitacora-header {
     margin-bottom: 40px;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
+    border-bottom: var(--borde-brutal);
     padding-bottom: 20px;
 }
 
-.user-name { font-size: 1.5rem; font-weight: bold; color: white; margin: 10px 0 5px 0; }
-.user-email { color: #888; font-size: 0.9rem; margin-bottom: 10px; }
-.oro { color: #facc15; }
-
-.bitacora-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
-    gap: 30px;
+/* Usamos variables de base.css */
+.user-name { 
+    font-family: var(--fuente-titulo);
+    font-size: clamp(1.2rem, 3vw, 1.8rem); 
+    font-weight: bold; 
+    color: var(--texto-principal); 
+    margin: 10px 0 5px 0; 
 }
 
-/* TARJETA ACTIVA */
+.user-email { 
+    color: var(--texto-suave); 
+    font-size: 0.9rem; 
+    font-family: var(--fuente-cuerpo);
+}
+
+.oro { 
+    color: var(--acento); 
+    font-weight: bolder; 
+    filter: drop-shadow(0 0 2px var(--acento));
+}
+
+/* --- Ajuste del Grid para Formato Lista --- */
+.bitacora-grid {
+    display: flex;
+    flex-direction: column; /* Tarjetas una debajo de otra */
+    gap: 20px;
+    padding: 0 clamp(10px, 5%, 45px); /* Padding adaptable */
+    width: 100%;
+}
+
+/* --- TARJETA RECTANGULAR --- */
 .card-bitacora {
-    background: rgba(15, 23, 42, 0.4);
-    border-radius: 25px;
-    padding: 30px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    transition: transform 0.3s ease;
+    background-color: var(--fondo-card);
+    border: var(--borde-brutal);
+    border-radius: var(--radio-card);
+    padding: 1.5rem 2rem;
+    backdrop-filter: blur(12px);
+    
+    /* Layout horizontal */
+    display: flex;
+    flex-direction: row; /* Elementos alineados de izquierda a derecha */
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    
+    transition: all 0.3s ease;
+    box-shadow: var(--sombra-glow);
 }
 
 .card-bitacora.proxima {
-    border: 1.5px solid #facc15;
-    box-shadow: 0 0 20px rgba(250, 204, 21, 0.15);
+    border-left: 5px solid var(--acento); /* Acento lateral para resaltar */
+    box-shadow: var(--sombra-glow-intensa);
 }
 
 /* TARJETA PASADA O CANCELADA */
 .card-bitacora.pasada {
-    opacity: 0.55; 
-    filter: grayscale(100%);
-    background: rgba(10, 10, 10, 0.6);
-    border: 1px dashed rgba(255, 255, 255, 0.2);
+    opacity: 0.6; 
+    filter: grayscale(80%);
+    background: rgba(128, 128, 128, 0.05);
+    border: 1px dashed var(--texto-suave);
 }
 
 .card-header {
+    flex: 0 0 150px; /* Ancho fijo para la sección de estado/fecha */
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.header-left {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+    flex-direction: column;
+    align-items: flex-start;
+    border-bottom: none; /* Quitamos la línea porque ahora es lateral */
+    padding-bottom: 0;
 }
 
 .header-left h2 {
     font-size: 1.1rem;
-    margin: 0;
+    color: var(--texto-principal);
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
 .fecha-log {
     font-size: 0.85rem;
-    color: #888;
+    color: var(--texto-suave);
+    font-family: var(--fuente-cuerpo);
 }
 
 .dot-glow {
-    width: 10px; height: 10px; background: #facc15; border-radius: 50%;
-    box-shadow: 0 0 10px #facc15; display: inline-block;
+    width: 12px; height: 12px; 
+    background: var(--acento); 
+    border-radius: 50%;
+    box-shadow: 0 0 10px var(--acento); 
+    display: inline-block;
 }
 
 .dot-off {
-    width: 10px; height: 10px; background: #555; border-radius: 50%; display: inline-block;
+    width: 12px; height: 12px; 
+    background: var(--texto-suave); 
+    border-radius: 50%; 
+    display: inline-block;
 }
 
 /* Cuerpo de Tarjetas */
 .card-body {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    margin: 20px 0;
-    gap: 15px;
+    flex: 2; /* El cuerpo ocupa la mayor parte del espacio */
+    display: flex;
+    flex-direction: row; /* Datos del parque y fechas lado a lado */
+    align-items: center;
+    margin: 0;
+    gap: 2rem;
 }
 
-.card-body-simple {
-    margin-top: 15px;
+.card-footer {
+    flex: 0 0 180px; /* Ancho para el botón de cancelar */
 }
 
-.card-body-simple h3 {
-    margin: 0 0 5px 0;
+.info-group {
+    flex: 1 1 200px;
 }
 
-/* Información del Parque Integrada */
-.direccion-parque-mini {
-    font-size: 0.85rem;
-    color: #b3b3b3;
-    margin: 4px 0;
-}
-
-.horario-parque-mini {
-    font-size: 0.8rem;
-    color: #888;
-    margin: 4px 0;
-}
-
-.info-group label { font-size: 0.7rem; color: #666; display: block; margin-bottom: 5px; }
-.info-group h3 { margin: 0; font-size: 1.2rem; }
-
-.status-text {
-    font-size: 0.8rem;
+.info-group label { 
+    font-size: 0.75rem; 
+    color: var(--texto-suave); 
+    text-transform: uppercase; 
     letter-spacing: 1px;
-    color: #ff8585;
-    margin-top: 10px;
+    margin-bottom: 8px; 
+}
+
+.info-group h3 { 
+    margin: 0; 
+    font-size: 1.25rem; 
+    color: var(--acento);
+}
+
+.direccion-parque-mini, .horario-parque-mini {
+    font-size: 0.85rem;
+    color: var(--texto-suave);
+    margin: 5px 0;
 }
 
 /* Botonera de Cancelaciones */
 .btn-cancelar {
-    width: 100%; background: rgba(255, 68, 68, 0.1); color: #ff4444;
-    border: 1px solid rgba(255, 68, 68, 0.3); padding: 12px; border-radius: 12px;
-    font-weight: bold; cursor: pointer;
-    transition: background 0.2s;
+    width: 100%; 
+    background: rgba(224, 82, 82, 0.1); 
+    color: #e05252;
+    border: 2px solid rgba(224, 82, 82, 0.3); 
+    padding: 12px; 
+    border-radius: var(--radio-card);
+    font-weight: bold; 
+    font-family: var(--fuente-cuerpo);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
 .btn-cancelar:hover {
-    background: rgba(255, 68, 68, 0.2);
+    background: #e05252;
+    color: white;
 }
 
-/* ── AJUSTE DE BOTONES SWEETALERT ── */
-.swal2-actions {
-    display: flex !important;
-    flex-direction: row !important;
-    justify-content: center !important;
-    gap: 15px !important;
-    width: 100% !important;
-    margin-top: 25px !important;
-}
+/* Responsivo para móviles */
+@media (max-width: 850px) {
+    .card-bitacora {
+        flex-direction: column; /* En celulares vuelve a ser vertical */
+        align-items: stretch;
+        gap: 1.5rem;
+    }
+    
+    .card-header {
+        flex: none;
+        flex-direction: row;
+        justify-content: space-between;
+        width: 100%;
+        border-bottom: 1px solid rgba(128, 128, 128, 0.1);
+        padding-bottom: 10px;
+    }
 
-.btn-swal {
-    min-width: 160px !important;
-    display: flex !important;
-    align-items: center;
-    justify-content: center;
-    height: 45px !important;
-    margin: 0 !important;
-    padding: 0 20px !important;
-    cursor: pointer;
-    font-weight: bold;
-    border-radius: 6px;
-}
+    .card-body {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
 
-.swal2-actions .btn-primary {
-    background-color: #d33 !important; 
-    color: white !important;
-    border: none !important;
-}
-
-.swal2-popup {
-    background-color: var(--fondo-pagina) !important;
-    border: var(--borde-brutal) !important;
-    border-radius: var(--radio-card) !important;
-    padding: 3rem 1rem !important;
-}
-
-.swal2-actions .btn-secondary {
-    border: 2px solid var(--acento) !important;
-    color: var(--acento) !important;
-    background: transparent !important;
-}
-
-.swal2-actions .btn-secondary:hover {
-    background: var(--acento) !important;
-    color: var(--texto-boton) !important;
-}
-
-/* Responsivo para Tablets y Celulares */
-@media (max-width: 768px) {
-    .bitacora-grid { grid-template-columns: 1fr; }
-    .card-body { grid-template-columns: 1fr; gap: 20px; }
+    .card-footer {
+        flex: none;
+    }
 }

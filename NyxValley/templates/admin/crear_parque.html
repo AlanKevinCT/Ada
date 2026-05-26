@@ -3,128 +3,68 @@
 {% load i18n %}
 
 {% block contenido %}
-<div style="display: flex; justify-content: center; align-items: center; min-height: calc(100vh - 120px); padding: 20px;">
-    
-    <div class="card fade-in" style="width: 100%; max-width: 700px; background-color: var(--fondo-card); border: var(--borde-brutal); padding: 30px; border-radius: 8px;">
+<main class="contenedor-formulario-centrado fade-in">
+    <div class="card" style="max-width: 800px; width: 100%;">
         
-        <header style="text-align: center; margin-bottom: 30px;">
-            <span style="color: var(--acento); font-size: 1.5rem; filter: drop-shadow(0 0 5px rgba(250, 204, 21, 0.8)); display: block; margin-bottom: 5px;" aria-hidden="true">✦</span>
-            <h2 class="card-titulo" style="border-bottom: none; margin-bottom: 5px; padding-bottom: 0;">{% translate "REGISTRAR PARQUE" %}</h2>
-            <p style="font-size: 0.85rem; color: var(--texto-suave); letter-spacing: 1px; text-transform: uppercase; margin: 0;">
+        <header class="encabezado-formulario">
+            <span class="glifo" style="color: var(--acento); font-size: 1.5rem; filter: drop-shadow(0 0 5px var(--acento));">✦</span>
+            <h2 class="card-titulo" style="border: none;">{% translate "REGISTRAR PARQUE" %}</h2>
+            <p class="texto-subtitulo-formulario">
                 {% translate "Dar de alta un nuevo santuario oficial en la plataforma" %}
             </p>
         </header>
 
-        {% if form.errors %}
-            <div role="alert" aria-live="assertive" style="background: rgba(239, 68, 68, 0.15); border: 1px solid rgb(239, 68, 68); color: #ff8585; padding: 14px; border-radius: 8px; margin-bottom: 24px; font-size: 0.9rem;">
-                <strong style="display: block; margin-bottom: 5px;">⚠️ {% translate "Por favor corrige los siguientes errores:" %}</strong>
-                {{ form.non_field_errors }}
-                {% for field in form %}
-                    {% if field.errors %}
-                        <p style="margin: 3px 0;"><strong>{{ field.label }}:</strong> {{ field.errors.0 }}</p>
-                    {% endif %}
-                {% endfor %}
-            </div>
-        {% endif %}
-
         <form method="POST" action="{% url 'crear_parque' %}">
             {% csrf_token %}
 
-            <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 20px; margin-bottom: 20px;">
-                <div class="form-grupo" style="display: flex; flex-direction: column;">
-                    <label style="font-size: 0.8rem; color: var(--texto-principal); margin-bottom: 6px; font-weight: bold; letter-spacing: 1px;">{% translate "NOMBRE DEL PARQUE" %}</label>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 20px;">
+                <div class="form-grupo">
+                    <label>{% translate "NOMBRE DEL PARQUE" %}</label>
                     {{ form.nombre }}
                 </div>
-                <div class="form-grupo" style="display: flex; flex-direction: center; align-items: flex-start; padding-left: 10px;">
-                    <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; color: var(--texto-principal); font-size: 0.85rem; font-weight: bold; margin-top: 20px;">
-                        {{ form.activo }}
-                        🌐 {% translate "ACTIVO AL CREAR" %}
+                <div class="form-grupo" style="display: flex; align-items: center; padding-top: 15px;">
+                    <label class="label-checkbox-accesible">
+                        {{ form.activo }} 🌐 {% translate "ACTIVO AL CREAR" %}
                     </label>
                 </div>
             </div>
 
-            <div class="form-grupo" style="display: flex; flex-direction: column; margin-bottom: 20px;">
-                <label style="font-size: 0.8rem; color: var(--texto-principal); margin-bottom: 6px; font-weight: bold; letter-spacing: 1px;">{% translate "DIRECCIÓN COMPLETA" %}</label>
+            <div class="form-grupo">
+                <label>{% translate "DIRECCIÓN COMPLETA" %}</label>
                 {{ form.direccion }}
             </div>
 
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
-                <div class="form-grupo" style="display: flex; flex-direction: column;">
-                    <label style="font-size: 0.8rem; color: var(--texto-principal); margin-bottom: 6px; font-weight: bold; letter-spacing: 1px;">🕒 {% translate "HORA DE APERTURA" %}</label>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 20px;">
+                <div class="form-grupo">
+                    <label>🕒 {% translate "HORA DE APERTURA" %}</label>
                     {{ form.horario_apertura }}
                 </div>
-                <div class="form-grupo" style="display: flex; flex-direction: column;">
-                    <label style="font-size: 0.8rem; color: var(--texto-principal); margin-bottom: 6px; font-weight: bold; letter-spacing: 1px;">🕒 {% translate "HORA DE CIERRE" %}</label>
+                <div class="form-grupo">
+                    <label>🕒 {% translate "HORA DE CIERRE" %}</label>
                     {{ form.horario_cierre }}
                 </div>
             </div>
 
-            <div class="form-grupo" style="display: flex; flex-direction: column; margin-bottom: 20px;">
-                <label style="font-size: 0.8rem; color: var(--texto-principal); margin-bottom: 6px; font-weight: bold; letter-spacing: 1px;">{% translate "CAPACIDAD MÁXIMA (PERSONAS)" %}</label>
-                {{ form.capacidad }}
-            </div>
-
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
-                <div class="form-grupo" style="display: flex; flex-direction: column;">
-                    <label style="font-size: 0.8rem; color: var(--texto-principal); margin-bottom: 6px; font-weight: bold; letter-spacing: 1px;">📍 {% translate "LATITUD" %}</label>
-                    {{ form.latitud }}
-                </div>
-                <div class="form-grupo" style="display: flex; flex-direction: column;">
-                    <label style="font-size: 0.8rem; color: var(--texto-principal); margin-bottom: 6px; font-weight: bold; letter-spacing: 1px;">📍 {% translate "LONGITUD" %}</label>
-                    {{ form.longitud }}
-                </div>
-            </div>
-
-            <label style="font-size: 0.8rem; color: var(--acento); display: block; margin-bottom: 10px; font-weight: bold; letter-spacing: 1px; text-transform: uppercase;">
-                ✦ {% translate "Servicios y Amenidades Disponibles" %}
+            <label style="color: var(--acento);  margin-bottom: 10px; display: block;">
+                ✦ {% translate "SERVICIOS Y AMENIDADES" %}
             </label>
-            
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; background: rgba(255, 255, 255, 0.02); padding: 20px; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.05); margin-bottom: 20px;">
-                <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; color: var(--texto-suave); font-size: 0.85rem;">
-                    {{ form.tiene_danza }} 💃 {% translate "Danza" %}
-                </label>
-                <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; color: var(--texto-suave); font-size: 0.85rem;">
-                    {{ form.tiene_musica }} 🎵 {% translate "Música" %}
-                </label>
-                <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; color: var(--texto-suave); font-size: 0.85rem;">
-                    {{ form.tiene_teatro }} 🎭 {% translate "Teatro" %}
-                </label>
-                <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; color: var(--texto-suave); font-size: 0.85rem;">
-                    {{ form.tiene_transporte }} 🚌 {% translate "Transporte" %}
-                </label>
-                <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; color: var(--texto-suave); font-size: 0.85rem;">
-                    {{ form.tiene_banos }} 🚻 {% translate "Baños" %}
-                </label>
-                <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; color: var(--texto-suave); font-size: 0.85rem;">
-                    {{ form.tiene_cafeterias }} ☕ {% translate "Cafeterías" %}
-                </label>
-                <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; color: var(--texto-suave); font-size: 0.85rem;">
-                    {{ form.tiene_guias }} 🦺 {% translate "Guías Autorizados" %}
-                </label>
-                <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; color: var(--texto-suave); font-size: 0.85rem;">
-                    {{ form.tiene_cabanas }} 🏠 {% translate "Cabañas" %}
-                </label>
-                <div style="grid-column: span 2;">
-                    <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; color: var(--texto-suave); font-size: 0.85rem;">
-                        {{ form.tiene_camping }} ⛺ {% translate "Zona de Camping" %}
-                    </label>
-                </div>
+            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 15px; background: rgba(128,128,128,0.05); padding: 20px; border-radius: var(--radio-card); border: var(--borde-brutal); margin-bottom: 25px;">
+                <label class="label-checkbox-accesible">{{ form.tiene_danza }} 💃 {% translate "Danza" %}</label>
+                <label class="label-checkbox-accesible">{{ form.tiene_musica }} 🎵 {% translate "Música" %}</label>
+                <label class="label-checkbox-accesible">{{ form.tiene_teatro }} 🎭 {% translate "Teatro" %}</label>
+                <label class="label-checkbox-accesible">{{ form.tiene_transporte }} 🚌 {% translate "Transporte" %}</label>
+                <label class="label-checkbox-accesible">{{ form.tiene_banos }} 🚻 {% translate "Baños" %}</label>
+                <label class="label-checkbox-accesible">{{ form.tiene_cafeterias }} ☕ {% translate "Cafeterías" %}</label>
+                <label class="label-checkbox-accesible">{{ form.tiene_guias }} 🦺 {% translate "Guías" %}</label>
+                <label class="label-checkbox-accesible">{{ form.tiene_cabanas }} 🏠 {% translate "Cabañas" %}</label>
+                <label class="label-checkbox-accesible">{{ form.tiene_camping }} ⛺ {% translate "Camping" %}</label>
             </div>
 
-            <div class="form-grupo" style="display: flex; flex-direction: column; margin-bottom: 25px;">
-                <label style="font-size: 0.8rem; color: var(--texto-principal); margin-bottom: 6px; font-weight: bold; letter-spacing: 1px;">{% translate "OTROS SERVICIOS ADICIONALES" %}</label>
-                {{ form.servicios }}
-            </div>
-
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-                <a href="{% url 'panel_admin' %}" class="btn btn-secondary" style="width: 100%; padding: 14px; font-weight: bold; font-size: 0.9rem; letter-spacing: 2px; text-align: center; text-decoration: none; box-sizing: border-box; display: inline-block;">
-                    {% translate "CANCELAR" %}
-                </a>
-                <button type="submit" class="btn btn-primary" style="width: 100%; padding: 14px; font-weight: bold; font-size: 0.9rem; letter-spacing: 2px; cursor: pointer;">
-                    {% translate "CREAR PARQUE" %}
-                </button>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; text-align: center;">
+                <a href="{% url 'panel_admin' %}" class="btn btn-secondary">{% translate "CANCELAR" %}</a>
+                <button type="submit" class="btn btn-primary">{% translate "CREAR PARQUE" %}</button>
             </div>
         </form>
     </div>
-</div>
+</main>
 {% endblock %}

@@ -1,152 +1,213 @@
-/* ── Layout del Panel ── */
+/* ── Layout del Panel Adaptable ── */
+.panel-seccion {
+    /* En lugar de 50px fijos, usamos un valor adaptable */
+    padding-left: clamp(20px, 5%, 50px);
+    padding-right: clamp(20px, 5%, 50px);
+    margin-bottom: 2rem;
+    width: 100%;
+}
+
+p{
+    padding: 0px;
+}
+
+/* Actualizamos .stats-container para que use la misma lógica */
 .stats-container {
     display: flex;
-    gap: 20px;
-    margin-bottom: 30px;
+    gap: 2rem;
     flex-wrap: wrap;
 }
 
 .stats-container .card {
-    flex: 1;
-    min-width: 250px;
+    flex: 1 1 280px; /* Crece y se encoge, mínimo 280px */
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
-    padding: 30px;
+    padding: 2rem;
     text-align: center;
+    /* Usamos las variables de base.css para que cambie con el tema */
+    background-color: var(--fondo-card);
+    border: var(--borde-brutal);
+    box-shadow: var(--sombra-glow);
 }
 
-/* ── Tabla Nyx Valley ── */
+/* ── Tabla Nyx Valley Estilizada ── */
 .nyx-table {
     width: 100%;
     border-collapse: separate;
-    border-spacing: 0 12px;
+    border-spacing: 0 0.8rem;
 }
 
 .nyx-table th {
-    padding: 12px 20px;
+    padding: 1rem;
     color: var(--acento);
     text-transform: uppercase;
     font-size: 0.8rem;
-    letter-spacing: 1px;
-    text-align: left;
+    letter-spacing: 2px;
+    font-family: var(--fuente-cuerpo);
 }
 
 .nyx-table td {
-    padding: 22px 20px;
-    background: rgba(255, 255, 255, 0.02);
+    padding: 1.5rem 1rem;
+    background: rgba(128, 128, 128, 0.05); /* Fondo sutil adaptable */
     vertical-align: middle;
-    border-top: 1px solid rgba(255, 255, 255, 0.03);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+    border-top: 1px solid rgba(128, 128, 128, 0.1);
+    border-bottom: 1px solid rgba(128, 128, 128, 0.1);
+    color: var(--texto-principal);
 }
 
 .nyx-table td:first-child {
-    border-radius: 10px 0 0 10px;
-    border-left: 1px solid rgba(255, 255, 255, 0.03);
+    border-radius: var(--radio-card) 0 0 var(--radio-card);
+    border-left: 1px solid rgba(128, 128, 128, 0.1);
 }
 
 .nyx-table td:last-child {
-    border-radius: 0 10px 10px 0;
-    border-right: 1px solid rgba(255, 255, 255, 0.03);
+    border-radius: 0 var(--radio-card) var(--radio-card) 0;
+    border-right: 1px solid rgba(128, 128, 128, 0.1);
 }
 
-/* ── Cuadrícula de Servicios (2 Columnas) ── */
+/* ── Cuadrícula de Servicios Refinada ── */
 .servicios-grid-clean {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 16px 24px;
+    display: flex;
+    flex-wrap: wrap; /* Permite que se acomoden según el espacio */
+    gap: 10px;
     width: 100%;
-    max-width: 420px;
+    max-width: 450px;
 }
 
-/* Elemento del servicio individual */
 .servicio-item {
     display: flex;
     align-items: center;
-    gap: 10px;
-    font-size: 0.8rem; /* Emoji más grande */
-    white-space: nowrap;
-    transition: filter 0.3s ease, opacity 0.3s ease;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 8px; /* Curva suave para las etiquetas */
+    font-size: 0.85rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid transparent;
 }
 
-/* Texto del servicio  */
 .servicio-texto {
-    font-size: 0.8rem;
-    font-weight: 100;
-    letter-spacing: 2px;
-    line-height: 0.5;
+    font-size: 0.7rem;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    font-weight: 600;
 }
 
-/* Servicios disponibles con brillo */
+/* Servicios DISPONIBLES: Efecto Neón sutil */
 .servicio-item.disponible {
-    filter: drop-shadow(0 0 6px #facc15) drop-shadow(0 0 12px #facc15);
-    opacity: 1;
+    background: rgba(128, 128, 128, 0.05);
+    border-color: var(--acento);
+    color: var(--texto-principal);
+    /* Brillo exterior que cambia con el tema */
+    box-shadow: inset 0 0 5px rgba(250, 204, 21, 0.1), var(--glow-linea);
 }
 
-.servicio-item.disponible .servicio-texto {
-    color: #ffffff;
+.servicio-item.disponible:hover {
+    transform: translateY(-2px);
+    background: var(--acento);
+    color: var(--texto-boton); /* El texto cambia a negro/oscuro si el fondo es brillante */
 }
 
-/* Servicios no disponibles - apagados */
+/* Servicios NO DISPONIBLES: Apagados y minimalistas */
 .servicio-item.no-disponible {
     filter: grayscale(100%);
-    opacity: 0.25;
+    opacity: 0.3;
+    border: 1px dashed var(--texto-suave);
+    background: transparent;
 }
 
-.servicio-item.no-disponible .servicio-texto {
-    color: rgba(255, 255, 255, 0.3);
+/* Ajuste para iconos (Emojis) */
+.servicio-item span[aria-hidden="true"] {
+    font-size: 1rem;
 }
 
-/* Número de capacidad */
+/* ── Tipografía Escalable ── */
 .capacidad-num {
     color: var(--acento);
     font-weight: 800;
-    font-size: 1.4rem;
+    font-size: clamp(1.2rem, 2vw, 1.6rem);
 }
 
-/* Botón Ver Reservas */
-.link-reservas {
-    margin-top: 15px;
-    color: var(--acento);
-    text-decoration: none;
+.direccion-texto {
     font-size: 0.85rem;
+    color: var(--texto-suave);
+    line-height: 1.4;
+    font-family: var(--fuente-cuerpo);
+}
+
+/* ── Media Queries para Móviles ── */
+@media (max-width: 768px) {
+    .nyx-table thead { display: none; } /* Ocultar cabecera en móvil */
+    
+    .nyx-table td {
+        display: block;
+        width: 100%;
+        text-align: left !important;
+        border: none;
+        padding: 0.5rem 1rem;
+    }
+
+    .nyx-table td:first-child {
+        padding-top: 1.5rem;
+        border-radius: var(--radio-card) var(--radio-card) 0 0;
+    }
+
+    .nyx-table td:last-child {
+        padding-bottom: 1.5rem;
+        border-radius: 0 0 var(--radio-card) var(--radio-card);
+        border-bottom: 2px solid var(--acento);
+    }
+}
+
+/* ── TARJETA DE ESTADÍSTICAS MEJORADA ── */
+.stats-numero {
+    font-size: clamp(2.5rem, 5vw, 3.5rem); 
+    color: var(--acento); 
+    margin: 10px 0; 
+    line-height: 1;
+    font-weight: 800;
+    filter: drop-shadow(0 0 10px rgba(var(--acento-rgb), 0.3));
+}
+
+.btn-link-gestion {
+    margin-top: 15px;
+    text-decoration: none;
+    color: var(--acento-hover);
+    font-size: 0.75rem;
+    font-weight: 700;
     letter-spacing: 1px;
-    transition: text-shadow 0.3s ease;
+    text-transform: uppercase;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.flecha-animada {
+    font-size: 1rem;
+    transition: transform 0.3s ease;
     display: inline-block;
 }
 
-.link-reservas:hover {
-    text-shadow: 0 0 10px var(--acento);
+/* Efecto de interacción */
+.btn-link-gestion:hover {
+    color: var(--acento);
+    background: rgba(128, 128, 128, 0.05);
+    border-color: rgba(var(--acento-rgb), 0.2);
 }
 
-/* ── Responsive Media Queries ── */
-@media (max-width: 1024px) {
-    .servicios-grid-clean {
-        max-width: 380px;
-    }
-    
-    .servicio-texto {
-        font-size: 1rem;
-    }
+.btn-link-gestion:hover .flecha-animada {
+    transform: translateX(5px); /* Se mueve a la derecha indicando avance */
+    filter: drop-shadow(0 0 5px var(--acento));
 }
 
-@media (max-width: 768px) {
-    .servicios-grid-clean {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 14px 20px;
-        max-width: 320px;
-    }
-    
-    .servicio-texto {
-        font-size: 0.95rem;
-    }
-}
-
-/* Texto de la dirección debajo del título del santuario */
-.direccion-texto {
-    font-size: 1.2rem;         
-    color: rgba(255, 255, 255, 0.6); 
-    font-weight: 300;            
-    margin-top: 4px;             
+/* Opcional: Hacer que toda la card brille un poco más al hacer hover en el link */
+.card-stats-interactiva:hover {
+    border-color: var(--acento);
+    box-shadow: var(--sombra-glow-intensa);
+    transform: translateY(-3px);
 }
