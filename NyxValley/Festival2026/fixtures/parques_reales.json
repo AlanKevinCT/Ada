@@ -4,8 +4,8 @@
   "pk": 1,
   "fields": {
     "nombre": "Parque Nacional Nevado de Toluca",
-    "direccion": "Zinacantepec, Estado de M�xico",
-    "servicios": "Senderismo, �rea de camping, estacionamiento, sanitarios",
+    "direccion": "Zinacantepec, Estado de México",
+    "servicios": "Senderismo, Área de camping, estacionamiento, sanitarios",
     "horario_apertura": "08:00:00",
     "horario_cierre": "18:00:00",
     "tiene_danza": false,
@@ -28,8 +28,8 @@
   "pk": 2,
   "fields": {
     "nombre": "Bosque de Tlalpan",
-    "direccion": "Perif�rico Sur, Tlalpan, Ciudad de M�xico",
-    "servicios": "Senderismo, �rea de picnic, sanitarios, estacionamiento",
+    "direccion": "Periférico Sur, Tlalpan, Ciudad de México",
+    "servicios": "Senderismo, Área de picnic, sanitarios, estacionamiento",
     "horario_apertura": "06:00:00",
     "horario_cierre": "18:00:00",
     "tiene_danza": false,
@@ -52,8 +52,8 @@
   "pk": 3,
   "fields": {
     "nombre": "Parque Nacional Izta-Popo",
-    "direccion": "Paso de Cort�s, Puebla",
-    "servicios": "Senderismo, gu�as especializados, �rea de camping, sanitarios",
+    "direccion": "Paso de Cortés, Puebla",
+    "servicios": "Senderismo, guías especializados, Área de camping, sanitarios",
     "horario_apertura": "07:00:00",
     "horario_cierre": "17:00:00",
     "tiene_danza": false,
@@ -75,9 +75,9 @@
   "model": "Festival2026.parque",
   "pk": 4,
   "fields": {
-    "nombre": "Santuario de la Luci�rnaga Nanacamilpa",
+    "nombre": "Santuario de la Luciérnaga Nanacamilpa",
     "direccion": "Nanacamilpa de Mariano Arista, Tlaxcala",
-    "servicios": "Gu�as nocturnos, �rea de camping, sanitarios, estacionamiento, tiendas de artesan�as",
+    "servicios": "Guías nocturnos, área de camping, sanitarios, estacionamiento, tiendas de artesanías",
     "horario_apertura": "19:00:00",
     "horario_cierre": "23:00:00",
     "tiene_danza": true,
@@ -101,7 +101,7 @@
   "fields": {
     "nombre": "Parque Nacional La Malinche",
     "direccion": "Tlaxcala / Puebla",
-    "servicios": "Senderismo, zona de camping, sanitarios, �rea de fogatas",
+    "servicios": "Senderismo, zona de camping, sanitarios, área de fogatas",
     "horario_apertura": "06:00:00",
     "horario_cierre": "18:00:00",
     "tiene_danza": false,
@@ -125,7 +125,7 @@
   "fields": {
     "nombre": "Bosque de San Juan Tetla",
     "direccion": "San Juan Tetla, Puebla",
-    "servicios": "Gu�as nocturnos, camping, sanitarios, estacionamiento",
+    "servicios": "Guías nocturnos, camping, sanitarios, estacionamiento",
     "horario_apertura": "18:00:00",
     "horario_cierre": "23:00:00",
     "tiene_danza": false,
