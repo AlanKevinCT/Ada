@@ -38,6 +38,18 @@ def formulario_reserva(request):
                 
             except ValueError as e:
                 form.add_error(None, str(e))
+    else :
+        initial_data = {}
+        parque_id = request.GET.get('parque') # Captura el ?parque=3
+        
+        if parque_id:
+            try:
+                parque_seleccionado = parques.get(id=parque_id)
+                initial_data['parque'] = parque_seleccionado
+            except (Parque.DoesNotExist, ValueError):
+                pass 
+                
+        form = ReservaForm(initial=initial_data)
 
     return render(request, 'cliente/formulario_reserva.html', {
         'form': form,

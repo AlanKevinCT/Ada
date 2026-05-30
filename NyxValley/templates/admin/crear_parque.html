@@ -29,10 +29,36 @@
                 </div>
             </div>
 
+
+
             <div class="form-grupo">
                 <label>{% translate "DIRECCIÓN COMPLETA" %}</label>
                 {{ form.direccion }}
             </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-top: 20px; margin-bottom: 20px;">
+                <div class="form-grupo">
+                    <label>📍 {% translate "LATITUD" %}</label>
+                    {{ form.latitud }}
+                </div>
+                <div class="form-grupo">
+                    <label>📍 {% translate "LONGITUD" %}</label>
+                    {{ form.longitud }}
+                </div>
+                <div class="form-grupo">
+                    <label>👥 {% translate "CAPACIDAD MÁXIMA" %}</label>
+                    {{ form.capacidad }}
+                </div>
+            </div>
+
+            <div class="form-grupo" style="margin-bottom: 25px;">
+                <label>📝 {% translate "OTROS SERVICIOS / DESCRIPCIÓN" %}</label>
+                {{ form.servicios }}
+            </div>
+            
+
+
+
 
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 20px;">
                 <div class="form-grupo">
