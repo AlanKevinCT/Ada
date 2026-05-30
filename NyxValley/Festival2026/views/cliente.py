@@ -16,8 +16,8 @@ from django.utils import timezone
 @login_required
 def panel_cliente(request):
     """Panel personal del usuario cliente."""
-    # TODO: Gera/Danna — agregar contexto del usuario
-    return render(request, 'cliente/panel.html')
+    return redirect('inicio')
+
 
 
 @login_required

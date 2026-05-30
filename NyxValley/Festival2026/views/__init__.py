@@ -14,7 +14,7 @@ from .mapa_interactivo import (
 
 from .reservaciones import (
     formulario_reserva,
-    confirmacion,
+
 )
 
 from .cliente import (

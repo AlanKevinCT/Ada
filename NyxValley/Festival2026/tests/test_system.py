@@ -83,8 +83,9 @@ class TestSistemaFestivalEndToEnd(StaticLiveServerTestCase):
         }
         url_reserva = self.live_server_url + reverse('formulario_reserva')
         respuesta_reserva = self.navegador.post(url_reserva, data=datos_reserva, follow=True)
-        self.assertTemplateUsed(respuesta_reserva, 'cliente/confirmacion.html')
-        
+        self.assertTemplateUsed(respuesta_reserva, 'cliente/formulario_reserva.html')
+        self.assertTrue(respuesta_reserva.context['success'])
+
         # C) Validación de Correo: Reservación Confirmada
         self.assertEqual(len(mail.outbox), 1)
         correo_reserva = mail.outbox[0]

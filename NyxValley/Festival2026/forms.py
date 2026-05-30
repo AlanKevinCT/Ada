@@ -225,14 +225,13 @@ class ReservaForm(forms.Form):
                 )
             )
 
-        if parque and fecha_inicio and fecha_fin and tipo_visita:
+        if parque and fecha_inicio and fecha_fin and tipo_visita and personas is not None:
             if not Disponibilidad.verificarDisponible(
                 parque, fecha_inicio, fecha_fin, tipo_visita, personas
             ):
                 raise ValidationError(
                     _('No hay disponibilidad en el parque para esas fechas.')
                 )
-
         return cleaned_data
 
 class ParqueForm(forms.ModelForm):

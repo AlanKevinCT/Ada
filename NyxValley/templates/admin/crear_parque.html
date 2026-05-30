@@ -17,6 +17,13 @@
         <form method="POST" action="{% url 'crear_parque' %}">
             {% csrf_token %}
 
+            {% if form.errors %}
+                <div style="color: red; background: black; padding: 10px; margin-bottom: 15px;">
+                    <strong>Por favor corrige los siguientes errores:</strong>
+                    {{ form.errors }}
+                </div>
+            {% endif %}
+
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 20px;">
                 <div class="form-grupo">
                     <label>{% translate "NOMBRE DEL PARQUE" %}</label>

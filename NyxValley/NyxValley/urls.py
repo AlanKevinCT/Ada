@@ -28,7 +28,6 @@ urlpatterns = [
 
     # ─── Reservaciones (cliente) ─────────────────────────────
     path('reservar/',                views.formulario_reserva, name='formulario_reserva'),
-    path('reservar/confirmacion/',   views.confirmacion,       name='confirmacion'),
 
     # ─── Panel de administrador ──────────────────────────────
     path('admin-panel/',                            views.panel_admin,          name='panel_admin'),

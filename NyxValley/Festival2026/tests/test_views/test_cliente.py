@@ -76,8 +76,8 @@ class TestVistasClienteReal(TestCase):
         """Prueba para que se renderice el panel cliente con un usuario autenticado común."""
         self.client.force_login(self.cliente_pablo)
         respuesta = self.client.get(self.url_panel)
-        self.assertEqual(respuesta.status_code, 200)
-        self.assertTemplateUsed(respuesta, 'cliente/panel.html')
+        self.assertEqual(respuesta.status_code, 302)
+        self.assertEqual(respuesta.url, reverse('inicio'))
 
     # ─────────────────────────────────────────────────────────────
     #  2. Lista de Reservaciones
