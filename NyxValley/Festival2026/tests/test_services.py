@@ -75,7 +75,7 @@ class TestServiciosFestival(TestCase):
         fecha_fin = date(2026, 6, 12)
         tipo_visita = 'cabana'
         disponible = Disponibilidad.verificarDisponible(
-            self.parque, fecha_inicio, fecha_fin, tipo_visita
+            self.parque, fecha_inicio, fecha_fin, tipo_visita, 1
         )
         self.assertTrue(disponible)
 
@@ -96,7 +96,7 @@ class TestServiciosFestival(TestCase):
         fecha_fin = date(2026, 6, 12)
         tipo_visita = 'cabana'
         disponible = Disponibilidad.verificarDisponible(
-            self.parque, fecha_inicio, fecha_fin, tipo_visita
+            self.parque, fecha_inicio, fecha_fin, tipo_visita, 1
         )
         self.assertFalse(disponible)
 
@@ -131,15 +131,17 @@ class TestServiciosFestival(TestCase):
     def test_verificar_hora_valida(self):
         """Verifica que la hora esté estrictamente dentro del horario del parque."""
         # 1. Hora dentro del rango (08:00 - 17:00)
-        hora_valida = Disponibilidad.verificaHora('10:00')
+        hora = time(10, 0)  # 10:00 AM
+        hora_valida = Disponibilidad.verificaHora(hora, self.parque)
         self.assertTrue(hora_valida, "Debería aceptar una hora dentro del rango del parque (10:00).")
 
         # 2. Hora fuera del rango (en la noche)
-        hora_tarde = Disponibilidad.verificaHora('22:00')
+        hora = time(22, 0)  # 10:00 PM  
+        hora_tarde = Disponibilidad.verificaHora(hora, self.parque)
         self.assertFalse(hora_tarde, "Debería rechazar una hora fuera del horario del parque (22:00).")
 
         # 3. Entrada inválida o nula
-        hora_invalida = Disponibilidad.verificaHora(None)
+        hora_invalida = Disponibilidad.verificaHora(None, self.parque)
         self.assertFalse(hora_invalida, "Debería rechazar un valor nulo (None) en la hora.")
 
     # ─────────────────────────────────────────────────────────────
@@ -147,8 +149,8 @@ class TestServiciosFestival(TestCase):
     # ─────────────────────────────────────────────────────────────
     def test_reservacion_existosa(self):
         """Verifica que se pueda crear una reservación con datos válidos."""
-        fecha_inicio = date(2026, 6, 10)
-        fecha_fin = date(2026, 6, 12)
+        fecha_inicio = date(2026, 6, 17)
+        fecha_fin = date(2026, 6, 19)
         numero_personas = 4
         tipo_visita = 'cabana'
 
@@ -245,7 +247,7 @@ class TestServiciosFestival(TestCase):
                 self.reserva_base, fecha_inicio_al_reves, fecha_fin_al_reves
             )
 
-        # Fechas pasadas (antes del 2026)
+        # Fechas pasadas (antes del 2026)   
         fecha_pasado_inicio = date(2024, 7, 10) # Julio de 2024
         fecha_pasado_fin = date(2024, 7, 12)
         
