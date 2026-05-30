@@ -38,9 +38,13 @@ class Disponibilidad:
             tipo_visita=tipo_visita,
             fecha_inicio__lt=fecha_fin,
             fecha_fin__gt=fecha_inicio,
-        ).count()
-        capacidad_necesaria = reservaciones_activas + cantidad
-        print(f"Capacidad del parque {cantidad} capacidad necesaria: {capacidad_necesaria} reservaciones activas: {reservaciones_activas}")
+        )
+        personas_reservadas = 0
+        for reserva in reservaciones_activas:
+            personas_reservadas += reserva.numero_personas
+            
+        capacidad_necesaria =  personas_reservadas + cantidad
+        
         return capacidad_necesaria <= parque.capacidad
 
     @staticmethod
@@ -101,10 +105,22 @@ class AsistReserva:
                 'Las fechas no son válidas: deben estar entre junio y agosto '
                 'y no pueden incluir martes.'
             )
+        
         if not Disponibilidad.verificarDisponible(parque, fecha_inicio,
                                                    fecha_fin, tipo_visita, numero_personas):
             raise ValueError('No hay disponibilidad en el parque para esas fechas.')
 
+        existe_reserva_activa = Reservacion.objects.filter(
+            usuario=usuario,
+            parque=parque,
+            estado='activa',
+            fecha_inicio__lt=fecha_fin,
+            fecha_fin__gt=fecha_inicio,
+        ).exists()
+
+        if existe_reserva_activa:
+            raise ValueError('El usuario ya tiene una reservación activa para este parque en esas fechas.')
+        
         reservacion = Reservacion.objects.create(
             usuario=usuario,
             parque=parque,

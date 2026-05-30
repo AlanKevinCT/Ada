@@ -149,8 +149,8 @@ class TestServiciosFestival(TestCase):
     # ─────────────────────────────────────────────────────────────
     def test_reservacion_existosa(self):
         """Verifica que se pueda crear una reservación con datos válidos."""
-        fecha_inicio = date(2026, 6, 10)
-        fecha_fin = date(2026, 6, 12)
+        fecha_inicio = date(2026, 6, 17)
+        fecha_fin = date(2026, 6, 19)
         numero_personas = 4
         tipo_visita = 'cabana'
 
@@ -247,7 +247,7 @@ class TestServiciosFestival(TestCase):
                 self.reserva_base, fecha_inicio_al_reves, fecha_fin_al_reves
             )
 
-        # Fechas pasadas (antes del 2026)
+        # Fechas pasadas (antes del 2026)   
         fecha_pasado_inicio = date(2024, 7, 10) # Julio de 2024
         fecha_pasado_fin = date(2024, 7, 12)
         
