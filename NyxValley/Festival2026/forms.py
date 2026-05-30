@@ -208,6 +208,7 @@ class ReservaForm(forms.Form):
         fecha_fin    = cleaned_data.get('fecha_fin')
         parque       = cleaned_data.get('parque')
         tipo_visita  = cleaned_data.get('tipo_visita')
+        personas     = cleaned_data.get('numero_personas')
 
         if fecha_inicio and fecha_fin:
             if fecha_inicio > fecha_fin:
@@ -226,7 +227,7 @@ class ReservaForm(forms.Form):
 
         if parque and fecha_inicio and fecha_fin and tipo_visita:
             if not Disponibilidad.verificarDisponible(
-                parque, fecha_inicio, fecha_fin, tipo_visita
+                parque, fecha_inicio, fecha_fin, tipo_visita, personas
             ):
                 raise ValidationError(
                     _('No hay disponibilidad en el parque para esas fechas.')
