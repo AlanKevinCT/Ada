@@ -178,7 +178,7 @@ class TestSistemaFestivalEndToEnd(StaticLiveServerTestCase):
         self.assertEqual(parque_creado.nombre, 'Parque Tlalpan MODIFICADO')
 
         # Validación de Correo: Modificación del Parque enviado a los usuarios con estancias activas
-        self.assertEqual(len(mail.outbox), 1)
+        self.assertEqual(len(mail.outbox), 2)
         correo_modificacion = mail.outbox[0]
         self.assertIn('cliente_aviso@ciencias.unam.mx', correo_modificacion.to)
         self.assertEqual(correo_modificacion.subject, 'Actualización de parque — Festival de las Luciérnagas')
@@ -192,7 +192,7 @@ class TestSistemaFestivalEndToEnd(StaticLiveServerTestCase):
         self.assertFalse(Parque.objects.filter(id=parque_creado.id).exists())
 
         # Validación de Correo: Notificación de eliminación masiva e impacto de cancelación de estancia
-        self.assertEqual(len(mail.outbox), 1)
+        self.assertEqual(len(mail.outbox), 2)
         correo_eliminacion = mail.outbox[0]
         self.assertIn('cliente_aviso@ciencias.unam.mx', correo_eliminacion.to)
         self.assertEqual(correo_eliminacion.subject, 'Actualización de parque — Festival de las Luciérnagas')
@@ -259,3 +259,112 @@ class TestSistemaFestivalEndToEnd(StaticLiveServerTestCase):
         
         self.assertEqual(respuesta_cupo.status_code, 200)
         self.assertTrue(len(respuesta_cupo.context['form'].non_field_errors()) > 0)
+
+    # ─────────────────────────────────────────────────────────────
+    #  7. Escenario Macropersistente de Cobertura Crítica de Negocio
+    # ─────────────────────────────────────────────────────────────
+    def test_macro_sistema__completo(self):
+        """
+        Simulación de punta a punta: Alta de parque por Admin, Registro y Reserva de Cliente,
+        Modificación de Parque con Alerta Masiva, y Cancelación Automática en Cascada por Cierre.
+        """
+        # 1. Flujo Administrativo de Alta
+        Usuario.objects.create_superuser(
+            correo_electronico='macro_admin@ciencias.unam.mx', nombre='Gerardo',
+            apellido_paterno='Silva', apellido_materno='López', password=self.admin_password
+        )
+        
+        # Iniciar sesión como Admin
+        url_login = self.live_server_url + reverse('login')
+        self.navegador.post(url_login, data={
+            'correo_electronico': 'macro_admin@ciencias.unam.mx', 'password': self.admin_password
+        })
+        
+        # Crear un nuevo Parque Oficial desde el Panel Administrativo
+        url_crear = self.live_server_url + reverse('crear_parque')
+        datos_nuevo_parque = {
+            'nombre': 'Santuario de Tlalpan E2E', 'direccion': 'CDMX', 'servicios': 'Camping, Guías',
+            'horario_apertura': time(7,0), 'horario_cierre': time(17,0), 'capacidad': 50,
+            'activo': True, 'tiene_camping': True, 'tiene_cabanas': False, 'latitud': 19.28, 'longitud': -99.19
+        }
+        self.navegador.post(url_crear, data=datos_nuevo_parque)
+        self.assertTrue(Parque.objects.filter(nombre='Santuario de Tlalpan E2E').exists())
+        
+        # Recuperamos la instancia nacida en la BD
+        parque_macro = Parque.objects.get(nombre='Santuario de Tlalpan E2E')
+        
+        # Cerrar sesión de Admin
+        url_logout = self.live_server_url + reverse('logout')
+        self.navegador.get(url_logout)
+        mail.outbox.clear()
+
+        # 2. Flujo del Cliente (Registro y Reserva)
+        datos_cliente = {
+            'correo_electronico': 'pablo_macro@ciencias.unam.mx', 'nombre': 'Pablo',
+            'apellido_paterno': 'González', 'apellido_materno': 'Martínez',
+            'password': self.password_valido, 'confirmar_password': self.password_valido
+        }
+        url_registro = self.live_server_url + reverse('registro')
+        self.navegador.post(url_registro, data=datos_cliente, follow=True)
+        
+        # Validar el Correo Automatizado de Bienvenida (Señal post_save Usuario)
+        self.assertTrue(len(mail.outbox) >= 1)
+        self.assertIn('¡Bienvenido al Festival Internacional de las Luciérnagas 2026!', mail.outbox[0].subject)
+        mail.outbox.clear()
+
+        # Cliente realiza una Reservación en el nuevo parque
+        datos_estancia = {
+            'parque': parque_macro.id, 'fecha_inicio': date(2026, 6, 24),
+            'fecha_fin': date(2026, 6, 26), 'numero_personas': 3, 'tipo_visita': 'camping'
+        }
+
+        url_reserva = self.live_server_url + reverse('formulario_reserva')
+        self.navegador.post(url_reserva, data=datos_estancia, follow=True)
+        
+        # Validar el Correo Automatizado de la Reservación (Señal post_save Reservacion)
+        self.assertTrue(len(mail.outbox) >= 1)
+        self.assertIn('✨ Reservación confirmada — Festival de las Luciérnagas', mail.outbox[0].subject)
+        
+        # Recuperamos la reservación nacida en la BD
+        cliente_instancia = Usuario.objects.get(correo_electronico='pablo_macro@ciencias.unam.mx')
+        reserva_macro = Reservacion.objects.get(usuario=cliente_instancia, parque=parque_macro)
+        self.assertEqual(reserva_macro.estado, 'activa')
+        
+        # Cliente sale del sistema
+        self.navegador.get(url_logout)
+        mail.outbox.clear()
+
+        # 3. Contingencia Masiva (Modificación)
+        # Reingresa el Administrador
+        self.navegador.post(url_login, data={
+            'correo_electronico': 'macro_admin@ciencias.unam.mx', 'password': self.admin_password
+        })
+        
+        # Admin modifica el aforo/nombre del parque por seguridad
+        url_editar = self.live_server_url + reverse('editar_parque', kwargs={'id': parque_macro.id})
+        datos_nuevo_parque['nombre'] = 'Santuario de Tlalpan MODIFICADO E2E'
+        self.navegador.post(url_editar, data=datos_nuevo_parque)
+        
+        # Validar que el gancho (parque_post_save) alertó a Pablo de los cambios estructurales
+        self.assertTrue(len(mail.outbox) >= 1)
+        correo_alerta_cambio = mail.outbox[0]
+        self.assertIn('pablo_macro@ciencias.unam.mx', correo_alerta_cambio.to)
+        self.assertEqual(correo_alerta_cambio.subject, 'Actualización de parque — Festival de las Luciérnagas')
+        self.assertIn('Santuario de Tlalpan MODIFICADO E2E', correo_alerta_cambio.body)
+        mail.outbox.clear()
+
+        # 4. Clausura de Parque y Cascada Relacional
+
+        # El Administrador ejecuta la eliminación del Parque debido a la contingencia
+        url_eliminar = self.live_server_url + reverse('eliminar_parque', kwargs={'id': parque_macro.id})
+        self.navegador.post(url_eliminar)
+        self.assertFalse(Parque.objects.filter(id=parque_macro.id).exists())
+        
+        # 🛠️ CORRECCIÓN: Validamos que la reservación fue eliminada físicamente de la BD por el CASCADE relacional
+        self.assertFalse(Reservacion.objects.filter(id=reserva_macro.id).exists())
+        
+        # Validar el Correo de Contingencia Final despachado a Pablo
+        self.assertTrue(len(mail.outbox) >= 1)
+        correo_contingencia = mail.outbox[0]
+        self.assertIn('pablo_macro@ciencias.unam.mx', correo_contingencia.to)
+        self.assertIn('ha sido eliminado del festival. Tu reservación ha sido cancelada automáticamente.', correo_contingencia.body)
