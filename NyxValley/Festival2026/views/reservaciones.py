@@ -56,18 +56,3 @@ def formulario_reserva(request):
         'parques': parques,
     })
 
-
-@login_required
-def confirmacion(request):
-    """Página de confirmación tras realizar una reservación (RF-11)."""
-    reservacion_id = request.session.pop('ultima_reservacion_id', None)
-    reservacion    = None
-
-    if reservacion_id:
-        reservacion = get_object_or_404(
-            Reservacion, id=reservacion_id, usuario=request.user
-        )
-
-    return render(request, 'cliente/confirmacion.html',
-                  {'reservacion': reservacion})
-

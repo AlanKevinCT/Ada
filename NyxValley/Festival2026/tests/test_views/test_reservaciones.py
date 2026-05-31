@@ -29,7 +29,6 @@ class TestReservacionesControlador(TestCase):
         
         # URLs de las vistas
         self.url_reserva = reverse('formulario_reserva')
-        self.url_confirmacion = reverse('confirmacion')
 
     # ─────────────────────────────────────────────────────────────
     #  1. Pruebas de Acceso y Autenticación
@@ -40,11 +39,11 @@ class TestReservacionesControlador(TestCase):
         self.assertEqual(respuesta.status_code, 302)
         self.assertIn('/login/', respuesta.url)
 
-    def test_confirmacion_anonimo_redirige_al_login(self):
-        """Verifica que un usuario no autenticado no pueda ver confirmaciones."""
-        respuesta = self.client.get(self.url_confirmacion)
-        self.assertEqual(respuesta.status_code, 302)
-        self.assertIn('/login/', respuesta.url)
+    # def test_confirmacion_anonimo_redirige_al_login(self):
+    #     """Verifica que un usuario no autenticado no pueda ver confirmaciones."""
+    #     respuesta = self.client.get(self.url_confirmacion)
+    #     self.assertEqual(respuesta.status_code, 302)
+    #     self.assertIn('/login/', respuesta.url)
 
     # ─────────────────────────────────────────────────────────────
     #  2. Formulario de Reserva
@@ -73,13 +72,10 @@ class TestReservacionesControlador(TestCase):
         
         respuesta = self.client.post(self.url_reserva, data=datos_post)
         
-        self.assertEqual(respuesta.status_code, 302)
-        self.assertRedirects(respuesta, self.url_confirmacion)
+        self.assertEqual(respuesta.status_code, 200)
         self.assertTrue(Reservacion.objects.filter(usuario=self.usuario, parque=self.parque).exists())
+        self.assertTrue(respuesta.context['success'])
         
-        reservacion_reciente = Reservacion.objects.get(usuario=self.usuario, parque=self.parque)
-        self.assertEqual(self.client.session['ultima_reservacion_id'], reservacion_reciente.id)
-
     def test_reserva_fallida(self):
         """Verifica que se arroje un error al enviar datos inválidos."""
         self.client.login(correo_electronico='pablo@ciencias.unam.mx', password='PasswordFuerte123!')
@@ -120,49 +116,49 @@ class TestReservacionesControlador(TestCase):
     # ─────────────────────────────────────────────────────────────
     #  3. Página de Confirmación
     # ─────────────────────────────────────────────────────────────
-    def test_confirmacion_con_datos_de_sesion_validos(self):
-        """Verifica que la confirmación muestre los datos correctos cuando la sesión contiene un id válido."""
-        self.client.login(correo_electronico='pablo@ciencias.unam.mx', password='PasswordFuerte123!')
+    # def test_confirmacion_con_datos_de_sesion_validos(self):
+    #     """Verifica que la confirmación muestre los datos correctos cuando la sesión contiene un id válido."""
+    #     self.client.login(correo_electronico='pablo@ciencias.unam.mx', password='PasswordFuerte123!')
         
-        reserva = Reservacion.objects.create(
-            usuario=self.usuario,
-            parque=self.parque,
-            fecha_inicio=date(2026, 6, 18),
-            fecha_fin=date(2026, 6, 20),
-            numero_personas=2,
-            tipo_visita='camping'
-        )
+    #     reserva = Reservacion.objects.create(
+    #         usuario=self.usuario,
+    #         parque=self.parque,
+    #         fecha_inicio=date(2026, 6, 18),
+    #         fecha_fin=date(2026, 6, 20),
+    #         numero_personas=2,
+    #         tipo_visita='camping'
+    #     )
         
-        sesion = self.client.session
-        sesion['ultima_reservacion_id'] = reserva.id
-        sesion.save()
+    #     sesion = self.client.session
+    #     sesion['ultima_reservacion_id'] = reserva.id
+    #     sesion.save()
         
-        respuesta = self.client.get(self.url_confirmacion)
+    #     respuesta = self.client.get(self.url_confirmacion)
         
-        self.assertEqual(respuesta.status_code, 200)
-        self.assertTemplateUsed(respuesta, 'cliente/confirmacion.html')
-        self.assertEqual(respuesta.context['reservacion'], reserva)
+    #     self.assertEqual(respuesta.status_code, 200)
+    #     self.assertTemplateUsed(respuesta, 'cliente/confirmacion.html')
+    #     self.assertEqual(respuesta.context['reservacion'], reserva)
 
-    def test_confirmacion_limpia_sesion_tras_primer_consumo_y_f5_falla(self):
-        """Verifica que tras renderizar una vez, al recargar la página ya no muestre los datos."""
-        self.client.login(correo_electronico='pablo@ciencias.unam.mx', password='PasswordFuerte123!')
+    # def test_confirmacion_limpia_sesion_tras_primer_consumo_y_f5_falla(self):
+    #     """Verifica que tras renderizar una vez, al recargar la página ya no muestre los datos."""
+    #     self.client.login(correo_electronico='pablo@ciencias.unam.mx', password='PasswordFuerte123!')
         
-        reserva = Reservacion.objects.create(
-            usuario=self.usuario,
-            parque=self.parque,
-            fecha_inicio=date(2026, 6, 18),
-            fecha_fin=date(2026, 6, 20),
-            numero_personas=2,
-            tipo_visita='camping'
-        )
+    #     reserva = Reservacion.objects.create(
+    #         usuario=self.usuario,
+    #         parque=self.parque,
+    #         fecha_inicio=date(2026, 6, 18),
+    #         fecha_fin=date(2026, 6, 20),
+    #         numero_personas=2,
+    #         tipo_visita='camping'
+    #     )
         
-        sesion = self.client.session
-        sesion['ultima_reservacion_id'] = reserva.id
-        sesion.save()
+    #     sesion = self.client.session
+    #     sesion['ultima_reservacion_id'] = reserva.id
+    #     sesion.save()
         
-        self.client.get(self.url_confirmacion)
+    #     self.client.get(self.url_confirmacion)
         
-        respuesta_f5 = self.client.get(self.url_confirmacion)
+    #     respuesta_f5 = self.client.get(self.url_confirmacion)
         
-        self.assertEqual(respuesta_f5.status_code, 200)
-        self.assertIsNone(respuesta_f5.context['reservacion'])
+    #     self.assertEqual(respuesta_f5.status_code, 200)
+    #     self.assertIsNone(respuesta_f5.context['reservacion'])
