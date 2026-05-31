@@ -144,5 +144,4 @@ def eliminar_parque(request, id):
     if request.method == 'POST':
         SignalModificacion.borrarParque(parque)
         parque.delete()
-        return redirect('panel_admin')
-    return render(request, 'admin/eliminar_parque.html', {'parque': parque})
+    return redirect('panel_admin')
