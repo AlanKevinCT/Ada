@@ -127,11 +127,6 @@ class TestVistasAdministracionReal(TestCase):
         self.assertIn(reserva_alberto, respuesta_fecha.context['reservaciones'])
         self.assertNotIn(reserva_pablo, respuesta_fecha.context['reservaciones'])
 
-        # # Filtrado por usuario
-        # respuesta_usuario = self.client.get(self.url_consultar, {'usuario': self.usuario_cliente.id})
-        # self.assertIn(reserva_pablo, respuesta_usuario.context['reservaciones'])
-        # self.assertNotIn(reserva_alberto, respuesta_usuario.context['reservaciones'])
-
     # ─────────────────────────────────────────────────────────────
     #  3. Creacion de parques
     # ─────────────────────────────────────────────────────────────
