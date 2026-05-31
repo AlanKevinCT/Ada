@@ -43,7 +43,6 @@ def registro(request):
                 apellido_materno=form.cleaned_data['apellido_materno'],
                 password=form.cleaned_data['password'],
             )
-            SignalCorreoCliente.notifyRegistro(usuario)
             auth_login(request, usuario)
             return redirect('inicio')
      return render(request, 'registro.html', {'form': form})
