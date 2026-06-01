@@ -359,8 +359,6 @@ class TestSistemaFestivalEndToEnd(StaticLiveServerTestCase):
         url_eliminar = self.live_server_url + reverse('eliminar_parque', kwargs={'id': parque_macro.id})
         self.navegador.post(url_eliminar)
         self.assertFalse(Parque.objects.filter(id=parque_macro.id).exists())
-        
-        # 🛠️ CORRECCIÓN: Validamos que la reservación fue eliminada físicamente de la BD por el CASCADE relacional
         self.assertFalse(Reservacion.objects.filter(id=reserva_macro.id).exists())
         
         # Validar el Correo de Contingencia Final despachado a Pablo
