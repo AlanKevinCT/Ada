@@ -1,0 +1,91 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block estilos_extra %}
+    <link rel="stylesheet" href="{% static 'css/info_completa.css' %}">
+{% endblock %}
+
+{% block contenido %}
+<main class="landing-visual fade-in">
+    
+    <header class="seccion-titulo" style="margin-bottom: 3rem;">
+        <div class="titulo-wrapper" style="display: flex; align-items: center; gap: 15px;">
+            <span class="glifo" style="color: var(--acento); font-size: 2rem;">✦</span>
+            <h1 style="margin: 0; border: none; padding: 0;">{{ parque.nombre|upper }}</h1>
+        </div>
+        <p class="direccion" style="padding: 0; margin-top: 10px; font-size: 1rem;">📍 {{ parque.direccion }}</p>
+    </header>
+
+    <div class="main-grid">
+        
+        <div class="col-left">
+            <section class="caja-info" aria-labelledby="titulo-bienvenida">
+                <p id="titulo-bienvenida" class="etiqueta">{% translate "BIENVENIDOS AL SANTUARIO" %}</p>
+                <div class="descripcion-box">
+                    <blockquote class="texto-magico" lang="es">
+                        {% translate '"En el corazón de Nyx Valley, el tiempo se detiene. Somos un refugio donde la naturaleza susurra secretos y las luciérnagas pintan el aire con destellos de esperanza. Nuestro parque no es solo un destino, es una experiencia mística diseñada para reconectar tu alma con el bosque."' %}
+                    </blockquote>
+                    <div class="divisor"></div>
+                    <p class="parque-descripcion-texto">{{ parque.descripcion }}</p>
+                </div>
+            </section>
+
+            <section class="caja-info" aria-labelledby="titulo-servicios">
+                <h2 id="titulo-servicios" class="etiqueta-separada">{% translate "SERVICIOS" %}</h2>
+                <div class="servicios-grid">
+                    
+                    {% if parque.tiene_camping %}
+                    <article class="servicio-card-grande">
+                        <span class="icono-extra-grande" aria-hidden="true">⛺</span>
+                        <div class="detalles">
+                            <strong class="servicio-nombre">{% translate "ZONA CAMPING" %}</strong>
+                            <br>
+                            <span class="servicio-capacidad">
+                                {% translate "Capacidad máxima:" %} {{ parque.capacidad }} {% translate "personas" %}
+                            </span>
+                        </div>
+                    </article>
+                    {% endif %}
+
+                    {% if parque.tiene_cabanas %}
+                    <article class="servicio-card-grande">
+                        <span class="icono-grande" aria-hidden="true">🏠</span>
+                        <div class="detalles">
+                            <strong class="servicio-nombre">{% translate "CABAÑA" %}</strong>
+                            <br>
+                            <span class="servicio-capacidad">
+                                {% translate "Capacidad máxima:" %} {{ parque.capacidad }} {% translate "personas" %}
+                            </span>
+                        </div>
+                    </article>
+                    {% endif %}
+                </div>
+            </section>
+        </div>
+
+        <div class="col-right">
+            <section class="caja-reserva" aria-label="{% translate 'Área de reservaciones' %}">
+                <a href="/reservar/?parque={{ parque.id }}" class="btn-reserva-boceto">
+                    {% translate "RESERVAR" %}
+                </a>
+            </section>
+
+            <section class="caja-info" aria-labelledby="titulo-horario">
+                <p id="titulo-horario" class="etiqueta">{% translate "HORARIO" %}</p>
+                <article class="horario-card" style="justify-content: center;">
+                    <span class="icono-horario" aria-hidden="true">⏰</span>
+                    <div class="horario-texto">
+                        <span class="rango">
+                            <time datetime="{{ parque.horario_apertura|time:'H:i' }}">{{ parque.horario_apertura|time:"H:i" }}</time> - 
+                            <time datetime="{{ parque.horario_cierre|time:'H:i' }}">{{ parque.horario_cierre|time:"H:i" }}</time>
+                        </span>
+                        <span class="unidad">{% translate "HRS" %}</span>
+                    </div>
+                </article>
+            </section>
+        </div>
+
+    </div>
+</main>
+{% endblock %}

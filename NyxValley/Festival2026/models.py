@@ -1,6 +1,7 @@
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.db import models
-
+from datetime import time
+from django.core.exceptions import ValidationError
 
 # ─────────────────────────────────────────────────────────────
 #  Manager personalizado para nuestro Usuario
@@ -74,11 +75,23 @@ class Parque(models.Model):
 
     nombre    = models.CharField(max_length=200)
     direccion = models.CharField(max_length=300)
-    servicios = models.TextField(help_text='Lista de servicios disponibles')
-    horario   = models.CharField(max_length=200)
-    capacidad = models.PositiveIntegerField(default=0)
+    servicios = models.TextField(help_text='Lista de servicios adicionales disponibles')
+
+
+    # Para mostrar el horario en la vista de detalle del parque (RF-09)
+    horario_apertura = models.TimeField(default=time(0, 0), help_text='Hora de apertura (HH:MM)')
+    horario_cierre   = models.TimeField(default=time(0, 0), help_text='Hora de cierre (HH:MM)')
 
     # Todos tienen camping; solo algunos tienen cabañas (RF-18)
+    tiene_danza = models.BooleanField(default=False)
+    tiene_musica = models.BooleanField(default=False)
+    tiene_teatro = models.BooleanField(default=False)
+    tiene_transporte = models.BooleanField(default=False)
+    tiene_banos = models.BooleanField(default=True)
+    tiene_cafeterias = models.BooleanField(default=True)
+    tiene_guias = models.BooleanField(default=False)
+
+    # Hospedaje
     tiene_cabanas = models.BooleanField(default=False)
     tiene_camping = models.BooleanField(default=True)
 
@@ -86,6 +99,7 @@ class Parque(models.Model):
     latitud  = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
     longitud = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
 
+    capacidad = models.PositiveIntegerField(default=0)
     activo = models.BooleanField(default=True)  # si False no aparece en el mapa
 
     class Meta:
@@ -94,6 +108,13 @@ class Parque(models.Model):
 
     def __str__(self):
         return self.nombre
+    
+    def clean(self):
+        if self.horario_apertura and self.horario_cierre:
+            if self.horario_apertura >= self.horario_cierre:
+                raise ValidationError({
+                    'horario_apertura': 'La hora de apertura debe ser anterior a la de cierre.',
+                })
 
 
 # ─────────────────────────────────────────────────────────────

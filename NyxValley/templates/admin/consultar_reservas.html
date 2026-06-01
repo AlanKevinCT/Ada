@@ -1,0 +1,116 @@
+{% extends "base/base.html" %}
+{% load static %}
+{% load i18n %}
+
+{% block estilos_extra %}
+<link rel="stylesheet" href="{% static 'css/admin_panel.css' %}">
+<link rel="stylesheet" href="{% static 'css/consultar_reservas.css' %}">
+{% endblock %}
+
+{% block contenido %}
+<div class="reservas-container">
+    <div class="panel-seccion" style="margin-bottom: 30px;">
+        <a href="{% url 'panel_admin' %}" class="btn-regresar-custom">
+            <span class="flecha">←</span> {% translate "VOLVER AL PANEL DE CONTROL" %}
+        </a>
+    </div>
+
+    <h1 style="text-align: center; margin-bottom: 40px;">{% translate "CONSULTA DE RESERVACIONES" %}</h1>
+
+    <div class="nyx-filtros-bar" role="search">
+        <form method="GET" action="{% url 'consultar_reservas' %}" class="nyx-form-grid">
+            
+            <div class="nyx-form-group">
+                <label for="filtro-parque">{% translate "Parque / Santuario" %}</label>
+                <select id="filtro-parque" name="parque" class="nyx-input">
+                    <option value="">-- {% translate "Todos los parques" %} --</option>
+                    {% for pa in parques %}
+                        <option value="{{ pa.id }}" {% if parque_seleccionado == pa.id|slugify %}selected{% endif %}>{{ pa.nombre }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="nyx-form-group">
+                <label for="filtro-fecha">{% translate "Fecha de Llegada" %}</label>
+                <input type="date" id="filtro-fecha" name="fecha" value="{{ fecha_seleccionada }}" class="nyx-input">
+            </div>
+
+            <div class="nyx-form-group">
+                <label for="filtro-estancia">{% translate "Tipo de Estancia" %}</label>
+                <select id="filtro-estancia" name="tipo_estancia" class="nyx-input">
+                    <option value="">-- {% translate "Cualquiera" %} --</option>
+                    <option value="cabana" {% if tipo_seleccionado == 'cabana' %}selected{% endif %}>{% translate "Cabañas" %}</option>
+                    <option value="camping" {% if tipo_seleccionado == 'camping' %}selected{% endif %}>{% translate "Camping" %}</option>
+                </select>
+            </div>
+
+            <div style="display: flex; gap: 12px;">
+                <button type="submit" class="btn btn-primary" style="color: var(--fondo-pagina);">
+                    🔍 {% translate "FILTRAR" %}
+                </button>
+                <a href="{% url 'consultar_reservas' %}" class="btn btn-secondary btn-limpiar">
+                    ✕ {% translate "LIMPIAR" %}
+                </a>
+            </div>
+        </form>
+    </div>
+
+    <div class="card" style="padding: 1.5rem;">
+        <div style="overflow-x: auto; width: 100%;">
+            <table class="nyx-table">
+                <thead>
+                    <tr>
+                        <th scope="col">{% translate "Cliente" %}</th>
+                        <th scope="col">{% translate "Parque" %}</th>
+                        <th scope="col" style="text-align: center;">{% translate "Periodo" %}</th>
+                        <th scope="col" style="text-align: center;">{% translate "Pax" %}</th>
+                        <th scope="col" style="text-align: center;">{% translate "Duración" %}</th>
+                        <th scope="col" style="text-align: center;">{% translate "Estado" %}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for r in reservaciones %}
+                    <tr>
+                        <td style="border-left: 4px solid var(--acento);">
+                            <strong style="color: var(--texto-principal);">{{ r.usuario.nombre_completo|upper }}</strong>
+                            <div class="direccion-texto">{{ r.usuario.correo_electronico }}</div>
+                        </td>
+
+                        <td>
+                            <span style="font-weight: 600;">{{ r.parque.nombre }}</span>
+                            <div class="direccion-texto">
+                                {% if r.tipo_visita == 'cabana' %} 🏡 {% translate "Cabaña" %} {% else %} ⛺ {% translate "Camping" %} {% endif %}
+                            </div>
+                        </td>
+
+                        <td style="text-align: center; font-family: var(--fuente-cuerpo); font-size: 0.9rem;">
+                            {{ r.fecha_inicio|date:"d M" }} → {{ r.fecha_fin|date:"d M Y" }}
+                        </td>
+
+                        <td style="text-align: center; font-weight: bold;">
+                            {{ r.numero_personas }}
+                        </td>
+
+                        <td style="text-align: center; color: var(--acento); font-weight: bold; font-family: var(--fuente-cuerpo);">
+                            {{ r.duracion_dias }}d
+                        </td>
+
+                        <td style="text-align: center;">
+                            <span class="badge-estado {% if r.estado == 'activa' %}estado-activa{% else %}estado-cancelada{% endif %}">
+                                {{ r.get_estado_display|upper }}
+                            </span>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" style="text-align: center; padding: 60px; color: var(--texto-suave);">
+                            {% translate "No se encontraron reservaciones con estos criterios." %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

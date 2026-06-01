@@ -1,0 +1,213 @@
+/* ── Layout del Panel Adaptable ── */
+.panel-seccion {
+    /* En lugar de 50px fijos, usamos un valor adaptable */
+    padding-left: clamp(20px, 5%, 50px);
+    padding-right: clamp(20px, 5%, 50px);
+    margin-bottom: 2rem;
+    width: 100%;
+}
+
+p{
+    padding: 0px;
+}
+
+/* Actualizamos .stats-container para que use la misma lógica */
+.stats-container {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
+.stats-container .card {
+    flex: 1 1 280px; /* Crece y se encoge, mínimo 280px */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 2rem;
+    text-align: center;
+    /* Usamos las variables de base.css para que cambie con el tema */
+    background-color: var(--fondo-card);
+    border: var(--borde-brutal);
+    box-shadow: var(--sombra-glow);
+}
+
+/* ── Tabla Nyx Valley Estilizada ── */
+.nyx-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 0.8rem;
+}
+
+.nyx-table th {
+    padding: 1rem;
+    color: var(--acento);
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    font-family: var(--fuente-cuerpo);
+}
+
+.nyx-table td {
+    padding: 1.5rem 1rem;
+    background: rgba(128, 128, 128, 0.05); /* Fondo sutil adaptable */
+    vertical-align: middle;
+    border-top: 1px solid rgba(128, 128, 128, 0.1);
+    border-bottom: 1px solid rgba(128, 128, 128, 0.1);
+    color: var(--texto-principal);
+}
+
+.nyx-table td:first-child {
+    border-radius: var(--radio-card) 0 0 var(--radio-card);
+    border-left: 1px solid rgba(128, 128, 128, 0.1);
+}
+
+.nyx-table td:last-child {
+    border-radius: 0 var(--radio-card) var(--radio-card) 0;
+    border-right: 1px solid rgba(128, 128, 128, 0.1);
+}
+
+/* ── Cuadrícula de Servicios Refinada ── */
+.servicios-grid-clean {
+    display: flex;
+    flex-wrap: wrap; /* Permite que se acomoden según el espacio */
+    gap: 10px;
+    width: 100%;
+    max-width: 450px;
+}
+
+.servicio-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 8px; /* Curva suave para las etiquetas */
+    font-size: 0.85rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid transparent;
+}
+
+.servicio-texto {
+    font-size: 0.7rem;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+/* Servicios DISPONIBLES: Efecto Neón sutil */
+.servicio-item.disponible {
+    background: rgba(128, 128, 128, 0.05);
+    border-color: var(--acento);
+    color: var(--texto-principal);
+    /* Brillo exterior que cambia con el tema */
+    box-shadow: inset 0 0 5px rgba(250, 204, 21, 0.1), var(--glow-linea);
+}
+
+.servicio-item.disponible:hover {
+    transform: translateY(-2px);
+    background: var(--acento);
+    color: var(--texto-boton); /* El texto cambia a negro/oscuro si el fondo es brillante */
+}
+
+/* Servicios NO DISPONIBLES: Apagados y minimalistas */
+.servicio-item.no-disponible {
+    filter: grayscale(100%);
+    opacity: 0.3;
+    border: 1px dashed var(--texto-suave);
+    background: transparent;
+}
+
+/* Ajuste para iconos (Emojis) */
+.servicio-item span[aria-hidden="true"] {
+    font-size: 1rem;
+}
+
+/* ── Tipografía Escalable ── */
+.capacidad-num {
+    color: var(--acento);
+    font-weight: 800;
+    font-size: clamp(1.2rem, 2vw, 1.6rem);
+}
+
+.direccion-texto {
+    font-size: 0.85rem;
+    color: var(--texto-suave);
+    line-height: 1.4;
+    font-family: var(--fuente-cuerpo);
+}
+
+/* ── Media Queries para Móviles ── */
+@media (max-width: 768px) {
+    .nyx-table thead { display: none; } /* Ocultar cabecera en móvil */
+    
+    .nyx-table td {
+        display: block;
+        width: 100%;
+        text-align: left !important;
+        border: none;
+        padding: 0.5rem 1rem;
+    }
+
+    .nyx-table td:first-child {
+        padding-top: 1.5rem;
+        border-radius: var(--radio-card) var(--radio-card) 0 0;
+    }
+
+    .nyx-table td:last-child {
+        padding-bottom: 1.5rem;
+        border-radius: 0 0 var(--radio-card) var(--radio-card);
+        border-bottom: 2px solid var(--acento);
+    }
+}
+
+/* ── TARJETA DE ESTADÍSTICAS MEJORADA ── */
+.stats-numero {
+    font-size: clamp(2.5rem, 5vw, 3.5rem); 
+    color: var(--acento); 
+    margin: 10px 0; 
+    line-height: 1;
+    font-weight: 800;
+    filter: drop-shadow(0 0 10px rgba(var(--acento-rgb), 0.3));
+}
+
+.btn-link-gestion {
+    margin-top: 15px;
+    text-decoration: none;
+    color: var(--acento-hover);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.flecha-animada {
+    font-size: 1rem;
+    transition: transform 0.3s ease;
+    display: inline-block;
+}
+
+/* Efecto de interacción */
+.btn-link-gestion:hover {
+    color: var(--acento);
+    background: rgba(128, 128, 128, 0.05);
+    border-color: rgba(var(--acento-rgb), 0.2);
+}
+
+.btn-link-gestion:hover .flecha-animada {
+    transform: translateX(5px); /* Se mueve a la derecha indicando avance */
+    filter: drop-shadow(0 0 5px var(--acento));
+}
+
+/* Opcional: Hacer que toda la card brille un poco más al hacer hover en el link */
+.card-stats-interactiva:hover {
+    border-color: var(--acento);
+    box-shadow: var(--sombra-glow-intensa);
+    transform: translateY(-3px);
+}

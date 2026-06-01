@@ -1,0 +1,204 @@
+/* Heredando del estilo de Nyx Valley — Adaptabilidad Total */
+.bitacora-container {
+    width: 95%; 
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0;
+}
+
+p{
+    padding: 10px;
+    font-size: 1em;
+}
+
+.bitacora-header {
+    margin-bottom: 40px;
+    border-bottom: var(--borde-brutal);
+    padding-bottom: 20px;
+}
+
+/* Usamos variables de base.css */
+.user-name { 
+    font-family: var(--fuente-titulo);
+    font-size: clamp(1.2rem, 3vw, 1.8rem); 
+    font-weight: bold; 
+    color: var(--texto-principal); 
+    margin: 10px 0 5px 0; 
+}
+
+.user-email { 
+    color: var(--texto-suave); 
+    font-size: 0.9rem; 
+    font-family: var(--fuente-cuerpo);
+}
+
+.oro { 
+    color: var(--acento); 
+    font-weight: bolder; 
+    filter: drop-shadow(0 0 2px var(--acento));
+}
+
+/* --- Ajuste del Grid para Formato Lista --- */
+.bitacora-grid {
+    display: flex;
+    flex-direction: column; /* Tarjetas una debajo de otra */
+    gap: 20px;
+    padding: 0 clamp(10px, 5%, 45px); /* Padding adaptable */
+    width: 100%;
+}
+
+/* --- TARJETA RECTANGULAR --- */
+.card-bitacora {
+    background-color: var(--fondo-card);
+    border: var(--borde-brutal);
+    border-radius: var(--radio-card);
+    padding: 1.5rem 2rem;
+    backdrop-filter: blur(12px);
+    
+    /* Layout horizontal */
+    display: flex;
+    flex-direction: row; /* Elementos alineados de izquierda a derecha */
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    
+    transition: all 0.3s ease;
+    box-shadow: var(--sombra-glow);
+}
+
+.card-bitacora.proxima {
+    border-left: 5px solid var(--acento); /* Acento lateral para resaltar */
+    box-shadow: var(--sombra-glow-intensa);
+}
+
+/* TARJETA PASADA O CANCELADA */
+.card-bitacora.pasada {
+    opacity: 0.6; 
+    filter: grayscale(80%);
+    background: rgba(128, 128, 128, 0.05);
+    border: 1px dashed var(--texto-suave);
+}
+
+.card-header {
+    flex: 0 0 150px; /* Ancho fijo para la sección de estado/fecha */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    border-bottom: none; /* Quitamos la línea porque ahora es lateral */
+    padding-bottom: 0;
+}
+
+.header-left h2 {
+    font-size: 1.1rem;
+    color: var(--texto-principal);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.fecha-log {
+    font-size: 0.85rem;
+    color: var(--texto-suave);
+    font-family: var(--fuente-cuerpo);
+}
+
+.dot-glow {
+    width: 12px; height: 12px; 
+    background: var(--acento); 
+    border-radius: 50%;
+    box-shadow: 0 0 10px var(--acento); 
+    display: inline-block;
+}
+
+.dot-off {
+    width: 12px; height: 12px; 
+    background: var(--texto-suave); 
+    border-radius: 50%; 
+    display: inline-block;
+}
+
+/* Cuerpo de Tarjetas */
+.card-body {
+    flex: 2; /* El cuerpo ocupa la mayor parte del espacio */
+    display: flex;
+    flex-direction: row; /* Datos del parque y fechas lado a lado */
+    align-items: center;
+    margin: 0;
+    gap: 2rem;
+}
+
+.card-footer {
+    flex: 0 0 180px; /* Ancho para el botón de cancelar */
+}
+
+.info-group {
+    flex: 1 1 200px;
+}
+
+.info-group label { 
+    font-size: 0.75rem; 
+    color: var(--texto-suave); 
+    text-transform: uppercase; 
+    letter-spacing: 1px;
+    margin-bottom: 8px; 
+}
+
+.info-group h3 { 
+    margin: 0; 
+    font-size: 1.25rem; 
+    color: var(--acento);
+}
+
+.direccion-parque-mini, .horario-parque-mini {
+    font-size: 0.85rem;
+    color: var(--texto-suave);
+    margin: 5px 0;
+}
+
+/* Botonera de Cancelaciones */
+.btn-cancelar {
+    width: 100%; 
+    background: rgba(224, 82, 82, 0.1); 
+    color: #e05252;
+    border: 2px solid rgba(224, 82, 82, 0.3); 
+    padding: 12px; 
+    border-radius: var(--radio-card);
+    font-weight: bold; 
+    font-family: var(--fuente-cuerpo);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.btn-cancelar:hover {
+    background: #e05252;
+    color: white;
+}
+
+/* Responsivo para móviles */
+@media (max-width: 850px) {
+    .card-bitacora {
+        flex-direction: column; /* En celulares vuelve a ser vertical */
+        align-items: stretch;
+        gap: 1.5rem;
+    }
+    
+    .card-header {
+        flex: none;
+        flex-direction: row;
+        justify-content: space-between;
+        width: 100%;
+        border-bottom: 1px solid rgba(128, 128, 128, 0.1);
+        padding-bottom: 10px;
+    }
+
+    .card-body {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .card-footer {
+        flex: none;
+    }
+}

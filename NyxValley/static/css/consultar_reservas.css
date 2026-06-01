@@ -1,0 +1,115 @@
+/* Reutilizamos la lógica de espaciado del panel */
+.reservas-container {
+    padding-left: clamp(20px, 5%, 50px);
+    padding-right: clamp(20px, 5%, 50px);
+    margin-top: 2rem;
+}
+
+/* Barra de filtros adaptable */
+.nyx-filtros-bar {
+    background: var(--fondo-card);
+    border: var(--borde-brutal);
+    border-radius: var(--radio-card);
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    box-shadow: var(--sombra-glow);
+}
+
+.nyx-form-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    align-items: flex-end;
+}
+
+.nyx-form-group {
+    flex: 1 1 200px;
+}
+
+/* Inputs que se adaptan al tema claro/oscuro */
+.nyx-input {
+    width: 100%;
+    background: rgba(128, 128, 128, 0.1) !important;
+    border: 1px solid var(--texto-suave) !important;
+    color: var(--texto-principal) !important;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-family: var(--fuente-cuerpo);
+    transition: all 0.3s ease;
+}
+
+.nyx-input option {
+    background-color: var(--fondo-pagina); /* Un gris muy oscuro sólido */
+    color: var(--texto-principal);
+}
+
+.nyx-input:focus {
+    border-color: var(--acento) !important;
+    box-shadow: var(--glow-linea);
+}
+
+/* Badges de estado dinámicos */
+.badge-estado {
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 0.7rem;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.estado-activa {
+    background: rgba(16, 185, 129, 0.15);
+    color: #10b981;
+    border: 1px solid #10b981;
+}
+
+.estado-cancelada {
+    background: rgba(239, 68, 68, 0.15);
+    color: #ef4444;
+    border: 1px solid #ef4444;
+}
+
+/* ── BOTÓN REGRESAR ESTILO NYX VALLEY ── */
+.btn-regresar-custom {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 18px;
+    background: transparent;
+    border: 1px solid var(--acento-hover); /* Borde discreto inicial */
+    border-radius: var(--radio-card);
+    color: var(--acento-hover);
+    font-family: var(--fuente-cuerpo);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-regresar-custom .flecha {
+    font-size: 1.2rem;
+    transition: transform 0.3s ease;
+}
+
+/* Efecto al pasar el mouse */
+.btn-regresar-custom:hover {
+    color: var(--acento);
+    border-color: var(--acento);
+    background: rgba(128, 128, 128, 0.05);
+    box-shadow: var(--sombra-glow); /* Brillo del color del tema */
+}
+
+.btn-regresar-custom:hover .flecha {
+    transform: translateX(-5px); /* La flecha se mueve a la izquierda indicando retroceso */
+}
+
+/* Ajuste específico para temas claros: que el texto sea un poco más oscuro */
+[data-theme="crema-dorado"] .btn-regresar-custom,
+[data-theme="bosque-dia"] .btn-regresar-custom,
+[data-theme="niebla-musgo"] .btn-regresar-custom {
+    border-color: var(--texto-suave);
+    color: var(--texto-suave);
+}

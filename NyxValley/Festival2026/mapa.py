@@ -4,7 +4,6 @@ from .models import Parque
 # ─────────────────────────────────────────────────────────────
 #  MapaNavegacion  (del diagrama — conecta con «external» MapaAPI)
 #  Lógica del mapa interactivo (RF-07, RF-08, RF-09)
-#  Ayros se encarga de la implementación completa de esta clase
 # ─────────────────────────────────────────────────────────────
 
 class MapaNavegacion:
@@ -27,11 +26,19 @@ class MapaNavegacion:
                 'nombre',
                 'direccion',
                 'servicios',
-                'horario',
+                'horario_apertura',
+                'horario_cierre',
                 'latitud',
                 'longitud',
                 'tiene_cabanas',
                 'tiene_camping',
+                'tiene_danza',
+                'tiene_musica',
+                'tiene_teatro',
+                'tiene_transporte',
+                'tiene_banos',
+                'tiene_cafeterias',
+                'tiene_guias',
             )
         )
         return self._parques
@@ -44,16 +51,24 @@ class MapaNavegacion:
         try:
             parque = Parque.objects.get(id=parque_id, activo=True)
             return {
-                'id':            parque.id,
-                'nombre':        parque.nombre,
-                'direccion':     parque.direccion,
-                'servicios':     parque.servicios,
-                'horario':       parque.horario,
-                'latitud':       float(parque.latitud),
-                'longitud':      float(parque.longitud),
-                'tiene_cabanas': parque.tiene_cabanas,
-                'tiene_camping': parque.tiene_camping,
-                'capacidad':     parque.capacidad,
+                'id':               parque.id,
+                'nombre':           parque.nombre,
+                'direccion':        parque.direccion,
+                'servicios':        parque.servicios,
+                'horario_apertura': parque.horario_apertura,
+                'horario_cierre':   parque.horario_cierre,
+                'latitud':          float(parque.latitud),
+                'longitud':         float(parque.longitud),
+                'tiene_danza':      parque.tiene_danza,
+                'tiene_musica':     parque.tiene_musica,
+                'tiene_teatro':     parque.tiene_teatro,
+                'tiene_banos':      parque.tiene_banos,
+                'tiene_cafeterias': parque.tiene_cafeterias,
+                'tiene_guias':      parque.tiene_guias,
+                'tiene_transporte': parque.tiene_transporte,
+                'tiene_cabanas':    parque.tiene_cabanas,
+                'tiene_camping':    parque.tiene_camping,
+                'capacidad':        parque.capacidad,
             }
         except Parque.DoesNotExist:
             return None
@@ -91,9 +106,17 @@ class MapaNavegacion:
                     'nombre':        p['nombre'],
                     'direccion':     p['direccion'],
                     'servicios':     p['servicios'],
-                    'horario':       p['horario'],
+                    'horario_apertura': p['horario_apertura'].strftime('%H:%M'),
+                    'horario_cierre':   p['horario_cierre'].strftime('%H:%M'),
+                    'tiene_danza':    p['tiene_danza'],
+                    'tiene_musica':   p['tiene_musica'],
+                    'tiene_teatro':   p['tiene_teatro'],
+                    'tiene_banos':    p['tiene_banos'],
+                    'tiene_cafeterias': p['tiene_cafeterias'],
+                    'tiene_guias':    p['tiene_guias'],
+                    'tiene_transporte': p['tiene_transporte'],
                     'tiene_cabanas': p['tiene_cabanas'],
-                    'tiene_camping': p['tiene_camping'],
+                    'tiene_camping':  p['tiene_camping'],
                 },
             })
 

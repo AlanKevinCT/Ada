@@ -1,0 +1,130 @@
+/* ==========================================================================
+   Nyx Valley — Vista de Información (Adaptable y Tematizada)
+   ========================================================================== */
+
+.landing-visual {
+    width: 100%;
+    max-width: 2500px;
+    margin: 0em;
+}
+
+/* Encabezados y etiquetas de sección */
+.etiqueta {
+    font-size:1.5em;
+    letter-spacing: 2px;
+    color: var(--acento); /* Usa el color del tema */
+    font-weight: 800;
+    margin-bottom: 15px;
+    display: block;
+    text-transform: uppercase;
+}
+
+.etiqueta-separada {
+    font-size: 1.5rem;
+    letter-spacing: 4px;
+    color: var(--acento); /* Consistencia con base.css */
+    font-weight: 800;
+    margin: 40px 0 20px 0;
+    display: block;
+    text-transform: uppercase;
+}
+
+/* Texto místico y descripción */
+.texto-magico {
+    color: var(--texto-suave);
+    line-height: 1.8;
+    font-weight: 600;
+    font-size: clamp(1rem, 2vw, 1rem);
+}
+
+.divisor {
+    border-top: var(--borde-brutal); 
+    margin: 2rem 0;
+    opacity: 0.5;
+}
+
+/* Estructura de las Tarjetas (Servicios y Horario) */
+.servicio-card-grande, .horario-card {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    padding: clamp(1rem, 3vw, 2rem);
+    background: var(--fondo-card); /* Adaptable al tema */
+    border-radius: var(--radio-card);
+    border: var(--borde-brutal);
+    margin-bottom: 1.5rem;
+    backdrop-filter: blur(8px);
+    transition: transform 0.3s ease;
+}
+
+.servicio-card-grande:hover {
+    transform: scale(1.02);
+    align-items: center;
+}
+
+.servicio-nombre {
+    font-family: var(--fuente-titulo);
+    color: var(--texto-principal);
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+/* Tipografía de Horario Fluida */
+.horario-texto .rango {
+    font-size: clamp(1.8rem, 4vw, 1.9rem); /* Se encoge en móvil */
+    font-weight: 900;
+    line-height: 1;
+    color: var(--texto-principal);
+    font-family: var(--fuente-cuerpo);
+}
+
+.horario-texto .unidad {
+    font-size: 0.8rem;
+    color: var(--acento);
+    letter-spacing: 2px;
+    margin-top: 5px;
+}
+
+/* Botón de Reserva Brutalista */
+.btn-reserva-boceto {
+    display: block;
+    width: 100%;
+    background: var(--acento);
+    color: var(--texto-boton);
+    text-align: center;
+    padding: 1.5rem;
+    font-weight: 900;
+    text-decoration: none;
+    font-size: 1.3rem;
+    border-radius: var(--radio-card);
+    margin-bottom: 2rem;
+    transition: all 0.3s ease;
+    box-shadow: var(--sombra-glow);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.btn-reserva-boceto:hover {
+    background: var(--acento-hover);
+    box-shadow: var(--sombra-glow-intensa);
+    transform: translateY(-3px);
+}
+
+/* Grid Principal Proporcional */
+.main-grid {
+    display: grid;
+    /* 1.2fr para contenido y 0.8fr para sidebar */
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 400px), 1fr));
+    gap: clamp(1.5rem, 5vw, 4rem);
+}
+
+/* Diseño Adaptable para móviles */
+@media (max-width: 768px) {
+    .seccion-titulo { text-align: center; }
+    .titulo-wrapper { justify-content: center; }
+    
+    .horario-card, .servicio-card-grande {
+        flex-direction: column;
+        text-align: center;
+    }
+}

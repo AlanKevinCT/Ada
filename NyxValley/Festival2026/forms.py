@@ -3,15 +3,78 @@ from django import forms
 from django.core.exceptions import ValidationError
 from .models import Usuario, Parque, Reservacion
 from .services import Disponibilidad
+from django.utils.translation import gettext_lazy as _
+import re
+
+
+# ─── Helpers de sanitización ──────────────────────────────────
+
+def sanitizar_texto(valor):
+    """
+    Elimina caracteres peligrosos de campos de texto.
+    Protege contra XSS e inyecciones.
+    """
+    if not valor:
+        return valor
+    # Eliminar tags HTML
+    valor = re.sub(r'<[^>]+>', '', valor)
+    # Eliminar caracteres de control
+    valor = re.sub(r'[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]', '', valor)
+    return valor.strip()
+
+
+def validar_solo_letras(valor, campo):
+    """Valida que el campo solo contenga letras y espacios."""
+    if not re.match(r'^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s\-]+$', valor):
+        raise ValidationError(
+            _(f'{campo} solo puede contener letras y espacios.')
+        )
+    return valor
+
+
+def validar_contrasena_fuerte(password):
+    """
+    Valida que la contraseña sea fuerte:
+    - Mínimo 8 caracteres
+    - Al menos una mayúscula
+    - Al menos una minúscula
+    - Al menos un número
+    - Al menos un carácter especial
+    """
+    if len(password) < 8:
+        raise ValidationError(
+            _('La contraseña debe tener al menos 8 caracteres.')
+        )
+    if not re.search(r'[A-Z]', password):
+        raise ValidationError(
+            _('La contraseña debe contener al menos una letra mayúscula.')
+        )
+    if not re.search(r'[a-z]', password):
+        raise ValidationError(
+            _('La contraseña debe contener al menos una letra minúscula.')
+        )
+    if not re.search(r'\d', password):
+        raise ValidationError(
+            _('La contraseña debe contener al menos un número.')
+        )
+    if not re.search(r'[!@#$%^&*(),.?":{}|<>_\-]', password):
+        raise ValidationError(
+            _('La contraseña debe contener al menos un carácter especial (!@#$%...).')
+        )
+    return password
+
+
+# ─── Formulario de Registro ───────────────────────────────────
 
 class RegistroForm(forms.ModelForm):
-    password           = forms.CharField(
-        label='Contraseña',
-        widget=forms.PasswordInput(attrs={'placeholder': 'Contraseña'})
+    password = forms.CharField(
+        label=_('Contraseña'),
+        widget=forms.PasswordInput(attrs={'placeholder': _('Contraseña')}),
+        min_length=8,
     )
     confirmar_password = forms.CharField(
-        label='Confirmar contraseña',
-        widget=forms.PasswordInput(attrs={'placeholder': 'Repite la contraseña'})
+        label=_('Confirmar contraseña'),
+        widget=forms.PasswordInput(attrs={'placeholder': _('Repite la contraseña')}),
     )
 
     class Meta:
@@ -22,59 +85,122 @@ class RegistroForm(forms.ModelForm):
             'apellido_paterno',
             'apellido_materno',
         ]
+        labels = {
+            'correo_electronico': _('Correo electrónico'),
+            'nombre':             _('Nombre'),
+            'apellido_paterno':   _('Apellido paterno'),
+            'apellido_materno':   _('Apellido materno'),
+        }
         widgets = {
-            'correo_electronico': forms.EmailInput(attrs={'placeholder': 'correo@ejemplo.com'}),
-            'nombre':             forms.TextInput(attrs={'placeholder': 'Nombre'}),
-            'apellido_paterno':   forms.TextInput(attrs={'placeholder': 'Apellido paterno'}),
-            'apellido_materno':   forms.TextInput(attrs={'placeholder': 'Apellido materno'}),
+            'correo_electronico': forms.EmailInput(
+                attrs={'placeholder': 'correo@ejemplo.com', 'autocomplete': 'off'}
+            ),
+            'nombre':           forms.TextInput(attrs={'placeholder': _('Nombre')}),
+            'apellido_paterno': forms.TextInput(attrs={'placeholder': _('Apellido paterno')}),
+            'apellido_materno': forms.TextInput(attrs={'placeholder': _('Apellido materno')}),
         }
 
     def clean_correo_electronico(self):
-        correo = self.cleaned_data['correo_electronico']
+        correo = self.cleaned_data['correo_electronico'].lower().strip()
+        # Validar formato estricto de correo
+        if not re.match(r'^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$', correo):
+            raise ValidationError(_('El formato del correo electrónico no es válido.'))
+        # Mensaje genérico — no revelar si el correo existe (evita enumeración)
         if Usuario.objects.filter(correo_electronico=correo).exists():
-            raise ValidationError('Este correo ya está registrado.')
+            raise ValidationError(_('No fue posible completar el registro. Verifica tus datos.'))
         return correo
+
+    def clean_nombre(self):
+        nombre = sanitizar_texto(self.cleaned_data.get('nombre', ''))
+        if len(nombre) < 2:
+            raise ValidationError(_('El nombre debe tener al menos 2 caracteres.'))
+        if len(nombre) > 100:
+            raise ValidationError(_('El nombre no puede exceder 100 caracteres.'))
+        return validar_solo_letras(nombre, 'Nombre')
+
+    def clean_apellido_paterno(self):
+        apellido = sanitizar_texto(self.cleaned_data.get('apellido_paterno', ''))
+        if len(apellido) < 2:
+            raise ValidationError(_('El apellido paterno debe tener al menos 2 caracteres.'))
+        return validar_solo_letras(apellido, 'Apellido paterno')
+
+    def clean_apellido_materno(self):
+        apellido = sanitizar_texto(self.cleaned_data.get('apellido_materno', ''))
+        if len(apellido) < 2:
+            raise ValidationError(_('El apellido materno debe tener al menos 2 caracteres.'))
+        return validar_solo_letras(apellido, 'Apellido materno')
+
+    def clean_password(self):
+        password = self.cleaned_data.get('password', '')
+        return validar_contrasena_fuerte(password)
 
     def clean(self):
         cleaned_data = super().clean()
-        password   = cleaned_data.get('password')
-        confirmar  = cleaned_data.get('confirmar_password')
+        password  = cleaned_data.get('password')
+        confirmar = cleaned_data.get('confirmar_password')
         if password and confirmar and password != confirmar:
-            raise ValidationError('Las contraseñas no coinciden.')
+            raise ValidationError(_('Las contraseñas no coinciden.'))
         return cleaned_data
+
+
+# ─── Formulario de Login ──────────────────────────────────────
 
 class LoginForm(forms.Form):
     correo_electronico = forms.EmailField(
-        label='Correo electrónico',
-        widget=forms.EmailInput(attrs={'placeholder': 'correo@ejemplo.com'})
+        label=_('Correo electrónico'),
+        widget=forms.EmailInput(
+            attrs={'placeholder': 'correo@ejemplo.com', 'autocomplete': 'off'}
+        ),
+        max_length=254,  # límite estándar RFC 5321
     )
     password = forms.CharField(
-        label='Contraseña',
-        widget=forms.PasswordInput(attrs={'placeholder': 'Contraseña'})
+        label=_('Contraseña'),
+        widget=forms.PasswordInput(attrs={'placeholder': _('Contraseña')}),
+        max_length=128,  # evita ataques de contraseñas enormes (DoS)
     )
+
+    def clean_correo_electronico(self):
+        return self.cleaned_data['correo_electronico'].lower().strip()
+
+    def clean_password(self):
+        # Sanitizar sin revelar información
+        password = self.cleaned_data.get('password', '')
+        if len(password) > 128:
+            raise ValidationError(_('Datos inválidos.'))
+        return password
+
+
+# ─── Formulario de Reserva ────────────────────────────────────
 
 class ReservaForm(forms.Form):
     parque = forms.ModelChoiceField(
         queryset=Parque.objects.filter(activo=True),
-        label='Parque',
-        empty_label='— Selecciona un parque —',
+        label=_('Parque'),
+        empty_label=_('— Selecciona un parque —'),
     )
     fecha_inicio = forms.DateField(
-        label='Fecha de inicio',
+        label=_('Fecha de inicio'),
         widget=forms.DateInput(attrs={'type': 'date'}),
     )
     fecha_fin = forms.DateField(
-        label='Fecha de fin',
+        label=_('Fecha de fin'),
         widget=forms.DateInput(attrs={'type': 'date'}),
     )
     numero_personas = forms.IntegerField(
-        label='Número de personas',
+        label=_('Número de personas'),
         min_value=1,
+        max_value=500,  # límite razonable — evita valores absurdos
     )
     tipo_visita = forms.ChoiceField(
-        label='Tipo de visita',
+        label=_('Tipo de visita'),
         choices=Reservacion.TIPO_VISITA,
     )
+
+    def clean_numero_personas(self):
+        n = self.cleaned_data.get('numero_personas')
+        if n is not None and (n < 1 or n > 500):
+            raise ValidationError(_('El número de personas debe estar entre 1 y 500.'))
+        return n
 
     def clean(self):
         cleaned_data = super().clean()
@@ -82,26 +208,122 @@ class ReservaForm(forms.Form):
         fecha_fin    = cleaned_data.get('fecha_fin')
         parque       = cleaned_data.get('parque')
         tipo_visita  = cleaned_data.get('tipo_visita')
+        personas     = cleaned_data.get('numero_personas')
 
         if fecha_inicio and fecha_fin:
-            if not Disponibilidad.verificaFechas(fecha_inicio, fecha_fin):
+            if fecha_inicio > fecha_fin:
                 raise ValidationError(
-                    'Las fechas no son válidas: deben estar entre junio y agosto '
-                    'y no pueden incluir martes.'
+                    _('La fecha de inicio no puede ser posterior a la fecha de fin.')
                 )
+            
+            from datetime import timedelta
+            
+            fecha_actual = fecha_inicio
+            while fecha_actual <= fecha_fin:
+                if fecha_actual.weekday() == 1:
+                    raise ValidationError(
+                        _('La fecha no es válida porque incluye un martes, y ese día no se puede reservar.')
+                    )
+                fecha_actual += timedelta(days=1)
 
-        if parque and tipo_visita == 'cabana' and not Parque.tiene_cabanas:
+
+
+            if not Disponibilidad.verificaFechas(fecha_inicio, fecha_fin):
+                raise ValidationError(_('Las fechas no son válidas para el festival.'))
+
+        if parque and tipo_visita == 'cabana' and not parque.tiene_cabanas:
             raise ValidationError(
-                f'El parque {parque.nombre} no cuenta con cabañas. '
-                'Elige zona de camping u otro parque.'
+                _('El parque {nombre} no cuenta con cabañas. Elige zona de camping u otro parque.').format(
+                    nombre=parque.nombre
+                )
             )
 
-        if parque and fecha_inicio and fecha_fin and tipo_visita:
+        if parque and fecha_inicio and fecha_fin and tipo_visita and personas is not None:
             if not Disponibilidad.verificarDisponible(
-                parque, fecha_inicio, fecha_fin, tipo_visita
+                parque, fecha_inicio, fecha_fin, tipo_visita, personas
             ):
                 raise ValidationError(
-                    'No hay disponibilidad en el parque para esas fechas.'
+                    _('No hay disponibilidad en el parque para esas fechas.')
                 )
-
         return cleaned_data
+
+class ParqueForm(forms.ModelForm):
+ 
+    class Meta:
+        model  = Parque
+        fields = [
+            'nombre',
+            'direccion',
+            'horario_apertura',
+            'horario_cierre',
+            'latitud',
+            'longitud',
+            'capacidad',
+            'activo',
+            # Servicios (creo que vamos a tener que modificar esto :()
+            'tiene_danza',
+            'tiene_musica',
+            'tiene_teatro',
+            'tiene_transporte',
+            'tiene_banos',
+            'tiene_cafeterias',
+            'tiene_guias',
+            'tiene_cabanas',
+            'tiene_camping',
+            # Servicios (texto)
+            'servicios',
+        ]
+        labels = {
+            'nombre':            _('Nombre del parque'),
+            'direccion':         _('Dirección'),
+            'horario_apertura':  _('Hora de apertura'),
+            'horario_cierre':    _('Hora de cierre'),
+            'latitud':           _('Latitud'),
+            'longitud':          _('Longitud'),
+            'capacidad':         _('Capacidad máxima de personas'),
+            'activo':            _('Visible en el mapa'),
+            'tiene_danza':       _('Danza'),
+            'tiene_musica':      _('Música'),
+            'tiene_teatro':      _('Teatro'),
+            'tiene_transporte':  _('Transporte'),
+            'tiene_banos':       _('Baños'),
+            'tiene_cafeterias':  _('Cafeterías'),
+            'tiene_guias':       _('Guías'),
+            'tiene_cabanas':     _('Cabañas'),
+            'tiene_camping':     _('Zona de camping'),
+            'servicios':         _('Otros servicios'),
+        }
+        widgets = {
+            'nombre':           forms.TextInput(attrs={'placeholder': _('Nombre del parque')}),
+            'direccion':        forms.TextInput(attrs={'placeholder': _('Dirección completa')}),
+            'horario_apertura': forms.TimeInput(attrs={'type': 'time'}),
+            'horario_cierre':   forms.TimeInput(attrs={'type': 'time'}),
+            'latitud':          forms.NumberInput(attrs={'placeholder': '19.432608', 'step': 'any'}),
+            'longitud':         forms.NumberInput(attrs={'placeholder': '-99.133209', 'step': 'any'}),
+            'capacidad':        forms.NumberInput(attrs={'min': 0}),
+            'servicios':        forms.Textarea(attrs={
+                'rows': 3,
+                'placeholder': _('Describe servicios adicionales disponibles en el parque'),
+            }),
+        }
+ 
+    def clean(self):
+        cleaned_data     = super().clean()
+        horario_apertura = cleaned_data.get('horario_apertura')
+        horario_cierre   = cleaned_data.get('horario_cierre')
+ 
+        if horario_apertura and horario_cierre:
+            if horario_apertura >= horario_cierre:
+                raise ValidationError({
+                    'horario_apertura': _('La hora de apertura debe ser anterior a la de cierre'),
+                })
+ 
+        tiene_cabanas = cleaned_data.get('tiene_cabanas')
+        tiene_camping = cleaned_data.get('tiene_camping')
+        if not tiene_cabanas and not tiene_camping:
+            raise ValidationError(
+                _('El parque debe ofrecer al menos zona de camping')
+            )
+ 
+        return cleaned_data
+ 

@@ -22,13 +22,18 @@ Sigue estos pasos **en orden** después de clonar el repositorio.
 git clone https://github.com/AlanKevinCT/Ada.git
 cd Ada/NyxValley
 ```
+### 2. Instalar gettext
+```bash
+sudo dnf install gettext
+```
+En este proyecto se utiliza gettext para manejar el sistema multi-idioma.
 
-### 2. Activar el entorno de Conda
+### 3. Activar el entorno de Conda
 ```bash
 conda activate <<Tu entorno>>
 ```
 
-### 3. Verificar que Django está instalado
+### 4. Verificar que Django está instalado e instalar dependencias
 ```bash
 django-admin --version
 ```
@@ -37,24 +42,40 @@ Si no aparece una versión, instálalo con:
 pip install django
 ```
 
-### 4. Aplicar las migraciones (crea tu base de datos local)
+Ahora instalamos las dependecias de nuestro proyecto
+```bash
+pip install -r requirements.txt
+```
+
+### 5. Aplicar las migraciones (crea tu base de datos local)
 ```bash
 python manage.py migrate
 ```
 
-### 5. Crear tu superusuario local
+### 6. Crear tu superusuario local
 ```bash
 python manage.py createsuperuser
 ```
 Llena los campos que te pida: correo, nombre, apellido paterno, apellido materno y contraseña.
 
-### 6. Levantar el servidor
+### 7. Cargar parques de prueba
+```bash
+python manage.py loaddata Festival2026/fixtures/parques_reales.json
+```
+Esto carga los 6 parques oficiales del festival con coordenadas reales para el mapa interactivo.
+
+### 8. Compilar las traducciones del proyecto
+```bash
+python manage.py compilemessages
+```
+
+### 9. Levantar el servidor
 ```bash
 python manage.py runserver
 ```
 Abre tu navegador en **http://127.0.0.1:8000**
 
-### 7. Ejecutar pruebas
+### 10. Ejecutar pruebas
 para ejecutar toda la suit de pruebas:
 ```bash
 python manage.py test Festival2026.tests
@@ -93,8 +114,16 @@ Ada/
     │       └── test_models.py       ← pruebas unitarias para los modelos
     │       └── test_services.py     ← pruebas unitarias para la lógica de negocio
     │       └── test_signals.py      ← pruebas de integracion para las señales.
+    │       └── test_forms.py        ← Pruebas de validación de entradas
+    │       └── test_decorators.py     ← Pruebas lógicas del patrón estructural Decorator
+    │       └── test_mapa.py           ← Pruebas para filtros del ORM y cumplimiento de GeoJSON
     │       └── test_system.py       ← pruebas de sistema
-    │       └── test_views.py        ← pruebas de integración
+    │       └── test_views           ← pruebas de las vistas
+    │           └── test_admin.py    ← pruebas del manejo de administrador
+    │           └── test_autenticacion.py ← pruebas de la gestion de parques
+    │           └── test_cliente.py       ← pruebas del cliente
+    │           └── test_mapa.py          ← pruebas del mapa interactivo
+    │           └── test_reservaciones.py ← pruebas de las reservaciones
     │   └── migrations/              ← historial de cambios en la base de datos
     │       └── 0001_initial.py      ← migración inicial con los 3 modelos
     └── NyxValley/

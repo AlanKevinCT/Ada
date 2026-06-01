@@ -7,16 +7,22 @@
 /* ── Tema 1: Bosque nocturno (default oscuro) ───────────────── */
 :root,
 [data-theme="bosque-nocturno"] {
-    --fondo-pagina:   #080c08;
-    --fondo-card:     #0d1a0d;
-    --fondo-nav:      #080c08;
-    --verde-medio:    #1a3320;
-    --verde-claro:    #2d5a3d;
-    --acento:         #e8d44d;
-    --acento-hover:   #f5e76a;
-    --texto-principal:#e8f0e8;
-    --texto-suave:    #8fa88f;
+    --fondo-pagina:   #020408; 
+    --fondo-card:     rgba(15, 22, 35, 0.6);
+    --fondo-nav:      #020408;
+    --verde-medio:    #ffcc33;
+    --verde-claro:    #ffcc33;
+    --acento:         #ffcc33;
+    --acento-hover:   #ffd65c;
+    --texto-principal:#ffffff;
+    --texto-suave:    #94a3b8;
+    --texto-boton:    #000000;
     --borde-brutal:   3px solid var(--acento);
+    --sombra-glow:          0 0 15px 5px rgba(250, 204, 21, 0.3);
+    --sombra-glow-intensa:  0 0 20px 8px rgba(250, 204, 21, 0.5);
+    --radio-curva: 50px;
+    --radio-card:  24px;
+    --glow-linea: 0 0 8px rgba(250, 204, 21, 0.4);
     --fuente-titulo:  'Georgia', serif;
     --fuente-cuerpo:  'Courier New', monospace;
 }
@@ -33,8 +39,13 @@
     --texto-principal:#c8bfff;
     --texto-suave:    #6660a8;
     --borde-brutal:   3px solid var(--acento);
+    --sombra-glow:          0 0 15px 5px rgba(124, 112, 255, 0.3);
+    --sombra-glow-intensa:  0 0 20px 8px rgba(124, 112, 255, 0.5);
     --fuente-titulo:  'Georgia', serif;
     --fuente-cuerpo:  'Courier New', monospace;
+    --radio-curva: 50px;
+    --radio-card:  24px;
+    --glow-linea: 0 0 8px rgba(124, 112, 255, 0.4);
 }
 
 /* ── Tema 3: Bosque esmeralda (oscuro) ──────────────────────── */
@@ -43,14 +54,19 @@
     --fondo-card:     #0a1f18;
     --fondo-nav:      #061410;
     --verde-medio:    #0f3d2a;
-    --verde-claro:    #1a5c40;
+    --verde-claro:    #1a5b40;
     --acento:         #3ecf8e;
     --acento-hover:   #7de8bb;
     --texto-principal:#b8f5dc;
     --texto-suave:    #1e6b4a;
     --borde-brutal:   3px solid var(--acento);
+    --sombra-glow:          0 0 15px 5px rgba(70, 198, 145, 0.3);
+    --sombra-glow-intensa:  0 0 20px 8px rgba(70, 198, 145, 0.5);
     --fuente-titulo:  'Georgia', serif;
     --fuente-cuerpo:  'Courier New', monospace;
+    --radio-curva: 50px;
+    --radio-card:  24px;
+    --glow-linea: 0 0 8px rgba(70, 198, 145, 0.4);
 }
 
 /* ── Tema 4: Crema y dorado (claro) ─────────────────────────── */
@@ -65,8 +81,13 @@
     --texto-principal:#5c4400;
     --texto-suave:    #7a6830;
     --borde-brutal:   3px solid var(--acento);
+    --sombra-glow:          0 0 15px 5px rgba(217, 159, 24, 0.3);
+    --sombra-glow-intensa:  0 0 20px 8px rgba(217, 159, 24, 0.5);
     --fuente-titulo:  'Georgia', serif;
     --fuente-cuerpo:  'Courier New', monospace;
+    --radio-curva: 50px;
+    --radio-card:  24px;
+    --glow-linea: 0 0 8px rgba(217, 159, 24, 0.4);
 }
 
 /* ── Tema 5: Bosque de día (claro) ──────────────────────────── */
@@ -81,8 +102,13 @@
     --texto-principal:#1b4332;
     --texto-suave:    #52796f;
     --borde-brutal:   3px solid var(--acento);
+    --sombra-glow:          0 0 15px 5px rgba(12, 218, 84, 0.3);
+    --sombra-glow-intensa:  0 0 20px 8px rgba(12, 218, 84, 0.5);
     --fuente-titulo:  'Georgia', serif;
     --fuente-cuerpo:  'Courier New', monospace;
+    --radio-curva: 50px;
+    --radio-card:  24px;
+    --glow-linea: 0 0 8px rgba(12, 218, 84, 0.4);
 }
 
 /* ── Tema 6: Niebla y musgo (claro) ─────────────────────────── */
@@ -97,8 +123,13 @@
     --texto-principal:#283618;
     --texto-suave:    #606c38;
     --borde-brutal:   3px solid var(--acento);
+    --sombra-glow:          0 0 15px 5px rgba(191, 226, 14, 0.3);
+    --sombra-glow-intensa:  0 0 20px 8px rgba(139, 154, 62, 0.5);
     --fuente-titulo:  'Georgia', serif;
     --fuente-cuerpo:  'Courier New', monospace;
+    --radio-curva: 50px;
+    --radio-card:  24px;
+    --glow-linea: 0 0 8px rgb(40, 54, 24, 0.4);
 }
 
 /* ── Reset ──────────────────────────────────────────────────── */
@@ -108,39 +139,51 @@
     box-sizing: border-box;
 }
 
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth;
+font-size: clamp(14px, 1vw + 10px, 18px); } /*Responsivo?*/
 
 body {
     font-family: var(--fuente-cuerpo);
     background-color: var(--fondo-pagina);
+    background-image: url('https://www.transparenttextures.com/patterns/stardust.png');
     color: var(--texto-principal);
     min-height: 100vh;
     line-height: 1.7;
     transition: background-color 0.3s, color 0.3s;
 }
 
+/* Ajuste para imágenes y elementos que puedan desbordar */
+img, video, canvas {
+    max-width: 100%;
+    height: auto;
+}
+
 /* ── Navbar ─────────────────────────────────────────────────── */
 nav {
     background-color: var(--fondo-nav);
     border-bottom: var(--borde-brutal);
-    padding: 0 48px;
-    height: 64px;
+    padding: 0 2%;
+    height: 75px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     position: sticky;
     top: 0;
     z-index: 1000;
+    /*backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);*/
+    box-shadow: var(--sombra-glow-intensa);
 }
 
 .nav-logo {
     font-family: var(--fuente-titulo);
     font-size: 1.5rem;
-    font-weight: 700;
+    font-weight: 900;
     color: var(--acento);
     text-decoration: none;
-    letter-spacing: 2px;
+    letter-spacing: -1px;
     text-transform: uppercase;
+    filter: drop-shadow(0 0 5px var(--acento-hover));
 }
 
 .nav-logo .glyph { font-size: 1.1rem; margin-right: 8px; }
@@ -154,29 +197,31 @@ nav {
 
 .nav-links li a {
     display: block;
-    padding: 0 20px;
-    height: 64px;
-    line-height: 64px;
-    color: var(--texto-suave);
     text-decoration: none;
     font-size: 0.85rem;
     letter-spacing: 1.5px;
     text-transform: uppercase;
-    border-left: 1px solid var(--verde-medio);
-    transition: all 0.2s;
+    border-radius: var(--radio-curva);
+    color: var(--texto-suave);
+    height: 40px;
+    line-height: 40px;
+    margin: 0 5px;
+    padding: 0 20px;
+    transition: all 0.3s ease;
 }
 
 .nav-links li a:hover {
-    color: var(--acento);
-    background-color: var(--fondo-card);
-    border-bottom: 3px solid var(--acento);
+    color: var(--texto-boton);
+    background-color: var(--acento);
+    box-shadow: var(--sombra-glow);
 }
 
 /* ── Main ───────────────────────────────────────────────────── */
-main {
-    max-width: 1280px;
+main { /*Responsivo?*/
+    width: 95%; /* Ocupa el 95% en pantallas pequeñas */
+    max-width: 1280px; /* Pero no se estira infinito en monitores 4K */
     margin: 0 auto;
-    padding: 48px 32px;
+    padding: clamp(1rem, 5vw, 3rem); /* Padding fluido */
 }
 
 /* ── Tipografía ─────────────────────────────────────────────── */
@@ -193,6 +238,8 @@ h1 {
     text-transform: uppercase;
     border-bottom: var(--borde-brutal);
     padding-bottom: 16px;
+    padding-top: 16px;
+    padding-left: 25px;
     margin-bottom: 32px;
 }
 
@@ -213,7 +260,8 @@ h3 {
 p {
     color: var(--texto-suave);
     margin-bottom: 16px;
-    font-size: 0.95rem;
+    padding: 25px;
+    font-size: 1.2rem;
 }
 
 /* ── Botones ────────────────────────────────────────────────── */
@@ -233,13 +281,14 @@ p {
 
 .btn-primary {
     background-color: var(--acento);
-    color: var(--fondo-pagina);
-    border: 3px solid var(--acento);
+    color: var(--texto-boton);
+    box-shadow: var(--sombra-glow);
 }
 
 .btn-primary:hover {
-    background-color: transparent;
-    color: var(--acento);
+    background-color: var(--acento-hover);
+    box-shadow: var(--sombra-glow-intensa);
+    transform: translateY(-2px);
 }
 
 .btn-secondary {
@@ -268,23 +317,57 @@ p {
 .card {
     background-color: var(--fondo-card);
     border: var(--borde-brutal);
-    padding: 28px;
-    transition: all 0.2s;
+    border-radius: var(--radio-card);
+    padding: 32px;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: var(--sombra-glow);
+    position: relative;
+    overflow: hidden;
+}
+
+.card:hover {
+    transform: translateY(-6px);
+    border-color: var(--acento);
+    box-shadow: var(--sombra-glow-intensa); 
 }
 
 .card-titulo {
     font-family: var(--fuente-titulo);
-    font-size: 1.2rem;
+    font-size: 1.25rem;
+    font-weight: 900;
     color: var(--acento);
     text-transform: uppercase;
     letter-spacing: 1.5px;
-    margin-bottom: 12px;
-    border-bottom: 1px solid var(--verde-claro);
-    padding-bottom: 8px;
+    margin-bottom: 16px;
+    border-bottom: 1px solid rgba(250, 204, 21, 0.2);
+    padding-bottom: 10px;
 }
 
-.card-dato { font-size: 0.85rem; color: var(--texto-suave); margin-bottom: 6px; }
-.card-dato span { color: var(--texto-principal); }
+.card-dato { font-size: 0.9rem; color: var(--texto-suave); margin-bottom: 8px; }
+.card-dato span { color: var(--texto-principal); font-weight: 600;}
+
+/* --- Control del icono del calendario nativo --- */
+
+/* Por defecto (Temas Oscuros como Bosque Nocturno, Indigo, Esmeralda) */
+input[type="date"]::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    /* Filtro para convertir el icono negro en blanco */
+    filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%);
+}
+
+/* Ajuste para Temas Claros (Crema y Dorado, Bosque de Día, Niebla y Musgo) */
+[data-theme="crema-dorado"] input[type="date"]::-webkit-calendar-picker-indicator,
+[data-theme="bosque-dia"] input[type="date"]::-webkit-calendar-picker-indicator,
+[data-theme="niebla-musgo"] input[type="date"]::-webkit-calendar-picker-indicator {
+    /* Filtro invertido o volver al original para que sea oscuro */
+    filter: invert(0%);
+}
+
+/* Opcional: Que el icono brille con el color de acento del tema al pasar el mouse */
+input[type="date"]::-webkit-calendar-picker-indicator:hover {
+    filter: invert(100%) drop-shadow(0 0 2px var(--acento));
+}
+
 
 /* ── Formularios ────────────────────────────────────────────── */
 .form-grupo { margin-bottom: 24px; }
@@ -304,7 +387,7 @@ p {
     width: 100%;
     padding: 12px 16px;
     background-color: var(--fondo-card);
-    border: 2px solid var(--verde-claro);
+    border: 2px solid var(--acento-hover);
     color: var(--texto-principal);
     font-family: var(--fuente-cuerpo);
     font-size: 0.95rem;
@@ -318,7 +401,7 @@ p {
     border-color: var(--acento);
 }
 
-/* ── Alertas ────────────────────────────────────────────────── */
+/* ── Alertas y Errores ──────────────────────────────────────── */
 .error { color: #e05252; font-size: 0.82rem; margin-top: 4px; letter-spacing: 1px; }
 
 .alerta {
@@ -415,3 +498,72 @@ footer {
 }
 
 footer .glyph { color: var(--acento); }
+
+
+
+/* .md 5.1.2: Envoltura semántica para las vistas que contengan formularios centrados */
+.contenedor-formulario-centrado {
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    min-height: calc(100vh - 120px); 
+    padding: 20px;
+}
+
+/* Encabezado e introducciones dentro de las tarjetas (.md 5.5.1) */
+.encabezado-formulario {
+    text-align: center; 
+    margin-bottom: 30px;
+}
+
+.texto-subtitulo-formulario {
+    font-size: 0.85rem; 
+    color: var(--texto-suave); 
+    letter-spacing: 1px; 
+    text-transform: uppercase;
+}
+
+/* Contenedor unificado para Checkboxes estilo brutalista (.md 5.3.2) */
+.form-grupo-checkbox-contenedor {
+    display: flex; 
+    gap: 30px; 
+    margin: 24px 0; 
+    background: rgba(255, 255, 255, 0.02); 
+    padding: 15px; 
+    border-radius: var(--radio-card); 
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.label-checkbox-accesible {
+    display: flex; 
+    align-items: center; 
+    gap: 10px; 
+    cursor: pointer; 
+    color: var(--texto-suave); 
+    font-size: 0.85rem; 
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+/* .md 5.4.3: Contenedor accesible en rojo para los errores globales que mande Django */
+.alerta-error-global {
+    background: rgba(239, 68, 68, 0.1); 
+    border: 1px solid rgb(239, 68, 68); 
+    color: #ef4444; 
+    padding: 12px; 
+    border-radius: var(--radio-card); 
+    margin-bottom: 20px; 
+    font-size: 0.9rem;
+}
+
+/* .md 5.3.2: Clase oculta obligatoria para que los lectores de pantalla lean etiquetas invisibles */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+}

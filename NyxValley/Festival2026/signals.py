@@ -1,8 +1,8 @@
-from django.db.models.signals import post_save
+from django.db.models.signals import pre_save, post_save, post_delete
 from django.dispatch import receiver
 from django.core.mail import send_mail
 from django.conf import settings
-from .models import Reservacion, Parque
+from .models import Reservacion, Parque, Usuario
 
 
 # ─────────────────────────────────────────────────────────────
@@ -84,6 +84,23 @@ class SignalCorreoCliente:
             recipient_list=[cliente.correo_electronico],
             fail_silently=True,
         )
+    
+    @staticmethod
+    def notifyRegistro(cliente):
+        """Correo de bienvenida al registrarse (además del de reservación)."""
+        send_mail(
+            subject='¡Bienvenido al Festival Internacional de las Luciérnagas 2026!',
+            message=(
+                f'Hola {cliente.nombre},\n\n'
+                f'Tu cuenta ha sido creada exitosamente con el correo: '
+                f'{cliente.correo_electronico}\n\n'
+                f'Ya puedes explorar los parques y realizar tu reservación.\n\n'
+                f'¡Te esperamos en el festival!\n'
+            ),
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            recipient_list=[cliente.correo_electronico],
+            fail_silently=True,
+        )
 
 
 # ─────────────────────────────────────────────────────────────
@@ -143,3 +160,76 @@ def al_crear_reservacion(sender, instance, created, **kwargs):
     """Se dispara automáticamente cuando se guarda una Reservacion nueva."""
     if created and instance.estado == 'activa':
         SignalCorreoCliente.notifyReserva(instance.usuario, instance)
+
+@staticmethod
+@receiver(post_save, sender=Usuario)
+def al_registrar_usuario(sender, instance, created, **kwargs):
+    """Se dispara automáticamente cuando se crea un nuevo Usuario."""
+    if created:
+        SignalCorreoCliente.notifyRegistro(instance)
+
+@receiver(pre_save, sender=Reservacion)
+def reservacion_pre_save(sender, instance, **kwargs):
+    """Guarda el estado Y fechas anteriores ANTES del cambio."""
+    try:
+        anterior = Reservacion.objects.get(pk=instance.pk)
+        instance._estado_anterior      = anterior.estado
+        instance._fecha_inicio_anterior = anterior.fecha_inicio
+        instance._fecha_fin_anterior    = anterior.fecha_fin   
+    except Reservacion.DoesNotExist:
+        instance._estado_anterior       = None
+        instance._fecha_inicio_anterior = None
+        instance._fecha_fin_anterior    = None
+
+@receiver(post_save, sender=Reservacion)
+def reservacion_post_save(sender, instance, created, **kwargs):
+    """Detecta cancelación o modificación de fechas."""
+    if created:
+        return
+
+    estado_anterior         = getattr(instance, '_estado_anterior', None)
+    fecha_inicio_anterior   = getattr(instance, '_fecha_inicio_anterior', None)
+    fecha_fin_anterior      = getattr(instance, '_fecha_fin_anterior', None)
+
+    if estado_anterior != 'cancelada' and instance.estado == 'cancelada':
+        SignalCorreoCliente.notifyCancelar(instance.usuario, instance)
+
+    elif instance.estado == 'activa' and (
+        fecha_inicio_anterior != instance.fecha_inicio or
+        fecha_fin_anterior    != instance.fecha_fin
+    ):
+        SignalCorreoCliente.notifyModificacion(instance.usuario, instance)
+
+@receiver(pre_save, sender=Parque)
+def parque_pre_save(sender, instance, **kwargs):
+    """Guarda el estado anterior del parque para detectar cambios."""
+    try:
+        anterior = Parque.objects.get(pk=instance.pk)
+        instance._nombre_anterior    = anterior.nombre
+        instance._capacidad_anterior = anterior.capacidad  # ajusta al campo real
+    except Parque.DoesNotExist:
+        instance._nombre_anterior    = None
+        instance._capacidad_anterior = None
+
+
+@receiver(post_save, sender=Parque)
+def parque_post_save(sender, instance, created, **kwargs):
+    """Notifica a usuarios afectados cuando un parque es modificado."""
+    if created:
+        SignalModificacion.agregarParque(instance)
+        return
+
+    cambios = []
+    if instance._nombre_anterior != instance.nombre:
+        cambios.append(f'Nombre: {instance._nombre_anterior} → {instance.nombre}')
+    if instance._capacidad_anterior != instance.capacidad:
+        cambios.append(f'Capacidad actualizada a {instance.capacidad}')
+
+    if cambios:
+        SignalModificacion.modificarParque(instance, ', '.join(cambios))
+
+
+@receiver(post_delete, sender=Parque)
+def parque_post_delete(sender, instance, **kwargs):
+    """Notifica y cancela reservaciones cuando un parque es eliminado."""
+    SignalModificacion.borrarParque(instance)

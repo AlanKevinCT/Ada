@@ -1,0 +1,873 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-05-25 01:32-0600\n"
+"PO-Revision-Date: 2026-05-25 01:34-0600\n"
+"Last-Translator: Nyx Valley Team <info@nyxvalley.com>\n"
+"Language-Team: English <en@li.org>\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: Festival2026/forms.py:30
+#, python-brace-format
+msgid "{campo} solo puede contener letras y espacios."
+msgstr "{campo} can only contain letters and spaces."
+
+#: Festival2026/forms.py:46
+msgid "La contraseña debe tener al menos 8 caracteres."
+msgstr "The password must be at least 8 characters long."
+
+#: Festival2026/forms.py:50
+msgid "La contraseña debe contener al menos una letra mayúscula."
+msgstr "The password must contain at least one uppercase letter."
+
+#: Festival2026/forms.py:54
+msgid "La contraseña debe contener al menos una letra minúscula."
+msgstr "The password must contain at least one lowercase letter."
+
+#: Festival2026/forms.py:58
+msgid "La contraseña debe contener al menos un número."
+msgstr "The password must contain at least one number."
+
+#: Festival2026/forms.py:62
+msgid "La contraseña debe contener al menos un carácter especial (!@#$%...)."
+msgstr "The password must contain at least one special character (!@#$%...)."
+
+#: Festival2026/forms.py:71 Festival2026/forms.py:72 Festival2026/forms.py:157
+#: Festival2026/forms.py:158
+msgid "Contraseña"
+msgstr "Password"
+
+#: Festival2026/forms.py:76
+msgid "Confirmar contraseña"
+msgstr "Confirm password"
+
+#: Festival2026/forms.py:77
+msgid "Repite la contraseña"
+msgstr "Repeat password"
+
+#: Festival2026/forms.py:89 Festival2026/forms.py:150
+msgid "Correo electrónico"
+msgstr "Email address"
+
+#: Festival2026/forms.py:90 Festival2026/forms.py:98
+msgid "Nombre"
+msgstr "First name"
+
+#: Festival2026/forms.py:91 Festival2026/forms.py:99
+msgid "Apellido paterno"
+msgstr "Last name"
+
+#: Festival2026/forms.py:92 Festival2026/forms.py:100
+msgid "Apellido materno"
+msgstr "Middle name"
+
+#: Festival2026/forms.py:107
+msgid "El formato del correo electrónico no es válido."
+msgstr "The email address format is invalid."
+
+#: Festival2026/forms.py:110
+msgid "No fue posible completar el registro. Verifica tus datos."
+msgstr "Registration could not be completed. Please verify your data."
+
+#: Festival2026/forms.py:116
+msgid "El nombre debe tener al menos 2 caracteres."
+msgstr "The name must be at least 2 characters long."
+
+#: Festival2026/forms.py:118
+msgid "El nombre no puede exceder 100 caracteres."
+msgstr "The name cannot exceed 100 characters."
+
+#: Festival2026/forms.py:124
+msgid "El apellido paterno debe tener al menos 2 caracteres."
+msgstr "The last name must be at least 2 characters long."
+
+#: Festival2026/forms.py:130
+msgid "El apellido materno debe tener al menos 2 caracteres."
+msgstr "The middle name must be at least 2 characters long."
+
+#: Festival2026/forms.py:142
+msgid "Las contraseñas no coinciden."
+msgstr "Passwords do not match."
+
+#: Festival2026/forms.py:169
+msgid "Datos inválidos."
+msgstr "Invalid data."
+
+#: Festival2026/forms.py:178 templates/admin/consultar_reservas.html:64
+msgid "Parque"
+msgstr "Park"
+
+#: Festival2026/forms.py:179
+msgid "— Selecciona un parque —"
+msgstr "— Select a park —"
+
+#: Festival2026/forms.py:182
+msgid "Fecha de inicio"
+msgstr "Start date"
+
+#: Festival2026/forms.py:186
+msgid "Fecha de fin"
+msgstr "End date"
+
+#: Festival2026/forms.py:190
+msgid "Número de personas"
+msgstr "Number of people"
+
+#: Festival2026/forms.py:195
+msgid "Tipo de visita"
+msgstr "Visit type"
+
+#: Festival2026/forms.py:202
+msgid "El número de personas debe estar entre 1 y 500."
+msgstr "The number of people must be between 1 and 500."
+
+#: Festival2026/forms.py:215
+msgid "La fecha de inicio no puede ser posterior a la fecha de fin."
+msgstr "The start date cannot be later than the end date."
+
+#: Festival2026/forms.py:218
+msgid "Las fechas no son válidas para el festival."
+msgstr "The dates are not valid for the festival."
+
+#: Festival2026/forms.py:222
+#, python-brace-format
+msgid "El parque {nombre} no cuenta con cabañas. Elige zona de camping u otro parque."
+msgstr "The park {nombre} does not have cabins. Please choose a camping area or another park."
+
+#: Festival2026/forms.py:232
+msgid "No hay disponibilidad en el parque para esas fechas."
+msgstr "There is no availability in the park for those dates."
+
+#: Festival2026/forms.py:264 Festival2026/forms.py:284
+msgid "Nombre del parque"
+msgstr "Park name"
+
+#: Festival2026/forms.py:265 templates/mapa/detalle_parque.html:12
+msgid "Dirección"
+msgstr "Address"
+
+#: Festival2026/forms.py:266
+msgid "Hora de apertura"
+msgstr "Opening time"
+
+#: Festival2026/forms.py:267
+msgid "Hora de cierre"
+msgstr "Closing time"
+
+#: Festival2026/forms.py:268
+msgid "Latitud"
+msgstr "Latitude"
+
+#: Festival2026/forms.py:269
+msgid "Longitud"
+msgstr "Longitude"
+
+#: Festival2026/forms.py:270
+msgid "Capacidad máxima de personas"
+msgstr "Maximum capacity of people"
+
+#: Festival2026/forms.py:271
+msgid "Visible en el mapa"
+msgstr "Visible on map"
+
+#: Festival2026/forms.py:272 templates/admin/crear_parque.html:84
+#: templates/admin/editar_parque.html:84 templates/admin/panel.html:78
+msgid "Danza"
+msgstr "Dance"
+
+#: Festival2026/forms.py:273 templates/admin/crear_parque.html:87
+#: templates/admin/editar_parque.html:87 templates/admin/panel.html:81
+msgid "Música"
+msgstr "Music"
+
+#: Festival2026/forms.py:274 templates/admin/crear_parque.html:90
+#: templates/admin/editar_parque.html:90 templates/admin/panel.html:84
+msgid "Teatro"
+msgstr "Theater"
+
+#: Festival2026/forms.py:275 templates/admin/crear_parque.html:93
+#: templates/admin/editar_parque.html:93
+msgid "Transporte"
+msgstr "Transportation"
+
+#: Festival2026/forms.py:276 templates/admin/crear_parque.html:96
+#: templates/admin/editar_parque.html:96 templates/admin/panel.html:90
+msgid "Baños"
+msgstr "Restrooms"
+
+#: Festival2026/forms.py:277 templates/admin/crear_parque.html:99
+#: templates/admin/editar_parque.html:99
+msgid "Cafeterías"
+msgstr "Coffee shops"
+
+#: Festival2026/forms.py:278 templates/admin/panel.html:96
+msgid "Guías"
+msgstr "Guides"
+
+#: Festival2026/forms.py:279 templates/admin/consultar_reservas.html:42
+#: templates/admin/crear_parque.html:105 templates/admin/editar_parque.html:105
+#: templates/admin/panel.html:72 templates/mapa/detalle_parque.html:33
+msgid "Cabañas"
+msgstr "Cabins"
+
+#: Festival2026/forms.py:280
+msgid "Zona de camping"
+msgstr "Camping area"
+
+#: Festival2026/forms.py:281
+msgid "Otros servicios"
+msgstr "Other services"
+
+#: Festival2026/forms.py:285
+msgid "Dirección completa"
+msgstr "Full address"
+
+#: Festival2026/forms.py:293
+msgid "Describe servicios adicionales disponibles en el parque"
+msgstr "Describe additional services available in the park"
+
+#: Festival2026/forms.py:305
+msgid "La hora de apertura debe ser anterior a la de cierre"
+msgstr "The opening time must be before the closing time"
+
+#: Festival2026/forms.py:312
+msgid "El parque debe ofrecer al menos zona de camping"
+msgstr "The park must offer at least a camping area"
+
+#: NyxValley/settings.py:99
+msgid "Español"
+msgstr "Spanish"
+
+#: NyxValley/settings.py:100
+msgid "English"
+msgstr "English"
+
+#: templates/admin/consultar_reservas.html:12
+msgid "VOLVER AL PANEL DE CONTROL"
+msgstr "BACK TO CONTROL PANEL"
+
+#: templates/admin/consultar_reservas.html:17
+msgid "CONSULTA DE RESERVACIONES (RF-13)"
+msgstr "RESERVATION INQUIRY (RF-13)"
+
+#: templates/admin/consultar_reservas.html:24
+msgid "Parque / Santuario"
+msgstr "Park / Sanctuary"
+
+#: templates/admin/consultar_reservas.html:26
+msgid "Todos los parques"
+msgstr "All parks"
+
+#: templates/admin/consultar_reservas.html:34
+msgid "Fecha de Llegada"
+msgstr "Arrival Date"
+
+#: templates/admin/consultar_reservas.html:39
+msgid "Tipo de Estancia"
+msgstr "Accommodation Type"
+
+#: templates/admin/consultar_reservas.html:41
+msgid "Cualquiera"
+msgstr "Any"
+
+#: templates/admin/consultar_reservas.html:43 templates/admin/panel.html:75
+#: templates/mapa/detalle_parque.html:30
+msgid "Camping"
+msgstr "Camping"
+
+#: templates/admin/consultar_reservas.html:49
+msgid "FILTRAR"
+msgstr "FILTER"
+
+#: templates/admin/consultar_reservas.html:52
+msgid "LIMPIAR"
+msgstr "CLEAR"
+
+#: templates/admin/consultar_reservas.html:63
+msgid "Cliente"
+msgstr "Customer"
+
+#: templates/admin/consultar_reservas.html:65
+msgid "Periodo de Estancia"
+msgstr "Stay Period"
+
+#: templates/admin/consultar_reservas.html:66
+msgid "Personas"
+msgstr "People"
+
+#: templates/admin/consultar_reservas.html:67
+msgid "Duración"
+msgstr "Duration"
+
+#: templates/admin/consultar_reservas.html:68
+msgid "Estado"
+msgstr "Status"
+
+#: templates/admin/consultar_reservas.html:84
+msgid "Cabaña"
+msgstr "Cabin"
+
+#: templates/admin/consultar_reservas.html:84
+#: templates/admin/crear_parque.html:109 templates/admin/editar_parque.html:109
+msgid "Zona de Camping"
+msgstr "Camping Area"
+
+#: templates/admin/consultar_reservas.html:96
+msgid "Pax"
+msgstr "Pax"
+
+#: templates/admin/consultar_reservas.html:102
+msgid "días"
+msgstr "days"
+
+#: templates/admin/consultar_reservas.html:109
+msgid "ACTIVA"
+msgstr "ACTIVE"
+
+#: templates/admin/consultar_reservas.html:113
+msgid "CANCELADA"
+msgstr "CANCELED"
+
+#: templates/admin/consultar_reservas.html:121
+msgid "No se encontraron reservaciones con los criterios seleccionados."
+msgstr "No reservations found matching the selected criteria."
+
+#: templates/admin/crear_parque.html:12
+msgid "REGISTRAR PARQUE"
+msgstr "REGISTER PARK"
+
+#: templates/admin/crear_parque.html:14
+msgid "Dar de alta un nuevo santuario oficial en la plataforma"
+msgstr "Register a new official sanctuary on the platform"
+
+#: templates/admin/crear_parque.html:20 templates/admin/editar_parque.html:20
+msgid "Por favor corrige los siguientes errores:"
+msgstr "Please correct the following errors:"
+
+#: templates/admin/crear_parque.html:35 templates/admin/editar_parque.html:35
+msgid "NOMBRE DEL PARQUE"
+msgstr "PARK NAME"
+
+#: templates/admin/crear_parque.html:41
+msgid "ACTIVO AL CREAR"
+msgstr "ACTIVE ON CREATION"
+
+#: templates/admin/crear_parque.html:47 templates/admin/editar_parque.html:47
+msgid "DIRECCIÓN COMPLETA"
+msgstr "FULL ADDRESS"
+
+#: templates/admin/crear_parque.html:53 templates/admin/editar_parque.html:53
+msgid "HORA DE APERTURA"
+msgstr "OPENING TIME"
+
+#: templates/admin/crear_parque.html:57 templates/admin/editar_parque.html:57
+msgid "HORA DE CIERRE"
+msgstr "CLOSING TIME"
+
+#: templates/admin/crear_parque.html:63 templates/admin/editar_parque.html:63
+msgid "CAPACIDAD MÁXIMA (PERSONAS)"
+msgstr "MAXIMUM CAPACITY (PEOPLE)"
+
+#: templates/admin/crear_parque.html:69 templates/admin/editar_parque.html:69
+msgid "LATITUD"
+msgstr "LATITUDE"
+
+#: templates/admin/crear_parque.html:73 templates/admin/editar_parque.html:73
+msgid "LONGITUD"
+msgstr "LONGITUDE"
+
+#: templates/admin/crear_parque.html:79 templates/admin/editar_parque.html:79
+msgid "Servicios y Amenidades Disponibles"
+msgstr "Available Services and Amenities"
+
+#: templates/admin/crear_parque.html:102 templates/admin/editar_parque.html:102
+msgid "Guías Autorizados"
+msgstr "Authorized Guides"
+
+#: templates/admin/crear_parque.html:115 templates/admin/editar_parque.html:115
+msgid "OTROS SERVICIOS ADICIONALES"
+msgstr "OTHER ADDITIONAL SERVICES"
+
+#: templates/admin/crear_parque.html:121 templates/admin/editar_parque.html:121
+#: templates/admin/panel.html:129
+msgid "CANCELAR"
+msgstr "CANCEL"
+
+#: templates/admin/crear_parque.html:124
+msgid "CREAR PARQUE"
+msgstr "CREATE PARK"
+
+#: templates/admin/editar_parque.html:12
+msgid "MODIFICAR PARQUE"
+msgstr "MODIFY PARK"
+
+#: templates/admin/editar_parque.html:14
+msgid "Editar los datos del parque oficial:"
+msgstr "Edit official park data:"
+
+#: templates/admin/editar_parque.html:41
+msgid "VISIBLE EN MAPA"
+msgstr "VISIBLE ON MAP"
+
+#: templates/admin/editar_parque.html:124
+msgid "ACTUALIZAR"
+msgstr "UPDATE"
+
+#: templates/admin/panel.html:10
+msgid "GESTIÓN DEL FESTIVAL 2026"
+msgstr "FESTIVAL MANAGEMENT 2026"
+
+#: templates/admin/panel.html:14
+msgid "PARQUES AUTORIZADOS"
+msgstr "AUTHORIZED PARKS"
+
+#: templates/admin/panel.html:19
+msgid "RESERVACIONES ACTIVAS"
+msgstr "ACTIVE RESERVATIONS"
+
+#: templates/admin/panel.html:21
+msgid "ADMINISTRAR RESERVACIONES →"
+msgstr "MANAGE RESERVATIONS →"
+
+#: templates/admin/panel.html:27
+msgid "REGISTRO DE PARQUES"
+msgstr "PARK REGISTRY"
+
+#: templates/admin/panel.html:28
+msgid "CREAR NUEVO PARQUE"
+msgstr "CREATE NEW PARK"
+
+#: templates/admin/panel.html:35
+msgid "Santuario / Ubicación"
+msgstr "Sanctuary / Location"
+
+#: templates/admin/panel.html:36 templates/mapa/detalle_parque.html:17
+msgid "Horario"
+msgstr "Schedule"
+
+#: templates/admin/panel.html:37
+msgid "Capacidad"
+msgstr "Capacity"
+
+#: templates/admin/panel.html:38
+msgid "Servicios y Amenidades"
+msgstr "Services and Amenities"
+
+#: templates/admin/panel.html:39
+msgid "Acciones"
+msgstr "Actions"
+
+#: templates/admin/panel.html:49
+msgid "OCULTO"
+msgstr "HIDDEN"
+
+#: templates/admin/panel.html:61 templates/mapa/info_completa.html:81
+msgid "HRS"
+msgstr "HRS"
+
+#: templates/admin/panel.html:66
+msgid "MÁX. PERSONAS"
+msgstr "MAX. PEOPLE"
+
+#: templates/admin/panel.html:87
+msgid "Transp."
+msgstr "Transp."
+
+#: templates/admin/panel.html:93
+msgid "Cafetería"
+msgstr "Cafeteria"
+
+#: templates/admin/panel.html:103
+msgid "EDITAR"
+msgstr "EDIT"
+
+#: templates/admin/panel.html:111
+msgid "BORRAR"
+msgstr "DELETE"
+
+#: templates/admin/panel.html:117
+msgid "No hay parques registrados."
+msgstr "No registered parks found."
+
+#: templates/admin/panel.html:126
+msgid "Confirmar Eliminación"
+msgstr "Confirm Deletion"
+
+#: templates/admin/panel.html:127
+#, python-brace-format
+msgid "¿Estás seguro de que deseas eliminar el parque {nombre}? Esta acción notificará a los clientes afectados."
+msgstr "Are you sure you want to delete the park {nombre}? This action will notify affected customers."
+
+#: templates/admin/panel.html:128
+msgid "SÍ, ELIMINAR"
+msgstr "YES, DELETE"
+
+#: templates/base/base.html:19
+msgid "Navegación principal"
+msgstr "Main navigation"
+
+#: templates/base/base.html:24
+msgid "Inicio"
+msgstr "Home"
+
+#: templates/base/base.html:28
+msgid "Panel admin"
+msgstr "Admin panel"
+
+#: templates/base/base.html:30
+msgid "Mis reservaciones"
+msgstr "My reservations"
+
+#: templates/base/base.html:32
+msgid "Cerrar sesión"
+msgstr "Log out"
+
+#: templates/base/base.html:34
+msgid "Iniciar sesión"
+msgstr "Log in"
+
+#: templates/base/base.html:35
+msgid "Registrarse"
+msgstr "Register"
+
+#: templates/base/base.html:42
+msgid "Seleccionar idioma"
+msgstr "Select language"
+
+#: templates/base/base.html:66
+msgid "Bosque nocturno"
+msgstr "Night forest"
+
+#: templates/base/base.html:70
+msgid "Índigo profundo"
+msgstr "Deep indigo"
+
+#: templates/base/base.html:74
+msgid "Bosque esmeralda"
+msgstr "Emerald forest"
+
+#: templates/base/base.html:78
+msgid "Crema y dorado"
+msgstr "Cream and gold"
+
+#: templates/base/base.html:82
+msgid "Bosque de día"
+msgstr "Day forest"
+
+#: templates/base/base.html:86
+msgid "Niebla y musgo"
+msgstr "Fog and moss"
+
+#: templates/base/base.html:94
+msgid "Tema"
+msgstr "Theme"
+
+#: templates/base/base.html:100
+msgid "Festival Internacional de las Luciérnagas 2026 — Nyx Valley"
+msgstr "International Firefly Festival 2026 — Nyx Valley"
+
+#: templates/cliente/formulario_reserva.html:12
+msgid "PROGRAMAR VISITA"
+msgstr "SCHEDULE VISIT"
+
+#: templates/cliente/formulario_reserva.html:14
+msgid "Reserva tu lugar para el Festival Internacional de las Luciérnagas 2026"
+msgstr "Reserve your spot for the International Firefly Festival 2026"
+
+#: templates/cliente/formulario_reserva.html:30
+msgid "SELECCIONA EL PARQUE"
+msgstr "SELECT THE PARK"
+
+#: templates/cliente/formulario_reserva.html:39
+msgid "FECHA DE ENTRADA"
+msgstr "CHECK-IN DATE"
+
+#: templates/cliente/formulario_reserva.html:47
+msgid "FECHA DE SALIDA"
+msgstr "CHECK-OUT DATE"
+
+#: templates/cliente/formulario_reserva.html:57
+msgid "CANTIDAD DE VISITANTES"
+msgstr "NUMBER OF VISITORS"
+
+#: templates/cliente/formulario_reserva.html:65
+msgid "TIPO DE ESTANCIA"
+msgstr "ACCOMMODATION TYPE"
+
+#: templates/cliente/formulario_reserva.html:75
+msgid "Temporada oficial: Junio 01 a Agosto 31. Los días martes el santuario permanece cerrado para mantenimiento ecológico."
+msgstr "Official season: June 01 to August 31. The sanctuary remains closed on Tuesdays for ecological maintenance."
+
+#: templates/cliente/formulario_reserva.html:81
+msgid "SOLICITAR RESERVACIÓN"
+msgstr "REQUEST RESERVATION"
+
+#: templates/cliente/formulario_reserva.html:90
+msgid "Lo sentimos"
+msgstr "We are sorry"
+
+#: templates/cliente/formulario_reserva.html:94
+msgid "ENTENDIDO"
+msgstr "UNDERSTOOD"
+
+#: templates/cliente/formulario_reserva.html:102
+msgid "¡RESERVACIÓN EXITOSA!"
+msgstr "SUCCESSFUL RESERVATION!"
+
+#: templates/cliente/formulario_reserva.html:104
+msgid "Tu reservación en Nyx Valley ha sido programada. Hemos enviado la confirmación a tu correo electrónico."
+msgstr "Your reservation in Nyx Valley has been scheduled. We have sent a confirmation to your email."
+
+#: templates/cliente/formulario_reserva.html:107
+msgid "VER MIS RESERVACIONES"
+msgstr "VIEW MY RESERVATIONS"
+
+#: templates/cliente/formulario_reserva.html:155
+msgid "La temporada oficial del festival inicia el 01 de Junio y finaliza el 31 de Agosto."
+msgstr "The official festival season begins on June 01 and ends on August 31."
+
+#: templates/cliente/formulario_reserva.html:162
+msgid "Los días martes los parques se encuentran cerrados por mantenimiento"
+msgstr "On Tuesdays the parks are closed for maintenance"
+
+#: templates/cliente/mis_reservaciones.html:13
+msgid "MIS"
+msgstr "MY"
+
+#: templates/cliente/mis_reservaciones.html:13
+msgid "RESERVACIONES"
+msgstr "RESERVATIONS"
+
+#: templates/cliente/mis_reservaciones.html:14
+msgid "Hola"
+msgstr "Hello"
+
+#: templates/cliente/mis_reservaciones.html:17
+msgid "Temporada:"
+msgstr "Season:"
+
+#: templates/cliente/mis_reservaciones.html:27
+msgid "Noche Cancelada"
+msgstr "Canceled Night"
+
+#: templates/cliente/mis_reservaciones.html:27
+msgid "Noche Finalizada"
+msgstr "Finished Night"
+
+#: templates/cliente/mis_reservaciones.html:34
+msgid "VISITA"
+msgstr "VISIT"
+
+#: templates/cliente/mis_reservaciones.html:42
+msgid "Próxima Noche"
+msgstr "Upcoming Night"
+
+#: templates/cliente/mis_reservaciones.html:47
+msgid "PARQUE:"
+msgstr "PARK:"
+
+#: templates/cliente/mis_reservaciones.html:53
+msgid "FECHA:"
+msgstr "DATE:"
+
+#: templates/cliente/mis_reservaciones.html:56
+msgid "HOSPEDAJE:"
+msgstr "LODGING:"
+
+#: templates/cliente/mis_reservaciones.html:57
+msgid "pers"
+msgstr "ppl"
+
+#: templates/cliente/mis_reservaciones.html:67
+msgid "¿Deseas cancelar esta noche mágica?"
+msgstr "Do you want to cancel this magical night?"
+
+#: templates/cliente/mis_reservaciones.html:68
+msgid "Esta acción cambiará el estado de tu reservación."
+msgstr "This action will change your reservation status."
+
+#: templates/cliente/mis_reservaciones.html:69
+msgid "SÍ, CANCELAR"
+msgstr "YES, CANCEL"
+
+#: templates/cliente/mis_reservaciones.html:70
+msgid "REGRESAR"
+msgstr "GO BACK"
+
+#: templates/cliente/mis_reservaciones.html:71
+msgid "CANCELAR NOCHE"
+msgstr "CANCEL NIGHT"
+
+#: templates/cliente/mis_reservaciones.html:78
+msgid "Aún no cuentas con ninguna reservación. ¡Explora el mapa!"
+msgstr "You don't have any reservations yet. Explore the map!"
+
+#: templates/login.html:12
+msgid "INICIAR SESIÓN"
+msgstr "LOG IN"
+
+#: templates/login.html:14
+msgid "Festival Internacional de las Luciérnagas"
+msgstr "International Firefly Festival"
+
+#: templates/login.html:28 templates/registro.html:30
+msgid "CORREO ELECTRÓNICO"
+msgstr "EMAIL ADDRESS"
+
+#: templates/login.html:36 templates/registro.html:65
+msgid "CONTRASEÑA"
+msgstr "PASSWORD"
+
+#: templates/login.html:44
+msgid "¿Olvidaste tu contraseña?"
+msgstr "Forgot your password?"
+
+#: templates/login.html:49
+msgid "INGRESAR"
+msgstr "ENTER"
+
+#: templates/login.html:54
+msgid "¿AÚN NO TIENES CUENTA?"
+msgstr "DON'T HAVE AN ACCOUNT YET?"
+
+#: templates/login.html:55
+msgid "REGÍSTRATE AQUÍ"
+msgstr "REGISTER HERE"
+
+#: templates/mapa/detalle_parque.html:22
+msgid "Servicios"
+msgstr "Services"
+
+#: templates/mapa/detalle_parque.html:27
+msgid "Hospedaje"
+msgstr "Lodging"
+
+#: templates/mapa/detalle_parque.html:42
+msgid "Reservar"
+msgstr "Book Now"
+
+#: templates/mapa/detalle_parque.html:45
+msgid "Ver más"
+msgstr "See more"
+
+#: templates/mapa/info_completa.html:17
+msgid "Ubicación física del parque"
+msgstr "Physical location of the park"
+
+#: templates/mapa/info_completa.html:24
+msgid "BIENVENIDOS AL SANTUARIO"
+msgstr "WELCOME TO THE SANCTUARY"
+
+#: templates/mapa/info_completa.html:27
+msgid "\"En el corazón de Nyx Valley, el tiempo se detiene. Somos un refugio donde la naturaleza susurra secretos y las luciérnagas pintan el aire con destellos de esperanza. Nuestro parque no es solo un destino, es una experiencia mística diseñada para reconectar tu alma con el bosque.\""
+msgstr "\"In the heart of Nyx Valley, time stands still. We are a sanctuary where nature whispers secrets and fireflies paint the air with flashes of hope. Our park is not just a destination; it is a mystical experience designed to reconnect your soul with the forest.\""
+
+#: templates/mapa/info_completa.html:35
+msgid "SERVICIOS"
+msgstr "SERVICES"
+
+#: templates/mapa/info_completa.html:42
+msgid "ZONA CAMPING"
+msgstr "CAMPING AREA"
+
+#: templates/mapa/info_completa.html:44 templates/mapa/info_completa.html:56
+msgid "Capacidad máxima:"
+msgstr "Maximum capacity:"
+
+#: templates/mapa/info_completa.html:44 templates/mapa/info_completa.html:56
+msgid "personas"
+msgstr "people"
+
+#: templates/mapa/info_completa.html:54
+msgid "CABAÑA"
+msgstr "CABIN"
+
+#: templates/mapa/info_completa.html:66
+msgid "Área de reservaciones"
+msgstr "Reservations area"
+
+#: templates/mapa/info_completa.html:68
+msgid "RESERVAR"
+msgstr "BOOK NOW"
+
+#: templates/mapa/info_completa.html:73
+msgid "HORARIO"
+msgstr "SCHEDULE"
+
+#: templates/mapa/mapa.html:5
+msgid "Mapa de Parques — Nyx Valley"
+msgstr "Park Map — Nyx Valley"
+
+#: templates/mapa/mapa.html:13
+msgid "Parques del Festival"
+msgstr "Festival Parks"
+
+#: templates/mapa/mapa.html:14
+msgid "Selecciona un marcador en el mapa para ver la información del parque."
+msgstr "Select a marker on the map to view park information."
+
+#: templates/mapa/mapa.html:24
+msgid "Selecciona un parque"
+msgstr "Select a park"
+
+#: templates/mapa/mapa.html:24
+msgid "en el mapa"
+msgstr "on the map"
+
+#: templates/registro.html:12
+msgid "UNIRSE"
+msgstr "JOIN US"
+
+#: templates/registro.html:14
+msgid "Crea tu cuenta para explorar y reservar"
+msgstr "Create your account to explore and book"
+
+#: templates/registro.html:38
+msgid "NOMBRE"
+msgstr "FIRST NAME"
+
+#: templates/registro.html:47
+msgid "APELLIDO PATERNO"
+msgstr "LAST NAME"
+
+#: templates/registro.html:55
+msgid "APELLIDO MATERNO"
+msgstr "MIDDLE NAME"
+
+#: templates/registro.html:73
+msgid "CONFIRMAR CONTRASEÑA"
+msgstr "CONFIRM PASSWORD"
+
+#: templates/registro.html:83
+msgid "REGISTRAR CUENTA"
+msgstr "REGISTER ACCOUNT"
+
+#: templates/registro.html:88
+msgid "¿YA TIENES UNA CUENTA?"
+msgstr "ALREADY HAVE AN ACCOUNT?"
+
+#: templates/registro.html:89
+msgid "INICIA SESIÓN AQUÍ"
+msgstr "LOG IN"
+
+#: templates/admin/consultar_reservas.html:69
+msgid "Correo:"
+msgstr "Email:"
+
+#: templates/admin/consultar_reservas.html:84
+msgid "Desde el"
+msgstr "From"
+
+#: templates/admin/consultar_reservas.html:86
+msgid "hasta el"
+msgstr "to"

@@ -1,0 +1,120 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block estilos_extra %}
+<link rel="stylesheet" href="{% static 'css/mis_reservaciones.css' %}">
+{% endblock %}
+
+{% block contenido %}
+<main class="bitacora-container fade-in">
+    <header class="bitacora-header">
+        <div class="header-main">
+            <h1>{% translate "MIS" %} <span class="oro">{% translate "RESERVACIONES" %}</span></h1>
+            <p class="user-name">{% translate "Hola" %}, {{ user.nombre_completo }}.</p>
+            <p class="user-email">{{ user.correo_electronico }}</p>
+        </div>
+        <div class="temporada-badge">{% translate "Temporada:" %} <span>JUN-AGO 2026</span></div>
+    </header>
+
+    <div class="bitacora-grid" id="contenedor-reservas">
+        {% for res in reservaciones %}
+            {% if res.estado == 'cancelada' or res.fecha_fin < hoy %}
+                <section class="card-bitacora pasada">
+                    <div class="card-header">
+                        <div class="header-left">
+                            <span class="dot-off" aria-hidden="true"></span>
+                            <h2>{% if res.estado == 'cancelada' %}{% translate "Noche Cancelada" %}{% else %}{% translate "Noche Finalizada" %}{% endif %}</h2>
+                        </div>
+                        <span class="fecha-log"><time datetime="{{ res.fecha_inicio|date:'Y-m-d' }}">{{ res.fecha_inicio|date:"d M, Y" }}</time></span>
+                    </div>
+                    <div class="card-body-simple">
+                        <h3>{{ res.parque.nombre }}</h3>
+                        <p class="direccion-parque-mini">📍 {{ res.parque.direccion }}</p>
+                        <p class="status-text">{% translate "VISITA" %} {{ res.get_estado_display|upper }}</p>
+                    </div>
+                </section>
+            {% else %}
+                <section class="card-bitacora proxima">
+                    <div class="card-header">
+                        <div class="header-left">
+                            <span class="dot-glow" aria-hidden="true"></span>
+                            <h2>{% translate "Próxima Noche" %}</h2>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="info-group">
+                            <label>{% translate "PARQUE:" %}</label>
+                            <h3>{{ res.parque.nombre }}</h3>
+                            <p class="direccion-parque-mini">📍 {{ res.parque.direccion }}</p>
+                            <p class="horario-parque-mini">⏰ {{ res.parque.horario_apertura|time:"H:i" }} - {{ res.parque.horario_cierre|time:"H:i" }} hrs</p>
+                        </div>
+                        <div class="info-group">
+                            <label>{% translate "FECHA:" %}</label>
+                            <p class="oro"><time datetime="{{ res.fecha_inicio|date:'Y-m-d' }}">{{ res.fecha_inicio|date:"d M" }}</time> - <time datetime="{{ res.fecha_fin|date:'Y-m-d' }}">{{ res.fecha_fin|date:"d M, Y" }}</time></p>
+                            
+                            <label style="margin-top: 15px;">{% translate "HOSPEDAJE:" %}</label>
+                            <p>{{ res.get_tipo_visita_display }} ({{ res.numero_personas }} {% translate "pers" %})</p>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <form id="form-cancelar-{{ res.id }}" action="{% url 'cancelar_reservacion' res.id %}" method="POST" style="display: none;">
+                            {% csrf_token %}
+                        </form>
+
+                        <button class="btn-cancelar trigger-cancelar" 
+                                data-id="{{ res.id }}"
+                                data-title='{% translate "¿Deseas cancelar esta noche mágica?" %}'
+                                data-text='{% translate "Esta acción cambiará el estado de tu reservación." %}'
+                                data-confirm='{% translate "SÍ, CANCELAR" %}'
+                                data-cancel='{% translate "REGRESAR" %}'>
+                            {% translate "CANCELAR NOCHE" %}
+                        </button>
+                    </div>
+                </section>
+            {% endif %}
+        {% empty %}
+            <div class="empty-state">
+                <p>{% translate "Aún no cuentas con ninguna reservación. ¡Explora el mapa!" %}</p>
+            </div>
+        {% endfor %}
+    </div>
+</main>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const estilo = getComputedStyle(document.documentElement);
+        const colorFondo = estilo.getPropertyValue('--fondo-card') || '#121212';
+        const colorOro = estilo.getPropertyValue('--acento') || '#e2b04a';
+        const colorTexto = estilo.getPropertyValue('--texto-principal') || '#ffffff';
+
+        document.querySelectorAll('.trigger-cancelar').forEach(boton => {
+            boton.addEventListener('click', (e) => {
+                e.preventDefault();
+                const resId = boton.getAttribute('data-id');
+                
+                Swal.fire({
+                    title: boton.getAttribute('data-title'),
+                    text: boton.getAttribute('data-text'),
+                    icon: 'warning',
+                    iconColor: colorOro,
+                    background: colorFondo,
+                    color: colorTexto,
+                    showCancelButton: true,
+                    confirmButtonText: boton.getAttribute('data-confirm'),
+                    cancelButtonText: boton.getAttribute('data-cancel'),
+                    customClass: {
+                        confirmButton: 'btn btn-primary btn-swal',
+                        cancelButton: 'btn btn-secondary btn-swal'
+                    },
+                    buttonsStyling: false,
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        document.getElementById(`form-cancelar-${resId}`).submit();
+                    }
+                });
+            });
+        });
+    });
+</script>
+{% endblock %}
