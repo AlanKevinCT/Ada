@@ -215,6 +215,19 @@ class ReservaForm(forms.Form):
                 raise ValidationError(
                     _('La fecha de inicio no puede ser posterior a la fecha de fin.')
                 )
+            
+            from datetime import timedelta
+            
+            fecha_actual = fecha_inicio
+            while fecha_actual <= fecha_fin:
+                if fecha_actual.weekday() == 1:
+                    raise ValidationError(
+                        _('La fecha no es válida porque incluye un martes, y ese día no se puede reservar.')
+                    )
+                fecha_actual += timedelta(days=1)
+
+
+
             if not Disponibilidad.verificaFechas(fecha_inicio, fecha_fin):
                 raise ValidationError(_('Las fechas no son válidas para el festival.'))
 
