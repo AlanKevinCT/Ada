@@ -183,7 +183,10 @@ class TestFormulariosFestival(TestCase):
         }
         form = ReservaForm(data=datos)
         self.assertFalse(form.is_valid())
-        self.assertIn('Las fechas no son válidas para el festival.', form.non_field_errors())
+        self.assertIn(
+            'La fecha no es válida porque incluye un martes, y ese día no se puede reservar.', 
+            form.non_field_errors()
+        )
 
     def test_reserva_form_bloqueo_cabanas_en_parque_sin_ellas(self):
         """Verifica que el formulario impida reservar una cabaña si la instancia específica del parque no cuenta con ese servicio."""

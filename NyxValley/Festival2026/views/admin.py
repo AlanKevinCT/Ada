@@ -1,21 +1,12 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse
 
 from ..models import Usuario, Parque, Reservacion
-from ..services import AsistReserva, Disponibilidad
-from ..mapa import MapaNavegacion
 from ..forms import ParqueForm
 from ..signals import SignalModificacion
 
-from django.core.mail import send_mail
-from django.conf import settings
-from django.utils import timezone
 from functools import wraps
 from django.shortcuts import redirect
-from django.contrib import messages
-from datetime import datetime
 
 def solo_admin(vista):
     """
@@ -52,8 +43,6 @@ def panel_admin(request):
      
      return render(request, 'admin/panel.html', contexto)
 
- 
-
 @login_required
 @solo_admin
 def consultar_reservas(request):
@@ -83,7 +72,6 @@ def consultar_reservas(request):
         'tipo_seleccionado': tipo_estancia,
     })
 
-
 @login_required
 @solo_admin
 def crear_parque(request):
@@ -100,7 +88,6 @@ def crear_parque(request):
             return redirect('panel_admin')
 
     return render(request, 'admin/crear_parque.html', {'form': form})
-
 
 @login_required
 @solo_admin
@@ -132,7 +119,6 @@ def editar_parque(request, id):
         'form': form,
         'parque': parque,
     })
-
 
 @login_required
 @solo_admin

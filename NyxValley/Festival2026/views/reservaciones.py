@@ -1,16 +1,9 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
+from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse
 
-from ..models import Usuario, Parque, Reservacion
-from ..services import AsistReserva, Disponibilidad
-from ..mapa import MapaNavegacion
-from ..forms import RegistroForm, LoginForm, ReservaForm
-
-from django.core.mail import send_mail
-from django.conf import settings
-from django.utils import timezone
+from ..models import Parque
+from ..services import AsistReserva
+from ..forms import  ReservaForm
 
 @login_required
 def formulario_reserva(request):
@@ -21,7 +14,7 @@ def formulario_reserva(request):
         form = ReservaForm(data=request.POST)
         if form.is_valid():
             try:
-                reservacion = AsistReserva.reservar(
+                AsistReserva.reservar(
                     usuario=request.user,
                     parque=form.cleaned_data['parque'],
                     fecha_inicio=form.cleaned_data['fecha_inicio'],
@@ -34,7 +27,6 @@ def formulario_reserva(request):
                     'parques': parques,
                     'success': True 
                 })
-                # ──────────────────────────────────────────────────────────────────
                 
             except ValueError as e:
                 form.add_error(None, str(e))
@@ -55,4 +47,3 @@ def formulario_reserva(request):
         'form': form,
         'parques': parques,
     })
-

@@ -1,24 +1,13 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse
 
-from ..models import Usuario, Parque, Reservacion
-from ..services import AsistReserva, Disponibilidad
-from ..mapa import MapaNavegacion
-from ..forms import RegistroForm, LoginForm, ReservaForm
-
-from django.core.mail import send_mail
-from django.conf import settings
-from django.utils import timezone
-
+from ..models import Reservacion
+from ..services import AsistReserva
 
 @login_required
 def panel_cliente(request):
     """Panel personal del usuario cliente."""
     return redirect('inicio')
-
-
 
 @login_required
 def mis_reservaciones(request):
@@ -28,7 +17,6 @@ def mis_reservaciones(request):
     ).order_by('-fecha_creacion')
     return render(request, 'cliente/mis_reservaciones.html',
                   {'reservaciones': reservaciones})
-
 
 @login_required
 def cancelar_reservacion(request, id):

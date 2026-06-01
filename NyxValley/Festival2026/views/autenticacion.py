@@ -1,17 +1,10 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
-from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse
 
-from ..models import Usuario, Parque, Reservacion
-from ..services import AsistReserva, Disponibilidad
+from ..models import Usuario
 from ..mapa import MapaNavegacion
-from ..forms import RegistroForm, LoginForm, ReservaForm
-from ..signals import SignalCorreoCliente
-
-from django.core.mail import send_mail
+from ..forms import RegistroForm, LoginForm
 from django.conf import settings
-from django.utils import timezone
 import json
 from django.core.cache import cache # Importar para el rate limiting
 
@@ -27,8 +20,6 @@ def inicio(request):
         'parques': parques,
         'geojson': geojson_str,
     })
-
-
 
 def registro(request):
      """Registro de nuevoUsuarioCliente."""
@@ -46,7 +37,6 @@ def registro(request):
             auth_login(request, usuario)
             return redirect('inicio')
      return render(request, 'registro.html', {'form': form})
-
 
 def login(request):
     """Inicio de sesión para cliente y administrador (RF-02)."""
@@ -83,9 +73,7 @@ def login(request):
 
     return render(request, 'login.html', {'form': form, 'error': error})
 
-
 def logout(request):
     """Cierra la sesión activa."""
     auth_logout(request)
     return redirect('inicio')
-

@@ -1,16 +1,9 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
-from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse
 
-from ..models import Usuario, Parque, Reservacion
-from ..services import AsistReserva, Disponibilidad
+from ..models import Parque
 from ..mapa import MapaNavegacion
-from ..forms import RegistroForm, LoginForm, ReservaForm
 
-from django.core.mail import send_mail
-from django.conf import settings
-from django.utils import timezone
 import json
 
 def mapa(request):
@@ -28,7 +21,6 @@ def mapa(request):
         'geojson': geojson_str,
     })
 
-
 def detalle_parque(request, id):
     """
     Devuelve la información de un parque al hacer clic en su pin (RF-09).
@@ -42,8 +34,6 @@ def detalle_parque(request, id):
     if request.headers.get('HX-Request'):
         return render(request, 'mapa/detalle_parque.html', {'parque': parque})
     return JsonResponse(parque)
-
-
 
 def info_completa_parque(request, id):
     """
